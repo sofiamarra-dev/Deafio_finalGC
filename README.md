@@ -29,8 +29,8 @@ Aprender a programar pode ser árduo e desmotivante para quem esta começando. O
 ---
 
 ## ⚙️ Tecnologias
-- **Front-end:** A definir
-- **Back-end:** A definir
+- **Front-end:** HTML e CSS
+- **Back-end:** Python
 - **Banco de dados:** A definir
 - **IA:** A definir
 - **Hospedagem:** Web.
