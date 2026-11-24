@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CodeQuest</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&family=Pixelify+Sans:wght@700&display=swap">
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<div class="gabinete">
+
+<!-- Página 1: entrar -->
+<section class="pagina" id="pag-entrar" hidden aria-labelledby="entrarTitulo">
+  <div class="entrada">
+    <div class="vitrine">
+      <h1 id="entrarTitulo" class="nome-jogo" data-site>CodeQuest</h1>
+      <p class="chamada">Aprenda Python explorando mundos: resolva desafios para abrir as portas e escapar antes que o tempo acabe.</p>
+      <div class="elenco" aria-hidden="true" id="elenco"></div>
+    </div>
+    <div class="deck login">
+      <h2>Quem vai jogar?</h2>
+      <div id="continuar" class="continuar" hidden>
+        <p>Neste computador</p>
+        <ul class="jogadores" id="jogadores"></ul>
+      </div>
+      <form id="loginForm" autocomplete="off">
+        <label class="campo">Nome <input id="loginNome" maxlength="16" required></label>
+        <label class="campo">Turma, se tiver <input id="loginTurma" maxlength="12"></label>
+        <p class="erro" id="loginErro" role="alert" hidden></p>
+        <button class="primary" type="submit">Entrar</button>
+      </form>
+      <button type="button" id="loginVisitante" class="link-deck">Jogar sem ranking</button>
+      <p class="help">Não tem senha: o nome só identifica você neste navegador e aparece no ranking.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Página 2: escolher o mundo -->
+<section class="pagina" id="pag-mundos" hidden aria-labelledby="mundosTitulo">
+  <header class="marquise">
+    <div class="titulos"><a class="site" href="#mundos" data-site>CodeQuest</a><h1 id="mundosTitulo">Escolha o mundo</h1></div>
+    <nav class="abas" aria-label="Menu">
+      <span class="ola" id="olaJogador"></span>
+      <button id="mundosRanking" class="link">Ranking</button>
+      <button id="mundosTrocar" class="link">Trocar de jogador</button>
+    </nav>
+  </header>
+  <p class="chamada">Cada mundo ensina um assunto de Python. Conclua um para liberar o próximo.</p>
+  <ul class="mundos" id="mundos"></ul>
+</section>
+
+<!-- Página 3: o jogo -->
+<div class="pagina" id="pag-jogo" hidden>
+  <header class="marquise">
+    <div class="titulos"><a class="site" href="#mundos" data-site>CodeQuest</a><h1 id="titulo">O Restaurante</h1></div>
+    <nav class="abas" aria-label="Menu">
+      <button id="verMapa" class="link">Mundos</button>
+      <button id="verRanking" class="link">Ranking</button>
+      <button id="verJogador" class="link">Entrar</button>
+    </nav>
+  </header>
+
+  <main class="jogo">
+    <section class="tela">
+      <div class="bisel">
+        <canvas id="game" width="480" height="320" aria-label="Cenário do jogo com o personagem e uma porta de saída"></canvas>
+        <div class="prompt" id="prompt" hidden></div>
+        <div class="toast" id="toast" hidden></div>
+      </div>
+      <p class="legenda" id="intro"></p>
+    </section>
+
+    <aside class="deck" aria-label="Painel de controle">
+      <p class="sala-tag" id="salaTag"></p>
+      <div class="relogio">
+        <span class="timer" id="timer" role="timer">06:00</span>
+        <div class="timebar" aria-hidden="true"><i id="timefill"></i></div>
+      </div>
+      <ul class="chips" id="chips" aria-label="Painéis da sala"></ul>
+      <p class="stats">
+        <span>Porta <b id="doorState">trancada</b></span>
+        <span>Tentativas <b id="tries">0</b></span>
+        <span>Pontos <b id="pontos">0</b></span>
+      </p>
+      <div class="comandos">
+        <div class="dpad" aria-label="Controles de movimento">
+          <button class="up" data-dir="up" aria-label="Cima">▲</button>
+          <button class="left" data-dir="left" aria-label="Esquerda">◀</button>
+          <button class="down" data-dir="down" aria-label="Baixo">▼</button>
+          <button class="right" data-dir="right" aria-label="Direita">▶</button>
+        </div>
+        <button class="primary" id="act" disabled>Interagir (E)</button>
+      </div>
+      <p class="help">Mova com as setas ou WASD. Chegue perto de um móvel com o balão e aperte E.</p>
+    </aside>
+  </main>
+
+  <section class="log">
+    <h2>Registro de tentativas</h2>
+    <ol id="logList"><li class="empty">Nenhuma tentativa ainda.</li></ol>
+  </section>
+</div>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="chTitle">
+    <h2 id="chTitle"></h2>
+    <p class="story" id="chStory"></p>
+    <p class="goal" id="chGoal"></p>
+    <div class="codeview" id="codeview" aria-label="Código Python"></div>
+    <div class="palette" id="palette" aria-label="Blocos disponíveis"></div>
+    <p class="hint">Arraste um bloco até o espaço tracejado, ou toque no bloco para encaixar. Toque no bloco encaixado para tirar.</p>
+    <div class="row">
+      <button class="primary" id="run">Executar e testar</button>
+      <button id="hintBtn">Ver dica</button>
+      <button id="reset">Limpar bloco</button>
+      <button id="close">Sair</button>
+    </div>
+    <div class="result" id="result" aria-live="polite">A saída do programa aparece aqui.</div>
+    <p class="tests" id="chTests"></p>
+    <p class="hint" id="chHint" hidden></p>
+  </div>
+</div>
+
+<div class="modal" id="ranking" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="rankTitulo">
+    <h2 id="rankTitulo">Ranking</h2>
+    <div class="abas-mundo" id="rankAbas" role="tablist" aria-label="Mundo"></div>
+    <label class="marca" id="rankTurmaRotulo" hidden><input type="checkbox" id="rankTurma"> <span></span></label>
+    <table class="rank" id="rankTabela">
+      <caption class="so-leitor">Melhores pontuações do mundo escolhido</caption>
+      <thead><tr><th scope="col">Posição</th><th scope="col">Jogador</th><th scope="col" class="num">Pontos</th><th scope="col" class="num">Tempo</th></tr></thead>
+      <tbody id="rankCorpo"></tbody>
+    </table>
+    <p class="story" id="rankVazio" hidden>Ninguém terminou este mundo ainda. Termine as três áreas para abrir o ranking.</p>
+    <p class="hint">O ranking fica salvo neste navegador. Vale a melhor pontuação de cada jogador.</p>
+    <div class="row"><button id="rankFechar">Fechar</button></div>
+  </div>
+</div>
+
+<div class="modal" id="end" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="endTitle">
+    <h2 id="endTitle">O rato escapou!</h2>
+    <p id="endText"></p>
+    <div class="row"><button class="primary" id="again">Jogar de novo</button><button id="again2" hidden>Mapa de mundos</button><button id="again3" hidden>Mapa de mundos</button></div>
+  </div>
+</div>
+
+<script src="lib/skulpt/skulpt.min.js"></script>
+<script src="lib/skulpt/skulpt-stdlib.js"></script>
+<script src="js/config.js"></script>
+<script src="js/mundos.js"></script>
+<script src="js/armazenamento.js"></script>
+<script src="js/pontos.js"></script>
+<script src="js/paginas.js"></script>
+<script src="js/jogador.js"></script>
+<script src="js/progresso.js"></script>
+<script src="js/desenho/util.js"></script>
+<script src="js/desenho/rato.js"></script>
+<script src="js/desenho/balao.js"></script>
+<script src="js/desenho/bancada.js"></script>
+<script src="js/desenho/luz.js"></script>
+<script src="js/desenho/porta.js"></script>
+<script src="js/desenho/efeitos.js"></script>
+<script src="js/python.js"></script>
+<script src="js/interface.js"></script>
+<script src="js/blocos.js"></script>
+<script src="js/painel.js"></script>
+<script src="js/mapa.js"></script>
+<script src="js/ranking.js"></script>
+<script src="js/mundos/restaurante/mundo.js"></script>
+<script src="js/mundos/restaurante/desafios/cozinha.js"></script>
+<script src="js/mundos/restaurante/desafios/despensa.js"></script>
+<script src="js/mundos/restaurante/desafios/salao.js"></script>
+<script src="js/mundos/restaurante/salas/cozinha.js"></script>
+<script src="js/mundos/restaurante/salas/despensa.js"></script>
+<script src="js/mundos/restaurante/salas/salao.js"></script>
+<script src="js/mundos/prisao/personagem.js"></script>
+<script src="js/mundos/prisao/mundo.js"></script>
+<script src="js/mundos/prisao/desafios/cela.js"></script>
+<script src="js/mundos/prisao/desafios/patio.js"></script>
+<script src="js/mundos/prisao/desafios/tunel.js"></script>
+<script src="js/mundos/prisao/salas/cela.js"></script>
+<script src="js/mundos/prisao/salas/patio.js"></script>
+<script src="js/mundos/prisao/salas/tunel.js"></script>
+<script src="js/jogo.js"></script>
+<script src="js/principal.js"></script>
+</body>
+</html>

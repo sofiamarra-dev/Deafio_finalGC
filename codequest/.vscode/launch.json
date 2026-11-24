@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Abrir o jogo no Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "file": "${workspaceFolder}/index.html"
+    },
+    {
+      "name": "Abrir a prisão (túnel) com 2 minutos",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://127.0.0.1:5500/index.html?mundo=prisao&sala=3&tempo=120"
+    },
+    {
+      "name": "Abrir na despensa com 2 minutos",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://127.0.0.1:5500/index.html?sala=2&tempo=120"
+    }
+  ]
+}
