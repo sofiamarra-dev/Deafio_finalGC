@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Testar os desafios (frontend)",
+      "type": "shell",
+      "command": "node tools/testar-desafios.js",
+      "options": { "cwd": "${workspaceFolder}/frontend" },
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Testar o servidor (backend)",
+      "type": "shell",
+      "command": "python -m pytest -q",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Instalar o servidor (cria .venv)",
+      "type": "shell",
+      "command": "python -m venv .venv && .venv/bin/pip install -r backend/requirements.txt",
+      "windows": { "command": "python -m venv .venv; .venv\\Scripts\\pip install -r backend/requirements.txt" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Gerar o arquivo único do jogo",
+      "type": "shell",
+      "command": "node tools/empacotar.js",
+      "options": { "cwd": "${workspaceFolder}/frontend" },
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Servidor (jogo + API) em http://127.0.0.1:8000",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["app.main:app", "--reload", "--port", "8000"],
+      "cwd": "${workspaceFolder}/backend",
+      "envFile": "${workspaceFolder}/backend/.env"
+    },
+    {
+      "name": "Abrir o jogo servido pelo servidor",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://127.0.0.1:8000/"
+    },
+    {
+      "name": "Abrir o jogo no Live Server (sem IA)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://127.0.0.1:5500/index.html"
+    },
+    {
+      "name": "Abrir a prisão (túnel) com 2 minutos",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://127.0.0.1:8000/?mundo=prisao&sala=3&tempo=120"
+    }
+  ]
+}

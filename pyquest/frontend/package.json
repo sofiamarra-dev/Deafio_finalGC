@@ -1,0 +1,10 @@
+{
+  "name": "pyquest",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Jogo educativo de Python com mundos (restaurante: condicionais; prisão: repetição), desafios com blocos de encaixar.",
+  "scripts": {
+    "testar": "node tools/testar-desafios.js",
+    "empacotar": "node tools/empacotar.js"
+  }
+}

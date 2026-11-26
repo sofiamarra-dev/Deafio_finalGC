@@ -1,0 +1,647 @@
+/* Estilos da página. Cores e fontes ficam nas variáveis do :root, aqui no topo.
+   Ideia: um gabinete de fliperama. Tela escura com moldura, painel de controle em plástico bege, cantos retos.
+   A cor de destaque (--accent) muda de acordo com o mundo (veja o mundo.js de cada mundo). */
+:root{
+  --chao:#1a1815;        /* fundo da página */
+  --gabinete:#25221e;    /* laterais do gabinete e janelas */
+  --tela:#0b0a09;        /* vidro da tela e áreas de código */
+  --plastico:#cfc5ac;    /* painel de controle */
+  --tinta:#1d1a16;       /* texto sobre o plástico */
+  --luz:#eee7d5;         /* texto sobre fundo escuro */
+  --muda:#9f9682;        /* texto secundário sobre fundo escuro */
+  --linha:#4b453a;
+  --accent:#e0482f;
+  --ok:#6fbf73; --bad:#ff7d5e; --treino:#4a9bb0; --ambar:#e8b04a;
+  --font-display:"Big Shoulders Display","Oswald","Arial Narrow",Impact,sans-serif;
+  --font-body:"IBM Plex Sans",system-ui,sans-serif;
+  --font-code:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--chao);margin:0}
+body{
+  color:var(--luz);font-family:var(--font-body);font-size:15px;line-height:1.5;
+  padding-block:20px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+.gabinete{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+
+/* letreiro */
+.marquise{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;padding-bottom:10px;border-bottom:3px solid var(--accent)}
+.marquise h1{font-family:var(--font-display);font-weight:800;font-size:clamp(38px,6vw,64px);line-height:.95;margin:0;color:var(--luz);letter-spacing:.01em;text-wrap:balance}
+.link{background:none;border:2px solid var(--linha);color:var(--luz);font-family:var(--font-body);font-size:14px;padding:6px 12px;border-radius:0;cursor:pointer}
+.link:hover{border-color:var(--accent);color:var(--accent)}
+
+/* tela e painel de controle lado a lado */
+.jogo{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
+@media (max-width:900px){.jogo{grid-template-columns:minmax(0,1fr)}}
+
+.tela{background:var(--gabinete);border:2px solid #000;padding:14px;box-shadow:inset 0 0 0 2px var(--linha)}
+.bisel{position:relative;border:4px solid #000;background:var(--tela);box-shadow:0 0 0 2px var(--linha)}
+.bisel::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(180deg,rgba(0,0,0,.14) 0 1px,transparent 1px 3px),radial-gradient(ellipse at center,transparent 62%,rgba(0,0,0,.35) 100%)}
+canvas{display:block;width:100%;height:auto;image-rendering:pixelated;background:var(--tela)}
+.legenda{margin:12px 2px 0;color:var(--muda);max-width:64ch}
+.prompt{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:2;background:var(--accent);color:#16120e;font-family:var(--font-display);font-weight:700;font-size:20px;line-height:1;padding:6px 14px 5px;border:2px solid #000;white-space:nowrap}
+.toast{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:2;max-width:calc(100% - 28px);background:var(--tela);color:var(--luz);border:2px solid var(--accent);padding:8px 14px;font-size:14px;text-align:center}
+
+.deck{background:var(--plastico);color:var(--tinta);border:2px solid #000;padding:16px;display:flex;flex-direction:column;gap:14px;box-shadow:inset 0 3px 0 rgba(255,255,255,.4),inset 0 -4px 0 rgba(0,0,0,.18)}
+.sala-tag{font-family:var(--font-display);font-weight:700;font-size:26px;line-height:1.05;margin:0}
+.relogio{background:var(--tela);border:3px solid #000;padding:6px 12px 10px;box-shadow:0 0 0 2px rgba(0,0,0,.25)}
+.timer{display:block;text-align:right;font-family:var(--font-display);font-weight:700;font-size:58px;line-height:1;color:var(--ok);font-variant-numeric:tabular-nums;letter-spacing:.03em}
+.timer.warn{color:var(--ambar)}
+.timer.crit{color:var(--bad)}
+.timebar{height:10px;margin-top:6px;overflow:hidden}
+.timebar i{display:block;height:100%;width:100%;background:repeating-linear-gradient(90deg,var(--barra,var(--ok)) 0 8px,transparent 8px 10px)}
+.timebar i.warn{--barra:var(--ambar)}
+.timebar i.crit{--barra:var(--bad)}
+
+.chips{display:flex;flex-direction:column;gap:6px;list-style:none;margin:0;padding:0}
+.chips li{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px}
+.chips li::before{content:"";flex:none;width:18px;height:18px;border:2px solid var(--tinta);background:transparent;font-size:13px;line-height:14px;text-align:center;color:#fff}
+.chips li.done::before{content:"✓";background:#2f6b3d;border-color:#2f6b3d}
+.chips li.treino{font-weight:400;font-style:italic}
+.chips li.treino::before{border-color:var(--treino)}
+.chips li.treino.done::before{border-color:#2f6b3d}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0;border-top:2px solid rgba(0,0,0,.35);padding-top:10px;font-size:14px}
+.stats span{display:flex;flex-direction:column;line-height:1.2}
+.stats b{font-family:var(--font-display);font-size:24px;font-weight:700;text-transform:none}
+
+.comandos{display:flex;gap:14px;align-items:stretch}
+.dpad{flex:none;display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,48px);gap:5px}
+.dpad .up{grid-column:2;grid-row:1}
+.dpad .left{grid-column:1;grid-row:2}.dpad .down{grid-column:2;grid-row:2}.dpad .right{grid-column:3;grid-row:2}
+.help{margin:0;font-size:13px;color:rgba(29,26,22,.75)}
+
+button{font-family:var(--font-body);font-size:16px;font-weight:600;background:var(--gabinete);color:var(--luz);border:2px solid #000;border-radius:0;cursor:pointer;touch-action:manipulation;box-shadow:0 4px 0 #000}
+button:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 #000}
+button:focus-visible,.link:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+button.primary{background:var(--accent);color:#16120e;padding:12px 18px;font-weight:700}
+#act{flex:1;min-height:56px;line-height:1.15}
+button:disabled{opacity:.5;cursor:default}
+.deck button.primary:disabled{background:#a99f88;color:#4a443a}
+
+/* registro de tentativas */
+.log{border-top:3px solid var(--linha);padding-top:12px}
+.log h2{font-family:var(--font-display);font-weight:700;font-size:26px;margin:0 0 8px}
+.log ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto}
+.log li{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;font-family:var(--font-code);font-size:13px;border-top:1px solid var(--linha);padding-top:6px}
+.log li:first-child{border-top:0;padding-top:0}
+.log li .who{color:var(--accent)}
+.tag{padding:0 8px;font-weight:600;font-size:12px;border:2px solid currentColor}
+.tag.ok{color:var(--ok)}.tag.bad{color:var(--bad)}
+.log .empty{color:var(--muda);font-family:var(--font-body);font-size:14px}
+
+/* janelas: desafio, mapa e fim de fase */
+.modal{position:fixed;inset:0;background:rgba(8,7,6,.88);display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding-block:20px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));z-index:20}
+.card{background:var(--gabinete);border:3px solid var(--accent);box-shadow:0 0 0 3px #000;width:100%;max-width:660px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.card h2{font-family:var(--font-display);font-weight:800;font-size:36px;line-height:1;margin:0;color:var(--luz)}
+.card p{margin:0}
+.card .story{color:var(--muda)}
+.card .goal{background:var(--tela);border-left:5px solid var(--accent);padding:10px 14px}
+.codeview{background:var(--tela);border:2px solid var(--linha);padding:12px 14px;font-family:var(--font-code);font-size:14.5px;line-height:2.1;overflow-x:auto}
+.codeview .ln{white-space:pre;display:block}
+.codeview .kw{color:#c9a0ff}.codeview .fn{color:#7fd1e8}.codeview .str{color:#f2c77b}.codeview .num{color:#8fe3b0}
+.slot{display:inline-flex;align-items:center;justify-content:center;min-width:48px;height:28px;padding:0 10px;margin:0 2px;vertical-align:middle;border:2px dashed var(--accent);background:rgba(255,255,255,.04);color:var(--accent);font-family:var(--font-code);font-size:14.5px;cursor:pointer}
+.slot.over{background:rgba(255,255,255,.18);border-style:solid}
+.slot.filled{border-style:solid;background:var(--plastico);border-color:#000;color:var(--tinta);font-weight:600}
+.palette{display:flex;gap:12px;flex-wrap:wrap;padding:14px;background:var(--tela);border:2px dashed var(--linha)}
+.blk{min-width:58px;height:44px;padding:0 18px;border:2px solid #000;border-radius:2px;background:var(--plastico);color:var(--tinta);font-family:var(--font-code);font-size:17px;font-weight:600;cursor:grab;touch-action:none;box-shadow:0 4px 0 #000,inset 0 2px 0 rgba(255,255,255,.45)}
+.blk:hover{background:#ddd4bd}
+.blk.used{opacity:.25;pointer-events:none}
+.ghost{position:fixed;z-index:50;pointer-events:none;opacity:.92;transform:translate(-50%,-50%) rotate(-4deg)}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.row button:not(.primary){padding:12px 16px;font-size:16px}
+.result{font-family:var(--font-code);font-size:13px;background:var(--tela);border:2px solid var(--linha);padding:10px 12px;white-space:pre-wrap;min-height:44px;overflow-x:auto}
+.result.ok{border-left:5px solid var(--ok)}.result.bad{border-left:5px solid var(--bad)}
+.hint{color:var(--muda);font-size:13px}
+.tests{font-size:13px;color:var(--muda)}
+
+/* mapa de mundos: veja o fim do arquivo */
+@media (max-width:420px){
+  .mundo{flex-direction:column;align-items:flex-start}
+  .timer{font-size:48px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* no celular, as teclas de movimento ficam logo abaixo da tela */
+@media (max-width:900px){
+  .comandos{order:-1}
+  .help{order:9}
+}
+
+/* abas do topo, login e ranking */
+.abas{display:flex;gap:8px;flex-wrap:wrap}
+#ranking{z-index:30}
+.so-leitor{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.stats{grid-template-columns:repeat(3,1fr)}
+.campo{display:flex;flex-direction:column;gap:4px;font-weight:600}
+input[type=text],.campo input{font:inherit;font-family:var(--font-body);font-size:16px;padding:9px 10px;background:var(--tela);color:var(--luz);border:2px solid var(--linha);border-radius:0}
+.campo input:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-color:var(--accent)}
+#loginForm{display:flex;flex-direction:column;gap:12px}
+.erro{margin:0;padding:8px 12px;border-left:5px solid var(--bad);background:var(--tela);color:var(--bad)}
+.jogadores{list-style:none;margin:0;padding:0;display:flex;gap:8px;flex-wrap:wrap}
+.jogadores button{padding:8px 14px}
+.abas-mundo{display:flex;gap:8px;flex-wrap:wrap}
+.abas-mundo button{padding:8px 14px;box-shadow:none;border-color:var(--linha)}
+.abas-mundo button[aria-selected=true]{background:var(--accent);color:#16120e;border-color:#000}
+.marca{display:flex;gap:8px;align-items:center}
+.marca input{width:18px;height:18px;accent-color:var(--accent)}
+.rank{width:100%;border-collapse:collapse;font-size:15px}
+.rank th{text-align:left;font-weight:600;color:var(--muda);padding:6px 8px;border-bottom:2px solid var(--linha)}
+.rank td{padding:7px 8px;border-bottom:1px solid var(--linha)}
+.rank .num{text-align:right;font-family:var(--font-code);font-variant-numeric:tabular-nums}
+.rank .pos{font-family:var(--font-display);font-weight:700;font-size:22px;width:3.2em}
+.rank tr.eu td{background:rgba(255,255,255,.07);font-weight:600}
+.stats{grid-template-columns:auto auto 1fr;column-gap:18px}
+.stats b{font-size:22px}
+
+/* páginas: entrar, mundos e jogo */
+.pagina{display:flex;flex-direction:column;gap:18px}
+.chamada{margin:0;font-size:18px;line-height:1.45;color:var(--muda);max-width:46ch}
+.ola{align-self:center;color:var(--muda);font-size:14px}
+
+
+
+@media (max-width:900px){
+}
+h1:focus{outline:none}
+
+/* nome do site no topo das páginas internas */
+.titulos{display:flex;flex-direction:column;gap:2px;min-width:0}
+.site{font-family:var(--font-display);font-weight:700;font-size:20px;line-height:1;color:var(--muda);text-decoration:none}
+.site:hover{color:var(--accent)}
+.site:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+/* dica da IA */
+.hint.ia{border-left:5px solid var(--accent);background:var(--tela);padding:10px 14px;color:var(--luz);font-size:15px}
+
+/* avatares do perfil */
+.avatar{display:block;image-rendering:pixelated;border:2px solid #000;flex:none}
+.avatares{border:0;margin:0;padding:0;min-width:0}
+.avatares legend{padding:0;font-weight:600;margin-bottom:6px;color:var(--tinta)}
+.avatares{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.avatares legend{grid-column:1/-1}
+.av{position:relative;display:block;cursor:pointer;line-height:0}
+.av input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.av .avatar{width:100%;height:auto;aspect-ratio:1}
+.av input:checked+.avatar{outline:4px solid var(--accent);outline-offset:2px}
+.av input:focus-visible+.avatar{outline:4px solid #4a9bd1;outline-offset:2px}
+.av:hover .avatar{filter:brightness(1.1)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.jogadores button,#verJogador{display:inline-flex;align-items:center;gap:8px}
+td.quem .avatar{display:inline-block;vertical-align:middle;width:24px;height:24px;border-width:1px;margin-right:8px}
+
+/* ===== Página de entrada (login) ===== */
+html[data-pagina="entrar"],body[data-pagina="entrar"],html[data-pagina="mundos"],body[data-pagina="mundos"]{background:#12101c}
+#pag-entrar{position:relative;--roxo:#12101c;--painel:#1c1930;--borda:#3a3560;--texto:#f4efe4;--suave:#b9b2cf;--ouro:#e8b04a}
+#pag-entrar .entrada{position:relative;z-index:1;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:56px;min-height:calc(100vh - 40px);padding:24px 0}
+#pag-entrar .vitrine{flex:1 1 560px;max-width:560px;min-width:0;display:flex;flex-direction:column;gap:28px}
+#pag-entrar .nome-jogo{font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-weight:700;font-size:clamp(56px,9vw,96px);line-height:.95;letter-spacing:-.035em;margin:0;color:var(--texto)}
+#pag-entrar .chamada{margin:0;font-size:18px;line-height:1.55;color:var(--suave);max-width:44ch}
+@keyframes queda{from{transform:translateY(-360px);opacity:0}to{transform:none;opacity:1}}
+
+#pag-entrar .cena{display:flex;gap:16px;flex-wrap:wrap}
+#pag-entrar .moldura{position:relative;margin:0;width:256px;max-width:100%;border:1px solid var(--borda);border-radius:4px;overflow:hidden;background:var(--painel)}
+#pag-entrar .quadro{display:block;width:100%;height:auto;image-rendering:pixelated}
+#pag-entrar .etiqueta{position:absolute;left:10px;top:10px;background:var(--painel);color:var(--texto);font-family:var(--font-code);font-weight:600;font-size:12px;padding:5px 9px;border-radius:4px;border:1px solid var(--borda);animation:surge .4s .6s both}
+#pag-entrar figcaption{padding:8px 12px;font-family:var(--font-code);font-size:12px;color:var(--suave);border-top:1px solid var(--borda)}
+#pag-entrar .bob{animation:balanca 2.6s ease-in-out infinite}
+@keyframes surge{from{transform:translateY(6px);opacity:0}to{transform:none;opacity:1}}
+@keyframes balanca{0%,100%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+
+#pag-entrar .cartao-login{flex:0 1 420px;min-width:0;width:100%;max-width:420px;background:var(--painel);color:var(--texto);border:1px solid var(--borda);border-top:4px solid var(--ouro);border-radius:6px;padding:32px;display:flex;flex-direction:column;gap:22px;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+#pag-entrar .cab-login h2{margin:0;font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-weight:700;font-size:30px;line-height:1.15;letter-spacing:-.01em}
+#pag-entrar .cab-login p{margin:4px 0 0;font-size:15px;color:var(--suave)}
+#pag-entrar .continuar p{margin:0 0 8px;font-size:14px;font-weight:600;color:var(--suave)}
+#pag-entrar .jogadores button{min-height:44px;padding:0 16px 0 8px;background:var(--roxo);border:1px solid var(--borda);border-radius:4px;color:var(--texto);font-weight:600;box-shadow:none;cursor:pointer}
+#pag-entrar .jogadores button:hover{background:#2a2646;border-color:#8e7ad6}
+#pag-entrar form{display:flex;flex-direction:column;gap:16px}
+#pag-entrar .campo{color:var(--texto);font-size:14px;font-weight:600;gap:6px}
+#pag-entrar .opc{font-weight:400;color:var(--suave)}
+#pag-entrar .campo input{height:50px;padding:0 14px;font-size:17px;color:var(--texto);background:var(--roxo);border:1px solid #4a4478;border-radius:4px}
+#pag-entrar .campo input:focus{border-color:#8e7ad6}
+#pag-entrar .campo input:focus-visible,#pag-entrar button:focus-visible{outline:3px solid #4a9bd1;outline-offset:2px}
+#pag-entrar .avatares{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+#pag-entrar .avatares legend{color:var(--texto);font-size:14px;font-weight:600;margin-bottom:8px}
+#pag-entrar .av{border-radius:4px}
+#pag-entrar .av .avatar{border:0;border-radius:4px}
+#pag-entrar .av input:checked+.avatar{outline:3px solid #e5484d;outline-offset:3px}
+#pag-entrar .av input:checked+.avatar{box-shadow:0 0 14px rgba(229,72,77,.55)}
+#pag-entrar .erro{border:0;background:none;padding:0;font-size:14px;font-weight:600;color:#ff8f84}
+#pag-entrar .entrar{height:54px;background:var(--ouro);color:#1a1408;border:0;border-radius:4px;box-shadow:0 4px 0 #8a6414;font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-weight:700;font-size:20px;cursor:pointer;transition:transform .08s}
+#pag-entrar .entrar:hover{background:#f0c066}
+#pag-entrar .entrar:active{transform:translateY(2px);box-shadow:0 0 0 #8a6414}
+#pag-entrar .rodape-login{display:flex;flex-direction:column;gap:6px;align-items:flex-start;border-top:1px solid var(--borda);padding-top:16px}
+#pag-entrar .sem-rank{min-height:44px;padding:0;background:none;border:0;border-bottom:1px solid var(--suave);border-radius:0;box-shadow:none;color:var(--suave);font-weight:600;cursor:pointer}
+#pag-entrar .sem-rank:hover{color:var(--texto);border-bottom-color:var(--texto)}
+#pag-entrar .help{margin:0;font-size:13px;line-height:1.5;color:var(--suave)}
+@media (max-width:900px){#pag-entrar .entrada{gap:28px}}
+@media (prefers-reduced-motion:reduce){#pag-entrar .bob,#pag-entrar .etiqueta{animation:none}}
+
+/* fundo da entrada: cozinha (utensílios balançando, vapor, brilho do fogão) de um lado e prisão (grades, holofote) do outro */
+#pag-entrar .fundo{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  background:radial-gradient(ellipse 60% 55% at 8% 100%,rgba(226,135,47,.20),transparent 70%),radial-gradient(ellipse 55% 50% at 95% 0%,rgba(74,155,209,.16),transparent 70%)}
+#pag-entrar .brilho-fogao{position:absolute;left:-6%;bottom:-12%;width:55vw;height:45%;background:radial-gradient(ellipse at 30% 100%,rgba(255,150,60,.22),transparent 65%);animation:chama 3.4s ease-in-out infinite alternate}
+@keyframes chama{from{opacity:.55;transform:scale(.96)}to{opacity:1;transform:scale(1.04)}}
+#pag-entrar .grades{position:absolute;top:0;right:0;bottom:0;width:48%;
+  background:repeating-linear-gradient(90deg,rgba(154,163,173,.13) 0 8px,transparent 8px 56px);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 70%);mask-image:linear-gradient(90deg,transparent,#000 70%)}
+#pag-entrar .holofote{position:absolute;top:-4%;right:12%;width:46vw;height:120%;transform-origin:50% 0;
+  background:linear-gradient(180deg,rgba(255,214,107,.20),rgba(255,214,107,0) 80%);
+  clip-path:polygon(47% 0,53% 0,100% 100%,0 100%);animation:varre 11s ease-in-out infinite alternate}
+@keyframes varre{from{transform:rotate(-16deg)}to{transform:rotate(12deg)}}
+#pag-entrar .utensilios{position:absolute;top:0;left:24px;opacity:.1}
+#pag-entrar .pend{animation:pende ease-in-out infinite alternate}
+@keyframes pende{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
+#pag-entrar .flutua{position:absolute;top:0;opacity:.09;animation:sobe linear infinite}
+#pag-entrar .flutua.b{opacity:.07}
+#pag-entrar .flutua.c{opacity:.11}
+@keyframes sobe{from{top:105%;transform:rotate(-20deg)}to{top:-15%;transform:rotate(25deg)}}
+#pag-entrar .vapores{position:absolute;left:0;bottom:0;width:260px;height:60%}
+#pag-entrar .vapor{position:absolute;bottom:0;width:18px;height:18px;border-radius:2px;background:#f4efe4;opacity:0;animation:vapor ease-out infinite}
+@keyframes vapor{0%{bottom:0;transform:translateX(0) scale(.6);opacity:0}15%{opacity:.14}100%{bottom:85%;transform:translateX(26px) scale(2.4);opacity:0}}
+@media (max-width:700px){#pag-entrar .utensilios{width:240px;height:90px}}
+@media (prefers-reduced-motion:reduce){#pag-entrar .holofote{animation:none;transform:rotate(-4deg)}#pag-entrar .pend,#pag-entrar .flutua,#pag-entrar .vapor,#pag-entrar .brilho-fogao{animation:none}#pag-entrar .vapor{opacity:0}#pag-entrar .flutua{top:20%}}
+#pag-entrar .holofote{background:linear-gradient(180deg,rgba(255,214,107,.26),rgba(255,214,107,0) 85%)}
+#pag-entrar .sirene{position:absolute;right:-8%;top:-18%;width:40vw;height:40vw;border-radius:50%;filter:blur(50px);animation:sirene 2.4s ease-in-out infinite}
+@keyframes sirene{0%,100%{background:rgba(230,70,70,.20)}50%{background:rgba(70,120,255,.20)}}
+#pag-entrar .lampada{animation:pisca 1.8s steps(1) infinite}
+@keyframes pisca{0%,100%{opacity:1}55%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){#pag-entrar .sirene,#pag-entrar .lampada{animation:none}}
+
+/* ícones dos jogadores nos botões (o canvas global ocupa 100% da largura, então fixamos o tamanho) */
+.jogadores .avatar,#verJogador .avatar{width:24px;height:24px;border-width:1px}
+
+/* ===== Página de mundos: mapa ===== */
+#pag-mundos{--roxo:#12101c;--painel:#1c1930;--borda:#3a3560;--texto:#f4efe4;--suave:#b9b2cf;--ouro:#e8b04a}
+#pag-mundos .marquise{border-bottom:1px solid var(--borda)}
+#pag-mundos .marquise h1{font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-weight:700;letter-spacing:-.03em}
+#pag-mundos .site,#pag-mundos .ola{color:var(--suave)}
+#pag-mundos .link{background:var(--painel);border:1px solid var(--borda);border-radius:4px;color:var(--texto);box-shadow:none}
+#pag-mundos .link:hover{border-color:#8e7ad6}
+#pag-mundos .chamada{color:var(--suave)}
+.mapa{container-type:inline-size;position:relative;width:100%;max-width:1100px;margin:0 auto;aspect-ratio:320/140;border:1px solid var(--borda);border-radius:6px;overflow:hidden;background:#2f4a3a;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.mapa-cena{position:absolute;inset:0;width:100%;height:100%;display:block}
+.mapa-cena .fumaca rect{animation:fumaca 3.2s ease-out infinite;opacity:0}
+.mapa-cena .fumaca rect:nth-child(2){animation-delay:.9s}
+.mapa-cena .fumaca rect:nth-child(3){animation-delay:1.8s}
+@keyframes fumaca{0%{transform:translate(0,6px);opacity:0}20%{opacity:.7}100%{transform:translate(4px,-10px);opacity:0}}
+.mapa-cena .feixe{transform-origin:22px -34px;animation:varre-mapa 6s ease-in-out infinite alternate}
+@keyframes varre-mapa{from{transform:rotate(-14deg)}to{transform:rotate(16deg)}}
+.mapa-cena .luz{animation:luz 3.4s ease-in-out infinite alternate}
+@keyframes luz{from{opacity:1}to{opacity:.72}}
+.mapa-cena .lampada{animation:pisca 1.8s steps(1) infinite}
+.mapa-cena .lugar.trancado{filter:grayscale(1) brightness(.6)}
+.mapa-cena .lugar.treme{animation:treme .4s}
+@keyframes treme{0%,100%{transform:translate(var(--tx,0),0)}25%{transform:translate(-1px,0)}75%{transform:translate(1px,0)}}
+.mapa-nos{list-style:none;margin:0;padding:0;position:absolute;inset:0;z-index:1;pointer-events:none}
+.mapa-nos li{position:absolute;width:0;height:0}
+.no{pointer-events:auto;position:absolute;left:50%;top:0;transform:translate(-50%,-82%);width:max(120px,21cqw);height:max(110px,17cqw);display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:2px;padding:0 0 0;background:transparent;border:2px solid transparent;border-radius:6px;color:var(--texto);cursor:pointer;box-shadow:none;font-family:var(--font-body)}
+.no:hover:not(.bloqueado) .rotulo{border-color:var(--ouro);background:#2a2548}
+.no:hover:not(.bloqueado) .estado::after{content:"  \2022 clique para entrar"}
+.no.selecionado .rotulo{border-color:var(--ouro)}
+.no:active:not(:disabled){transform:translate(-50%,-82%);box-shadow:none}
+.no:focus-visible{outline:3px solid #4a9bd1;outline-offset:2px}
+.no .rotulo{position:relative;top:20px;background:var(--painel);border:1px solid var(--borda);border-radius:4px;padding:3px 9px;font-weight:700;font-size:clamp(11px,1.5vw,15px);white-space:nowrap}
+.no .estado{position:relative;top:20px;font-size:clamp(10px,1.2vw,12px);font-family:var(--font-code);background:var(--painel);border:1px solid var(--borda);border-radius:4px;padding:1px 7px;color:var(--suave);white-space:nowrap}
+.no.concluido .estado{color:#6fd9c4}
+.no.bloqueado .estado::before{content:"\1F512  ";font-size:.9em}
+.viajante{position:absolute;width:clamp(30px,5.2%,92px);aspect-ratio:12/20;transform:translate(-50%,-100%);pointer-events:none;z-index:2}
+.viajante .figura{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;transform-origin:50% 100%}
+.viajante .viaj-avatar{width:84%;height:auto;aspect-ratio:1;flex:none;border:2px solid #14101f;border-radius:6px;background:#e8dcc4;box-shadow:0 0 0 1px rgba(244,239,228,.4);position:relative;z-index:1}
+.viajante .corpo{width:100%;height:auto;margin-top:-6%;display:block;overflow:visible}
+.viajante .sombra{position:absolute;left:8%;right:8%;bottom:-4%;height:9%;background:rgba(0,0,0,.35);border-radius:50%}
+.viajante.esquerda .figura{transform:scaleX(-1)}
+.viajante:not(.andando) .figura{animation:respira 2.6s ease-in-out infinite}
+.viajante.andando .figura{animation:passo .26s ease-in-out infinite alternate}
+.viajante.andando .perna.a{animation:perna .26s steps(2) infinite alternate}
+.viajante.andando .perna.b{animation:perna .26s steps(2) infinite alternate-reverse}
+.viajante .poeira{position:absolute;left:10%;bottom:2%;width:14%;aspect-ratio:1;background:#d8c9a2;opacity:0}
+.viajante.andando .poeira{animation:poeira .6s ease-out infinite}
+@keyframes respira{50%{transform:translateY(-2%)}}
+@keyframes passo{from{transform:translateY(0) rotate(-3deg)}to{transform:translateY(-6%) rotate(3deg)}}
+@keyframes perna{from{transform:translateY(0)}to{transform:translateY(-1px)}}
+@keyframes poeira{0%{transform:translate(0,0) scale(.6);opacity:.8}100%{transform:translate(-120%,-60%) scale(1.5);opacity:0}}
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes balanco-carrinho{from{translate:0 0}to{translate:0 -3%}}
+.mundo-info{max-width:1100px;width:100%;margin:0 auto;display:flex;gap:18px;align-items:center;padding:16px 20px;background:var(--painel);border:1px solid var(--borda);border-top:4px solid var(--cor,var(--ouro));border-radius:6px}
+.mundo-info .previa{flex:none;width:80px;height:92px;image-rendering:pixelated;background:var(--roxo);border-radius:4px}
+.mundo-info .previa.trancada{filter:grayscale(1) brightness(.45)}
+.info-txt{min-width:0;display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.info-txt h2{margin:0;font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-weight:700;font-size:28px;line-height:1.1;color:var(--texto)}
+.info-txt p{margin:0;font-size:14px;color:var(--suave)}
+.info-txt .assunto{color:var(--texto)}
+.mundo-info .status{color:var(--suave)}
+.info-txt .jogar{margin-top:8px;min-height:44px;padding:0 26px;background:var(--ouro);color:#1a1408;border:0;border-radius:4px;box-shadow:0 4px 0 #8a6414;font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-weight:700;font-size:18px;cursor:pointer}
+.info-txt .jogar:hover:not(:disabled){background:#f0c066}
+.info-txt .jogar:disabled{background:#4a4478;color:#b9b2cf;box-shadow:none;cursor:not-allowed}
+.info-txt .jogar:focus-visible{outline:3px solid #4a9bd1;outline-offset:2px}
+@media (max-width:700px){.mundo-info{flex-direction:column;align-items:flex-start}.no .rotulo{top:26px}.no .estado{top:26px}}
+@media (prefers-reduced-motion:reduce){.mapa-cena .luz,.mapa-cena .fumaca rect,.mapa-cena .feixe,.mapa-cena .lampada,.viajante:not(.andando) .figura,.viajante.andando .poeira{animation:none}}
+
+/* ===== Página do jogo: tela grande, barra de topo e moeda ===== */
+.moeda{display:inline-block;width:1.15em;height:1.15em;vertical-align:-.2em;background:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' fill-opacity='.35' d='M3 11h6v1H3z'/%3E%3Cpath fill='%237a4d0b' d='M4 0h4v1H4zM2 1h2v1H2zM8 1h2v1H8zM1 2h1v1H1zM10 2h1v1h-1zM0 3h1v6H0zM11 3h1v6h-1zM1 9h1v1H1zM10 9h1v1h-1zM2 10h2v1H2zM8 10h2v1H8zM4 11h4v1H4z'/%3E%3Cpath fill='%23f2b632' d='M4 1h4v1H4zM2 2h8v1H2zM1 3h10v6H1zM2 9h8v1H2zM4 10h4v1H4z'/%3E%3Cpath fill='%23ffe27a' d='M4 1h3v1H4zM2 2h2v1H2zM1 3h1v3H1zM2 3h1v1H2z'/%3E%3Cpath fill='%23c98512' d='M9 8h1v1H9zM8 9h2v1H8zM5 9h3v1H5z'/%3E%3Cpath fill='%237a4d0b' d='M5 3h2v1H5zM4 4h1v4H4zM7 4h1v4H7zM5 8h2v1H5zM5 5h2v1H5z'/%3E%3C/svg%3E") center/contain no-repeat;image-rendering:pixelated}
+.moeda.grande{width:56px;height:56px;vertical-align:middle}
+.moeda.gira{animation:moeda-gira .7s steps(8) 1}
+@keyframes moeda-gira{0%{transform:scaleX(1)}25%{transform:scaleX(.15)}50%{transform:scaleX(-1)}75%{transform:scaleX(.15)}100%{transform:scaleX(1)}}
+
+html[data-pagina="jogo"],body[data-pagina="jogo"]{background:#12101c}
+#pag-jogo{--roxo:#12101c;--painel:#1c1930;--borda:#3a3560;--texto:#f4efe4;--suave:#b9b2cf;--ouro:#e8b04a;max-width:1240px;margin-inline:auto;width:100%}
+#pag-jogo .marquise{border-bottom:1px solid var(--borda)}
+#pag-jogo .marquise h1{font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-weight:700;letter-spacing:-.03em;font-size:clamp(28px,4vw,44px)}
+#pag-jogo .site{color:var(--suave)}
+#pag-jogo .link{background:var(--painel);border:1px solid var(--borda);border-radius:4px;color:var(--texto);box-shadow:none;display:inline-flex;align-items:center;gap:6px}
+#pag-jogo .link:hover{border-color:#8e7ad6}
+#pag-jogo .jogo{display:flex;flex-direction:column;align-items:stretch;gap:10px}
+#pag-jogo .hud{width:var(--larg);min-width:min(100%,520px);margin-inline:auto;position:relative;display:flex;flex-wrap:wrap;gap:10px 28px;align-items:center;justify-content:space-between;padding:10px 16px 14px;background:var(--painel);border:1px solid var(--borda);border-radius:8px}
+#pag-jogo .hud-sala{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;min-width:0}
+#pag-jogo .sala-tag{margin:0;font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-weight:700;font-size:20px;color:var(--texto)}
+#pag-jogo .chips{flex-direction:row;flex-wrap:wrap;gap:6px}
+#pag-jogo .chips li{font-size:13px;font-weight:600;color:var(--suave);background:var(--roxo);border:1px solid var(--borda);border-radius:999px;padding:3px 10px 3px 6px;gap:6px}
+#pag-jogo .chips li::before{width:14px;height:14px;border:2px solid var(--borda);border-radius:50%;font-size:10px;line-height:10px}
+#pag-jogo .chips li.done{color:var(--texto);border-color:#2f8f6a}
+#pag-jogo .chips li.done::before{content:"✓";background:#2f8f6a;border-color:#2f8f6a}
+#pag-jogo .chips li.treino{font-style:italic}
+#pag-jogo .hud-medidas{display:flex;align-items:center;gap:10px}
+#pag-jogo .moedas,#pag-jogo .tempo{display:inline-flex;align-items:center;gap:8px;background:var(--roxo);border:1px solid var(--borda);border-radius:999px;padding:4px 14px 4px 10px;font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-weight:700;font-size:20px;line-height:1.1;color:var(--texto);font-variant-numeric:tabular-nums}
+#pag-jogo .moedas .moeda{width:22px;height:22px;vertical-align:baseline}
+#pag-jogo .moedas.sobe{animation:moedas-sobe .5s ease-out}
+@keyframes moedas-sobe{0%{transform:scale(1)}35%{transform:scale(1.18);border-color:var(--ouro);box-shadow:0 0 14px rgba(232,176,74,.55)}100%{transform:scale(1)}}
+#pag-jogo .tempo .rel-ic{width:16px;height:16px;color:var(--suave)}
+#pag-jogo .timer{display:inline;font-size:20px;letter-spacing:.02em;text-align:left;color:var(--texto)}
+#pag-jogo .timer.warn{color:var(--ambar)}
+#pag-jogo .timer.crit{color:#ff6b57;animation:tempo-pisca 1s steps(2) infinite}
+@keyframes tempo-pisca{50%{opacity:.55}}
+#pag-jogo .timebar{position:absolute;left:12px;right:12px;bottom:5px;height:4px;margin:0;border-radius:2px;background:var(--roxo);overflow:hidden}
+#pag-jogo .timebar i{background:linear-gradient(90deg,#2f8f6a,#6fd9c4);transition:width .4s linear}
+#pag-jogo .timebar i.warn{background:var(--ambar)}
+#pag-jogo .timebar i.crit{background:#ff6b57}
+#pag-jogo .tela{background:none;border:0;padding:0;box-shadow:none}
+#pag-jogo{--larg:min(100%,calc((100vh - 250px) * 1.5))}
+#pag-jogo .bisel{width:var(--larg);min-width:min(100%,520px);margin-inline:auto;border:2px solid var(--borda);border-radius:8px;overflow:hidden;background:#07060d;box-shadow:0 22px 60px rgba(0,0,0,.55),0 0 0 1px #000}
+#pag-jogo .bisel::after{background:radial-gradient(ellipse at center,transparent 70%,rgba(5,4,12,.35) 100%)}
+#pag-jogo canvas{width:100%;height:auto}
+#pag-jogo .rodape{width:var(--larg);min-width:min(100%,520px);margin:12px auto 0;display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;justify-content:space-between}
+#pag-jogo .legenda{flex:1 1 320px;margin:0;color:var(--suave);font-size:14px}
+#pag-jogo .stats{display:flex;gap:22px;margin:0;border:0;padding:0;font-size:12px;color:var(--suave)}
+#pag-jogo .stats b{font-size:16px;color:var(--texto);font-family:"Space Grotesk","Inter",system-ui,sans-serif}
+#pag-jogo .comandos{gap:12px;align-items:center}
+#pag-jogo #act{flex:none;min-height:44px;padding:0 22px;border-radius:4px;border:0;background:var(--ouro);color:#1a1408;box-shadow:0 4px 0 #8a6414;font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-weight:700;font-size:16px}
+#pag-jogo #act:disabled{background:#3a3560;color:#9e97bd;box-shadow:none;opacity:1}
+#pag-jogo .dpad{display:none}
+#pag-jogo .help{width:var(--larg);min-width:min(100%,520px);margin:6px auto 0;font-size:12px;color:#8d86a8}
+#pag-jogo .prompt{background:var(--ouro);border:2px solid #000;border-radius:4px;font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-size:clamp(13px,1.8vw,19px);bottom:3%}
+#pag-jogo .toast{background:rgba(18,16,28,.94);border:1px solid var(--ouro);border-radius:6px;color:var(--texto);font-size:clamp(12px,1.6vw,16px);top:3%;display:flex;align-items:center;gap:8px;justify-content:center}
+#pag-jogo .toast .moeda{flex:none;width:1.4em;height:1.4em;vertical-align:baseline}
+#pag-jogo .toast b{color:var(--ouro)}
+#pag-jogo .log{border-top:1px solid var(--borda)}
+#pag-jogo .log h2{font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-size:18px;color:var(--suave)}
+@media (hover:none),(max-width:900px){
+  #pag-jogo .dpad{display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(2,52px)}
+  #pag-jogo .dpad button{background:var(--painel);border:1px solid var(--borda);border-radius:6px;box-shadow:none;color:var(--texto)}
+  #pag-jogo .comandos{width:100%;justify-content:space-between}
+  #pag-jogo .bisel,#pag-jogo .rodape,#pag-jogo .help,#pag-jogo .hud{width:100%;min-width:0}
+}
+@media (max-width:560px){#pag-jogo .hud{padding-bottom:16px}#pag-jogo .sala-tag{font-size:17px}}
+.fim-moedas{display:flex;align-items:center;gap:12px;margin:0;font-family:"Space Grotesk","Inter",system-ui,sans-serif}
+.fim-moedas b{font-size:44px;line-height:1;color:#f2b632;font-variant-numeric:tabular-nums}
+.fim-moedas span{color:var(--muda);font-size:18px}
+.rank th .moeda,.rank td .moeda{width:14px;height:14px;vertical-align:-2px}
+.moeda-voa{position:fixed;z-index:60;width:22px;height:22px;pointer-events:none}
+
+/* ===== Janela do desafio: tipos de quebra-cabeça ===== */
+#modal .card,#end .card,#ranking .card,#loja .card{max-width:760px;background:#1c1930;border:1px solid #3a3560;border-top:4px solid var(--accent);border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.6);color:#f4efe4}
+#modal .card h2,#end .card h2,#ranking .card h2,#loja .card h2{font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-weight:700;font-size:28px;letter-spacing:-.02em}
+.tipo-puzzle{margin:0;align-self:flex-start;font-family:var(--font-code);font-size:12px;letter-spacing:.04em;color:#1a1408;background:#e8b04a;border-radius:999px;padding:3px 12px}
+#modal .codeview{background:#0f0d1a;border:1px solid #3a3560;border-radius:8px}
+#modal .palette{background:#14111f;border:1px dashed #3a3560;border-radius:8px}
+#modal .blk{border:0;border-radius:6px;background:#e8e2d2;color:#1c1930;box-shadow:0 3px 0 #8a826a}
+#modal .blk:hover{background:#fff6dc}
+#modal .blk.multi{white-space:pre;text-align:left;height:auto;min-height:44px;padding:8px 16px;line-height:1.35;font-size:15px}
+#modal button.primary{background:#e8b04a;border:0;border-radius:6px;box-shadow:0 4px 0 #8a6414;color:#1a1408}
+#modal .row button:not(.primary){border:1px solid #3a3560;border-radius:6px;background:#14111f;box-shadow:none}
+.slot.longo{white-space:pre;height:auto;line-height:1.3;padding:6px 12px;text-align:left}
+.codeview .ln.fixa{opacity:.85}
+.codeview .saida-prev{margin-top:8px;padding-top:6px;border-top:1px dashed #3a3560;white-space:normal;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.codeview .saida-prev .rot{color:#b9b2cf;font-family:var(--font-body);font-size:14px}
+.ordem{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.ord{display:flex;align-items:center;gap:10px;background:#1c1930;border:1px solid #3a3560;border-radius:6px;padding:4px 8px 4px 6px;cursor:grab;touch-action:none;user-select:none}
+.ord .alca{color:#6d6694;font-size:18px;line-height:1}
+.ord .cod{flex:1;white-space:pre;font-family:var(--font-code);font-size:14.5px;min-width:0;overflow-x:auto}
+.ord .setas{display:flex;gap:4px}
+.ord .setas button{width:30px;height:30px;padding:0;font-size:12px;border:1px solid #3a3560;border-radius:4px;background:#14111f;box-shadow:none;color:#d6d0ea}
+.ord.arrastando{border-color:#e8b04a;background:#2a2548;cursor:grabbing;box-shadow:0 6px 18px rgba(0,0,0,.45)}
+
+#end .card,#ranking .card,#loja .card{max-width:660px}
+#end .row button,#ranking .row button,#loja .row button{border:1px solid #3a3560;border-radius:6px;background:#14111f;box-shadow:none}
+#end button.primary{background:#e8b04a;border:0;border-radius:6px;box-shadow:0 4px 0 #8a6414;color:#1a1408}
+
+/* ===== Botão de música e volume ===== */
+.som{display:flex;align-items:center;gap:8px;background:rgba(28,25,48,.92);border:1px solid #3a3560;border-radius:999px;padding:4px 12px 4px 4px;align-self:center}
+.som.flutuante{position:fixed;right:max(14px,env(safe-area-inset-right,0px));top:max(14px,env(safe-area-inset-top,0px));z-index:40}
+.som button{width:36px;height:36px;padding:0;display:grid;place-items:center;border:0;border-radius:50%;background:#e8b04a;color:#1a1408;box-shadow:none}
+.som button svg{width:20px;height:20px}
+.som button .corte{display:none}
+.som button.mudo{background:#3a3560;color:#b9b2cf}
+.som button.mudo .corte{display:block}
+.som input[type=range]{width:84px;accent-color:#e8b04a;background:none;border:0;padding:0;height:20px}
+.som input[type=range]:disabled{opacity:.4}
+@media (max-width:560px){.som input[type=range]{width:60px}}
+
+/* ===== Narrador (pergunta de conceito antes dos blocos) ===== */
+.narrador{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:end;background:linear-gradient(180deg,#221e3a,#181530);border:1px solid #3a3560;border-radius:10px;padding:16px 18px 16px 14px;margin-block:4px}
+.narrador[hidden]{display:none}
+.narr-fig{align-self:end;position:relative}
+.narr-sprite{display:block;width:132px;height:auto;image-rendering:pixelated;animation:narr-respira 2.4s ease-in-out infinite;filter:drop-shadow(0 6px 0 rgba(0,0,0,.35))}
+.narr-fig.entrega .narr-sprite{animation:narr-entrega .9s ease-in forwards}
+@keyframes narr-respira{50%{transform:translateY(-3px)}}
+@keyframes narr-entrega{30%{transform:translateX(-8px) rotate(-3deg)}100%{transform:translateX(26px) translateY(-6px);opacity:.15}}
+.narr-fala{position:relative;background:#f4efe4;color:#1c1930;border-radius:12px;padding:14px 16px;min-width:0}
+.narr-fala::before{content:"";position:absolute;left:-10px;bottom:28px;border:10px solid transparent;border-left:0;border-right-color:#f4efe4}
+.narr-nome{margin:0 0 2px;font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-weight:700;font-size:13px;color:#7a5410}
+.narr-texto{margin:0 0 8px;font-size:15px;line-height:1.4}
+.narr-pergunta{margin:0 0 10px;font-weight:700;font-size:16px;line-height:1.35}
+.narr-opcoes{display:grid;gap:8px}
+.narr-op{display:block;width:100%;text-align:left;font:inherit;font-size:15px;line-height:1.35;padding:10px 12px;background:#fff;color:#1c1930;border:2px solid #cfc7b0;border-radius:8px;box-shadow:0 3px 0 #b9b19a;cursor:pointer}
+.narr-op:hover:not(:disabled){border-color:#e8b04a;background:#fff8e4}
+.narr-op:focus-visible{outline:3px solid #5a3fd0;outline-offset:2px}
+.narr-op.errada{background:#f6dcd9;border-color:#c0453f;color:#6b1f1b;text-decoration:line-through;box-shadow:none;opacity:.8}
+.narr-op.certa{background:#d6f0d2;border-color:#3d8f3a;box-shadow:none}
+.narr-retorno{margin:10px 0 0;font-size:14.5px;line-height:1.4;min-height:1.4em}
+.narr-retorno.ruim{color:#8a2a24}.narr-retorno.ok{color:#256b22;font-weight:700}
+#modal .card.travado #codeview,#modal .card.travado #palette,#modal .card.travado #chAjuda,#modal .card.travado #run,#modal .card.travado #reset,#modal .card.travado #hintBtn,#modal .card.travado #iaBtn,#modal .card.travado #result,#modal .card.travado #chTests,#modal .card.travado #chHint,#modal .card.travado #iaDica{display:none}
+#modal .palette.chegou .blk{animation:bloco-chega .55s cubic-bezier(.2,.9,.3,1.2) backwards}
+#modal .palette.chegou .blk:nth-child(2){animation-delay:.07s}#modal .palette.chegou .blk:nth-child(3){animation-delay:.14s}#modal .palette.chegou .blk:nth-child(4){animation-delay:.21s}#modal .palette.chegou .blk:nth-child(5){animation-delay:.28s}
+@keyframes bloco-chega{from{transform:translate(-160px,-20px) rotate(-14deg);opacity:0}}
+@media (max-width:560px){.narrador{grid-template-columns:1fr;justify-items:start}.narr-sprite{width:96px}.narr-fala::before{display:none}}
+@media (prefers-reduced-motion:reduce){.narr-sprite,.narr-fig.entrega .narr-sprite,#modal .palette.chegou .blk{animation:none}}
+
+/* ===== Loja ===== */
+.loja-btn{display:inline-flex;align-items:center;gap:6px}
+.loja-btn .moeda{width:14px;height:14px}
+.loja-btn b{color:#f2b632;font-variant-numeric:tabular-nums}
+.loja-topo{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-block:8px}
+.loja-prev{display:flex;align-items:flex-end;gap:14px;background:#14111f;border:1px solid #3a3560;border-radius:10px;padding:12px 16px}
+.loja-av{border-radius:8px;image-rendering:pixelated}
+.loja-pers{image-rendering:pixelated}
+.loja-saldo{display:flex;align-items:center;gap:10px;margin:0;font-family:"Space Grotesk","Inter",system-ui,sans-serif}
+.loja-saldo b{font-size:36px;color:#f2b632;line-height:1;font-variant-numeric:tabular-nums}
+.loja-saldo span{color:#b9b2cf}
+#lojaItens h3{margin:16px 0 6px;font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-size:17px;color:#b9b2cf}
+.loja-lista{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.loja-lista li{display:grid;grid-template-columns:62px 1fr auto;align-items:center;gap:10px;background:#14111f;border:1px solid #3a3560;border-radius:8px;padding:8px 10px}
+.loja-lista li.vestido{border-color:#e8b04a;background:#241f3a}
+.icone-item{image-rendering:pixelated;width:60px;height:auto;background:#2a2548;border-radius:6px;padding:4px}
+.loja-nome{font-size:15px;min-width:0}
+.loja-lista button{display:inline-flex;align-items:center;gap:6px;min-width:72px;justify-content:center;padding:7px 12px;border:1px solid #3a3560;border-radius:6px;background:#1c1930;color:#f4efe4;cursor:pointer;font:inherit;font-size:14px}
+.loja-lista button.compra{background:#e8b04a;color:#1a1408;border:0;font-weight:700}
+.loja-lista button:disabled{opacity:.45;cursor:not-allowed}
+.loja-lista .moeda{width:14px;height:14px}
+
+/* ===== Perto de você (ranking) ===== */
+.perto{background:#14111f;border:1px solid #3a3560;border-left:4px solid #e8b04a;border-radius:8px;padding:10px 14px;margin-bottom:12px}
+.perto h3{margin:0 0 6px;font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-size:16px}
+.perto p{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:15px}
+.perto .acima{color:#f6c9a8}.perto .abaixo{color:#b9b2cf}.perto .lider{color:#f2b632;font-weight:700}
+
+/* ===== Resumo no fim do mundo ===== */
+.fim-carteira{margin:6px 0 0;font-size:14px;color:#b9b2cf}
+.resumo{margin-top:14px;background:#14111f;border:1px solid #3a3560;border-radius:10px;padding:14px 16px}
+.resumo h3{margin:0 0 4px;font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-size:20px;color:#e8b04a}
+.resumo-sub{margin:0 0 10px;font-size:15px;color:#d6d0ea}
+.resumo-lista{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.resumo-lista li{display:grid;grid-template-columns:1fr 110px auto;gap:2px 12px;align-items:center}
+.r-nome{font-weight:700;font-size:15px}
+.r-barra{height:8px;border-radius:4px;background:#2a2548;overflow:hidden}
+.r-barra i{display:block;height:100%;background:#e0674f;border-radius:4px}
+.r-n{font-size:13px;color:#f6c9a8;font-variant-numeric:tabular-nums}
+.r-dica{grid-column:1/-1;font-size:13.5px;line-height:1.4;color:#b9b2cf}
+@media (max-width:480px){.resumo-lista li{grid-template-columns:1fr auto}.r-barra{display:none}}
+#end .card{max-height:none}
+.narr-sprite{background:transparent!important}
+.loja-av{width:96px;height:96px}
+.loja-pers{width:80px;height:92px;background:transparent!important}
+.loja-prev .loja-av{flex:none}
+.perto canvas{width:24px;height:24px;flex:none;border-radius:4px}
+.resumo-sub{margin-bottom:14px}
+/* avatares nítidos: o seletor usa tamanho fixo (múltiplo de 12) e o resto reduz de um desenho grande */
+.avatar.suave{image-rendering:auto}
+#pag-entrar .avatares,.avatares{grid-template-columns:repeat(6,48px);justify-content:space-between;gap:10px 8px}
+.av .avatar,#pag-entrar .av .avatar{width:48px;height:48px;aspect-ratio:auto}
+
+/* ===== Mapa de mundos maior: ocupa a largura da tela (limitado pela altura, para caber sem rolar muito) ===== */
+.gabinete:has(#pag-mundos:not([hidden])){max-width:1680px}
+#pag-mundos .mapa{max-width:max(720px,min(1560px,calc((100vh - 230px) * 2.2857)))}
+#pag-mundos .mundo-info{max-width:max(720px,min(1560px,calc((100vh - 230px) * 2.2857)))}
+#pag-mundos .chamada{max-width:none}
+
+/* Título do login: as letras são "recheadas" com palavras de código (if, else, break...) */
+#pag-entrar .nome-jogo{margin:0;line-height:0;font-size:0}
+#pag-entrar .nome-jogo svg{display:block;width:min(100%,680px);height:auto;overflow:visible}
+#pag-entrar .nome-jogo text{font-family:"Big Shoulders Display",Impact,"Arial Black","Oswald",sans-serif;font-weight:900;font-size:150px;letter-spacing:1px}
+#pag-entrar .nome-jogo .t-sombra{fill:#000;opacity:.45}
+#pag-entrar .nome-jogo .cod text{font-size:26px;font-family:"IBM Plex Mono",Menlo,Consolas,monospace;font-weight:700;letter-spacing:0}
+
+/* ===== Base do login: restaurante à esquerda, prisão à direita ===== */
+#pag-entrar .cenario-base{position:absolute;left:0;bottom:0;width:100%;height:auto;aspect-ratio:8/1;min-height:120px;display:block;opacity:.95}
+#pag-entrar .cenario-base .janela{animation:janela-pisca 5s ease-in-out infinite}
+#pag-entrar .cenario-base .j2{animation-delay:-2.2s}
+#pag-entrar .cenario-base .holofote-base{transform-box:view-box;transform-origin:296px 12px;animation:varre-base 7s ease-in-out infinite alternate}
+
+#pag-entrar .brasa{position:absolute;bottom:6%;width:4px;height:4px;background:#ffb04a;box-shadow:0 0 6px 1px rgba(255,150,60,.7);opacity:0;animation:brasa-sobe 5s ease-out infinite}
+@keyframes janela-pisca{0%,100%{opacity:1}45%{opacity:.78}50%{opacity:.92}}
+@keyframes varre-base{from{transform:rotate(-9deg)}to{transform:rotate(7deg)}}
+@keyframes brasa-sobe{0%{transform:translate(0,0);opacity:0}15%{opacity:.9}100%{transform:translate(28px,-190px);opacity:0}}
+@media (prefers-reduced-motion:reduce){#pag-entrar .cenario-base .janela,#pag-entrar .cenario-base .holofote-base,#pag-entrar .brasa{animation:none}#pag-entrar .brasa{display:none}}
+@media (max-width:700px){#pag-entrar .cenario-base{min-height:90px}}
+
+/* fichas de código decorativas embaixo do título */
+#pag-entrar .fichas-codigo{list-style:none;margin:14px 0 4px;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+#pag-entrar .fichas-codigo li{font-family:"IBM Plex Mono",Menlo,Consolas,monospace;font-weight:700;font-size:clamp(15px,1.7vw,20px);line-height:1;padding:7px 12px 8px;border-radius:6px;background:#1c1930;border:1px solid #3a3560;box-shadow:0 3px 0 #0b0913;animation:ficha-flutua 4.2s ease-in-out infinite}
+#pag-entrar .fichas-codigo .f1{color:#b79cff}#pag-entrar .fichas-codigo .f2{color:#ff9b5e;animation-delay:-.7s}#pag-entrar .fichas-codigo .f3{color:#6fe0cf;animation-delay:-1.4s}
+#pag-entrar .fichas-codigo .f4{color:#6fe0cf;animation-delay:-2.1s}#pag-entrar .fichas-codigo .f5{color:#b79cff;animation-delay:-2.8s}#pag-entrar .fichas-codigo .f6{color:#ff9b5e;animation-delay:-3.5s}
+@keyframes ficha-flutua{50%{transform:translateY(-4px)}}
+@media (prefers-reduced-motion:reduce){#pag-entrar .fichas-codigo li{animation:none}}
+
+/* dica ao chegar perto de um lugar no mapa */
+.mapa-dica{position:absolute;z-index:3;transform:translate(-50%,calc(-100% - clamp(40px,7cqw,76px)));background:#e8b04a;color:#1a1408;font-weight:700;font-size:clamp(12px,1.5cqw,16px);padding:5px 12px;border-radius:6px;box-shadow:0 3px 0 #8a6414;white-space:nowrap;pointer-events:none}
+.mapa-dica.bloqueada{background:#3a3560;color:#f4efe4;box-shadow:0 3px 0 #1c1930}
+.mapa-dica::after{content:"";position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-bottom:0;border-top-color:#e8b04a}
+.mapa-dica.bloqueada::after{border-top-color:#3a3560}
+
+/* ===== Topo das páginas de mundos e do jogo, no mesmo estilo do login ===== */
+#pag-mundos .titulos,#pag-jogo .titulos{display:flex;flex-direction:row;align-items:flex-end;gap:clamp(14px,2.4vw,28px);flex-wrap:wrap;min-width:0}
+.logo-link{display:block;line-height:0;flex:none}
+.logo-link:focus-visible{outline:3px solid #4a9bd1;outline-offset:4px;border-radius:4px}
+.logo-pixel{display:block;width:clamp(120px,15vw,168px);height:auto;overflow:visible}
+#pag-mundos .marquise h1,#pag-jogo .marquise h1{font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-weight:700;font-size:clamp(20px,2.6vw,30px);letter-spacing:-.01em;line-height:1.1;color:#f4efe4;padding-bottom:3px;border-left:3px solid #e8b04a;padding-left:clamp(12px,1.8vw,20px)}
+#pag-mundos .marquise,#pag-jogo .marquise{align-items:flex-end;padding-bottom:14px}
+
+/* retrato do jogador no topo da tela do jogo */
+#pag-jogo .perfil{display:inline-flex;align-items:center;gap:10px;padding:3px 14px 3px 3px;background:#14111f;border:1px solid #3a3560;border-radius:999px}
+#pag-jogo .perfil[hidden]{display:none}
+#pag-jogo .perfil .avatar{width:48px;height:48px;border:2px solid #e8b04a;border-radius:50%;object-fit:cover;background:#1c1930}
+#pag-jogo .perfil-nome{font-weight:700;font-size:15px;color:#f4efe4;max-width:9ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:560px){#pag-jogo .perfil-nome{display:none}#pag-jogo .perfil{padding-right:3px}}
+
+/* ===== Cartão do perfil ao lado do jogo (telas largas) ===== */
+.perfil-card{display:none}
+@media (min-width:1180px) and (hover:hover){
+  .gabinete:has(#pag-jogo:not([hidden])){max-width:1480px}
+  #pag-jogo .jogo{flex-direction:row;align-items:flex-start;gap:20px}
+  #pag-jogo .jogo-col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:10px}
+  #pag-jogo .perfil-card:not([hidden]){display:flex}
+  #pag-jogo .hud .perfil{display:none}
+}
+#pag-jogo .perfil-card{flex:none;width:208px;flex-direction:column;align-items:stretch;gap:6px;margin-top:4px;padding:14px;background:#1c1930;border:1px solid #3a3560;border-top:4px solid var(--accent,#e8b04a);border-radius:10px;box-shadow:0 18px 40px rgba(0,0,0,.4);color:#f4efe4}
+.perfil-quadro{aspect-ratio:1;width:100%;display:grid;place-items:center;background:#14111f;border:1px solid #3a3560;border-radius:8px;padding:6px}
+.perfil-quadro .perfil-avatar{width:100%;height:100%;border:0;border-radius:6px}
+.perfil-card-nome{margin:6px 0 0;font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-weight:700;font-size:20px;line-height:1.1;overflow-wrap:anywhere}
+.perfil-card-sub{margin:0;font-size:13px;color:#b9b2cf}
+.perfil-saldo{display:flex;align-items:center;gap:6px;margin:4px 0 2px;font-weight:700;color:#f2b632;font-size:15px}
+.perfil-saldo .moeda{width:14px;height:14px}
+.perfil-card h3{margin:8px 0 0;font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-size:14px;color:#b9b2cf;border-top:1px solid #3a3560;padding-top:10px}
+.perfil-itens{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.perfil-item{display:grid;place-items:center;width:100%;padding:5px 3px;background:#14111f;border:2px solid #3a3560;border-radius:6px;cursor:pointer;box-shadow:none}
+.perfil-item.vestido{border-color:#e8b04a;background:#2a2548}
+.perfil-item:focus-visible{outline:3px solid #4a9bd1;outline-offset:2px}
+.perfil-item .icone-item{width:100%;background:none;padding:0}
+.perfil-vazio{margin:0;font-size:13px;color:#b9b2cf;line-height:1.35}
+.perfil-loja{margin-top:8px;padding:8px 10px;background:#14111f;border:1px solid #3a3560;border-radius:6px;color:#f4efe4;cursor:pointer;font:inherit;font-size:14px;box-shadow:none}
+.perfil-loja:hover{border-color:#8e7ad6}
+
+/* ===== Ranking: pódio, lista e abas ===== */
+#ranking .card{max-width:720px}
+#ranking h2{display:flex;align-items:center;gap:12px}
+#ranking .trofeu{width:34px;height:34px}
+#ranking .abas-mundo button{border-radius:999px;padding:7px 16px}
+.podio{list-style:none;margin:6px 0 14px;padding:14px 8px 0;display:flex;align-items:flex-end;justify-content:center;gap:10px;background:radial-gradient(ellipse at 50% 100%,rgba(232,176,74,.16),transparent 70%),#14111f;border:1px solid #3a3560;border-radius:10px}
+.podio[hidden]{display:none}
+.podio li{flex:1 1 0;max-width:200px;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
+.podio-av{border:3px solid #3a3560;border-radius:10px;background:#1c1930;margin-bottom:6px}
+.podio .p1 .podio-av{border-color:#f2b632;box-shadow:0 0 18px rgba(242,182,50,.45)}
+.podio .p2 .podio-av{border-color:#c9d1dd}.podio .p3 .podio-av{border-color:#cd7f4a}
+.podio .eu .podio-nome{color:#e8b04a}
+.podio-nome{font-weight:700;font-size:15px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.podio-sub{font-size:12px;color:#b9b2cf}
+.podio-pts{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:#f2b632;margin-top:2px;font-variant-numeric:tabular-nums}
+.podio-pts .moeda{width:13px;height:13px}
+.podio-base{width:100%;margin-top:8px;display:grid;place-items:center;font-family:"Space Grotesk","Inter",system-ui,sans-serif;font-weight:800;font-size:22px;color:#1a1408;border-radius:6px 6px 0 0}
+.podio .p1 .podio-base{height:56px;background:linear-gradient(#ffd86e,#e8a92f)}
+.podio .p2 .podio-base{height:40px;background:linear-gradient(#e3e8f0,#aab3c2)}
+.podio .p3 .podio-base{height:28px;background:linear-gradient(#e0975f,#b46a36)}
+#ranking .rank td.quem{display:flex;align-items:center;gap:10px}
+#ranking .rank td.quem .avatar{width:36px;height:36px;border:0;border-radius:6px;margin:0}
+#ranking .rank tr.eu td{background:#2a2548}
+#ranking .rank tr.eu td:first-child{box-shadow:inset 4px 0 0 #e8b04a}
+@media (max-width:520px){.podio{gap:6px}.podio-sub{display:none}.podio-nome{font-size:13px}.podio-av{width:52px!important;height:52px!important}.podio .p1 .podio-av{width:60px!important;height:60px!important}}
+/* podium: tamanhos fixos (o canvas global tem width:100%) */
+.podio .podio-av{width:60px;height:60px;flex:none}
+.podio .p1 .podio-av{width:72px;height:72px}
+/* dica do mapa: menor e acima da cabeça do avatar (a altura do personagem acompanha a largura do mapa) */
+.mapa-dica{transform:translate(-50%,calc(-100% - clamp(48px,8.8cqw,156px) - 8px));font-size:clamp(11px,1.2cqw,14px);padding:4px 10px;box-shadow:0 2px 0 #8a6414}
+.mapa-dica.bloqueada{box-shadow:0 2px 0 #1c1930}
+.mapa-dica::after{bottom:-5px;margin-left:-5px;border-width:5px}

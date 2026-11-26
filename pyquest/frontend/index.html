@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PyQuest</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&family=Pixelify+Sans:wght@700&display=swap">
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<div class="gabinete">
+
+<!-- Página 1: entrar -->
+<section class="pagina" id="pag-entrar" hidden aria-labelledby="entrarTitulo">
+  <div class="fundo" aria-hidden="true">
+    
+    <div class="grades"></div>
+    <svg class="cenario-base" viewBox="0 0 320 40" preserveAspectRatio="xMidYMax slice" shape-rendering="crispEdges" aria-hidden="true">
+      <defs><linearGradient id="chaoBase" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#241d36"/><stop offset="1" stop-color="#14101f"/></linearGradient></defs>
+      <rect x="0" y="34" width="320" height="6" fill="url(#chaoBase)"/>
+      <g fill="#33294a"><rect x="4" y="35" width="14" height="1"/><rect x="30" y="37" width="14" height="1"/><rect x="62" y="35" width="14" height="1"/><rect x="96" y="37" width="14" height="1"/><rect x="128" y="35" width="14" height="1"/><rect x="170" y="37" width="14" height="1"/><rect x="206" y="35" width="14" height="1"/><rect x="246" y="37" width="14" height="1"/><rect x="284" y="35" width="14" height="1"/></g>
+      <!-- restaurante -->
+      <g class="rest">
+        <rect x="96" y="3" width="7" height="10" fill="#2a2140"/><rect x="95" y="2" width="9" height="2" fill="#3a2e55"/>
+        <rect x="8" y="12" width="104" height="22" fill="#241c38"/>
+        <path d="M5 11h110l-4 6H9z" fill="#3a2e55"/>
+        <g fill="#b8433b"><rect x="9" y="11" width="8" height="6"/><rect x="25" y="11" width="8" height="6"/><rect x="41" y="11" width="8" height="6"/><rect x="57" y="11" width="8" height="6"/><rect x="73" y="11" width="8" height="6"/><rect x="89" y="11" width="8" height="6"/><rect x="105" y="11" width="6" height="6"/></g>
+        <g fill="#efe6d2" opacity=".85"><rect x="17" y="11" width="8" height="6"/><rect x="33" y="11" width="8" height="6"/><rect x="49" y="11" width="8" height="6"/><rect x="65" y="11" width="8" height="6"/><rect x="81" y="11" width="8" height="6"/><rect x="97" y="11" width="8" height="6"/></g>
+        <g class="janela"><rect x="15" y="20" width="22" height="11" fill="#f2b04a"/><rect x="15" y="25" width="22" height="1" fill="#b87a22"/><rect x="25" y="20" width="1" height="11" fill="#b87a22"/><rect x="14" y="19" width="24" height="1" fill="#14101f"/></g>
+        <g class="janela j2"><rect x="46" y="20" width="22" height="11" fill="#f2b04a"/><rect x="46" y="25" width="22" height="1" fill="#b87a22"/><rect x="56" y="20" width="1" height="11" fill="#b87a22"/><rect x="45" y="19" width="24" height="1" fill="#14101f"/></g>
+        <rect x="80" y="20" width="14" height="14" fill="#4a3226"/><rect x="82" y="22" width="10" height="5" fill="#f2b04a" opacity=".8"/><rect x="91" y="28" width="1" height="2" fill="#e8b04a"/>
+        <rect x="20" y="18" width="14" height="1" fill="#14101f" opacity=".5"/>
+        
+        <g fill="#e8b04a"><rect x="40" y="31" width="2" height="2"/><rect x="73" y="31" width="2" height="2"/></g>
+      </g>
+      <!-- uma luzinha: lanterna baixa, sem poste comprido -->
+      <circle cx="151" cy="27" r="9" fill="#f2c85a" opacity=".10"/><circle cx="151" cy="27" r="5" fill="#f2c85a" opacity=".14"/><rect x="150" y="29" width="2" height="5" fill="#3a2e55"/><rect x="148" y="25" width="6" height="4" fill="#f2c85a"/><rect x="147" y="24" width="8" height="1" fill="#3a2e55"/>
+      <!-- arbustos -->
+      <g fill="#203a34"><rect x="126" y="30" width="10" height="4"/><rect x="128" y="28" width="6" height="2"/><rect x="170" y="30" width="12" height="4"/><rect x="172" y="28" width="7" height="2"/></g>
+      <!-- prisão -->
+      <g class="pris">
+        <g class="holofote-base"><polygon points="296,12 232,34 300,34" fill="#cfe3ff" opacity=".13"/></g>
+        <rect x="196" y="18" width="118" height="16" fill="#2b2e40"/>
+        <g fill="#232638"><rect x="196" y="22" width="118" height="1"/><rect x="196" y="27" width="118" height="1"/><rect x="196" y="32" width="118" height="1"/></g>
+        <rect x="196" y="17" width="118" height="2" fill="#3a3e54"/>
+        <path d="M196 15l4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3" fill="none" stroke="#6a6f86" stroke-width="1"/>
+        <rect x="288" y="3" width="22" height="15" fill="#2b2e40"/><rect x="286" y="1" width="26" height="3" fill="#3a3e54"/>
+        <rect x="292" y="7" width="14" height="6" fill="#bcd4ff" opacity=".85"/><rect x="298" y="7" width="2" height="6" fill="#2b2e40"/>
+        <g fill="#14101f"><rect x="212" y="21" width="14" height="10"/></g>
+        <g fill="#8a90ab"><rect x="215" y="21" width="1" height="10"/><rect x="218" y="21" width="1" height="10"/><rect x="221" y="21" width="1" height="10"/><rect x="224" y="21" width="1" height="10"/></g>
+        <g fill="#14101f"><rect x="244" y="21" width="14" height="10"/></g>
+        <g fill="#8a90ab"><rect x="247" y="21" width="1" height="10"/><rect x="250" y="21" width="1" height="10"/><rect x="253" y="21" width="1" height="10"/><rect x="256" y="21" width="1" height="10"/></g>
+        <rect x="268" y="20" width="14" height="14" fill="#1a1626"/><rect x="274" y="20" width="2" height="14" fill="#3a3e54"/>
+        <rect x="285" y="22" width="2" height="2" fill="#f2b04a"/>
+      </g>
+    </svg>
+    <i class="brasa" style="left:14%;animation-delay:-.4s"></i><i class="brasa" style="left:19%;animation-delay:-1.7s"></i><i class="brasa" style="left:25%;animation-delay:-2.6s"></i><i class="brasa" style="left:31%;animation-delay:-3.4s"></i>
+    <div class="holofote"></div>
+    <div class="sirene"></div>
+    <svg class="flutua a" viewBox="0 0 12 12" width="48" height="48" shape-rendering="crispEdges" aria-hidden="true" fill="#f4efe4" style="left:6%;animation-duration:46s;animation-delay:-5s"><rect x="1" y="1" width="5" height="1"/><rect x="0" y="2" width="1" height="3"/><rect x="6" y="2" width="1" height="3"/><rect x="1" y="5" width="5" height="1"/><rect x="6" y="3" width="5" height="1"/><rect x="9" y="4" width="1" height="2"/><rect x="7" y="4" width="1" height="1"/></svg><svg class="flutua b" viewBox="0 0 12 12" width="48" height="48" shape-rendering="crispEdges" aria-hidden="true" fill="#f4efe4" style="left:17%;animation-duration:52s;animation-delay:-28s"><rect x="2" y="0" width="1" height="4"/><rect x="4" y="0" width="1" height="4"/><rect x="6" y="0" width="1" height="4"/><rect x="2" y="4" width="5" height="1"/><rect x="4" y="5" width="1" height="7"/></svg><svg class="flutua c" viewBox="0 0 12 12" width="48" height="48" shape-rendering="crispEdges" aria-hidden="true" fill="#f4efe4" style="left:33%;animation-duration:40s;animation-delay:-14s"><rect x="3" y="0" width="4" height="1"/><rect x="3" y="1" width="1" height="3"/><rect x="6" y="1" width="1" height="3"/><rect x="1" y="4" width="8" height="6"/></svg><svg class="flutua a" viewBox="0 0 12 12" width="48" height="48" shape-rendering="crispEdges" aria-hidden="true" fill="#f4efe4" style="left:58%;animation-duration:50s;animation-delay:-36s"><rect x="4" y="0" width="3" height="1"/><rect x="3" y="1" width="5" height="3"/><rect x="4" y="4" width="3" height="1"/><rect x="5" y="5" width="1" height="7"/></svg><svg class="flutua b" viewBox="0 0 12 12" width="48" height="48" shape-rendering="crispEdges" aria-hidden="true" fill="#f4efe4" style="left:72%;animation-duration:44s;animation-delay:-20s"><rect x="2" y="3" width="8" height="1"/><rect x="1" y="4" width="10" height="6"/><rect x="0" y="5" width="1" height="2"/><rect x="11" y="5" width="1" height="2"/></svg><svg class="flutua c" viewBox="0 0 12 12" width="48" height="48" shape-rendering="crispEdges" aria-hidden="true" fill="#f4efe4" style="left:88%;animation-duration:56s;animation-delay:-8s"><rect x="1" y="1" width="5" height="1"/><rect x="0" y="2" width="1" height="3"/><rect x="6" y="2" width="1" height="3"/><rect x="1" y="5" width="5" height="1"/><rect x="6" y="3" width="5" height="1"/><rect x="9" y="4" width="1" height="2"/><rect x="7" y="4" width="1" height="1"/></svg><svg class="flutua a" viewBox="0 0 12 12" width="48" height="48" shape-rendering="crispEdges" aria-hidden="true" fill="#f4efe4" style="left:46%;animation-duration:60s;animation-delay:-44s"><rect x="2" y="0" width="1" height="4"/><rect x="4" y="0" width="1" height="4"/><rect x="6" y="0" width="1" height="4"/><rect x="2" y="4" width="5" height="1"/><rect x="4" y="5" width="1" height="7"/></svg>
+    <div class="vapores"><i class="vapor" style="left:40px;animation-delay:-0s;animation-duration:7s"></i><i class="vapor" style="left:90px;animation-delay:-2.5s;animation-duration:8s"></i><i class="vapor" style="left:140px;animation-delay:-1s;animation-duration:6.5s"></i><i class="vapor" style="left:190px;animation-delay:-4s;animation-duration:7.5s"></i><i class="vapor" style="left:70px;animation-delay:-5s;animation-duration:9s"></i><i class="vapor" style="left:120px;animation-delay:-3.5s;animation-duration:8.5s"></i></div>
+    <svg class="utensilios" viewBox="0 0 64 24" width="384" height="144" shape-rendering="crispEdges" aria-hidden="true" fill="#f4efe4"><rect x="0" y="2" width="62" height="1"/><g class="pend" style="transform-origin:8.5px 3px;animation-duration:5.2s;animation-delay:-0s"><rect x="8" y="3" width="1" height="13"/><rect x="6" y="16" width="5" height="3"/><rect x="7" y="19" width="3" height="1"/></g><g class="pend" style="transform-origin:24px 3px;animation-duration:6.4s;animation-delay:-2s"><rect x="23" y="3" width="2" height="7"/><rect x="19" y="10" width="10" height="5"/><rect x="20" y="15" width="8" height="1"/></g><g class="pend" style="transform-origin:38.5px 3px;animation-duration:4.6s;animation-delay:-4s"><rect x="38" y="3" width="1" height="8"/><rect x="36" y="11" width="5" height="1"/><rect x="36" y="12" width="1" height="5"/><rect x="40" y="12" width="1" height="5"/><rect x="38" y="12" width="1" height="6"/></g><g class="pend" style="transform-origin:50.5px 3px;animation-duration:5.8s;animation-delay:-1s"><rect x="50" y="3" width="1" height="11"/><rect x="48" y="14" width="5" height="5"/></g><g class="pend" style="transform-origin:57.5px 3px;animation-duration:7s;animation-delay:-3s"><rect x="57" y="3" width="1" height="6"/><rect x="55" y="9" width="5" height="6"/><rect x="56" y="15" width="3" height="1"/></g></svg>
+  </div>
+  <div class="entrada">
+    <div class="vitrine">
+      <h1 id="entrarTitulo" class="nome-jogo"><svg viewBox="-4 -4 838 192" role="img" aria-label="PyQuest" focusable="false" shape-rendering="crispEdges">
+        <defs>
+          <clipPath id="tituloForma"><rect x="0" y="0" width="28" height="26"/><rect x="20" y="0" width="28" height="26"/><rect x="40" y="0" width="28" height="26"/><rect x="60" y="0" width="28" height="26"/><rect x="0" y="20" width="28" height="26"/><rect x="80" y="20" width="28" height="26"/><rect x="0" y="40" width="28" height="26"/><rect x="80" y="40" width="28" height="26"/><rect x="0" y="60" width="28" height="26"/><rect x="20" y="60" width="28" height="26"/><rect x="40" y="60" width="28" height="26"/><rect x="60" y="60" width="28" height="26"/><rect x="0" y="80" width="28" height="26"/><rect x="0" y="100" width="28" height="26"/><rect x="0" y="120" width="28" height="26"/><rect x="120" y="40" width="28" height="26"/><rect x="200" y="40" width="28" height="26"/><rect x="120" y="60" width="28" height="26"/><rect x="200" y="60" width="28" height="26"/><rect x="140" y="80" width="28" height="26"/><rect x="180" y="80" width="28" height="26"/><rect x="160" y="100" width="28" height="26"/><rect x="140" y="120" width="28" height="26"/><rect x="120" y="140" width="28" height="26"/><rect x="120" y="160" width="28" height="26"/><rect x="260" y="0" width="28" height="26"/><rect x="280" y="0" width="28" height="26"/><rect x="300" y="0" width="28" height="26"/><rect x="240" y="20" width="28" height="26"/><rect x="320" y="20" width="28" height="26"/><rect x="240" y="40" width="28" height="26"/><rect x="320" y="40" width="28" height="26"/><rect x="240" y="60" width="28" height="26"/><rect x="320" y="60" width="28" height="26"/><rect x="240" y="80" width="28" height="26"/><rect x="280" y="80" width="28" height="26"/><rect x="320" y="80" width="28" height="26"/><rect x="240" y="100" width="28" height="26"/><rect x="300" y="100" width="28" height="26"/><rect x="260" y="120" width="28" height="26"/><rect x="280" y="120" width="28" height="26"/><rect x="320" y="120" width="28" height="26"/><rect x="360" y="40" width="28" height="26"/><rect x="440" y="40" width="28" height="26"/><rect x="360" y="60" width="28" height="26"/><rect x="440" y="60" width="28" height="26"/><rect x="360" y="80" width="28" height="26"/><rect x="440" y="80" width="28" height="26"/><rect x="360" y="100" width="28" height="26"/><rect x="420" y="100" width="28" height="26"/><rect x="440" y="100" width="28" height="26"/><rect x="380" y="120" width="28" height="26"/><rect x="400" y="120" width="28" height="26"/><rect x="440" y="120" width="28" height="26"/><rect x="500" y="40" width="28" height="26"/><rect x="520" y="40" width="28" height="26"/><rect x="540" y="40" width="28" height="26"/><rect x="480" y="60" width="28" height="26"/><rect x="560" y="60" width="28" height="26"/><rect x="480" y="80" width="28" height="26"/><rect x="500" y="80" width="28" height="26"/><rect x="520" y="80" width="28" height="26"/><rect x="540" y="80" width="28" height="26"/><rect x="560" y="80" width="28" height="26"/><rect x="480" y="100" width="28" height="26"/><rect x="500" y="120" width="28" height="26"/><rect x="520" y="120" width="28" height="26"/><rect x="540" y="120" width="28" height="26"/><rect x="560" y="120" width="28" height="26"/><rect x="620" y="40" width="28" height="26"/><rect x="640" y="40" width="28" height="26"/><rect x="660" y="40" width="28" height="26"/><rect x="680" y="40" width="28" height="26"/><rect x="600" y="60" width="28" height="26"/><rect x="620" y="80" width="28" height="26"/><rect x="640" y="80" width="28" height="26"/><rect x="660" y="80" width="28" height="26"/><rect x="680" y="100" width="28" height="26"/><rect x="600" y="120" width="28" height="26"/><rect x="620" y="120" width="28" height="26"/><rect x="640" y="120" width="28" height="26"/><rect x="660" y="120" width="28" height="26"/><rect x="740" y="20" width="28" height="26"/><rect x="720" y="40" width="28" height="26"/><rect x="740" y="40" width="28" height="26"/><rect x="760" y="40" width="28" height="26"/><rect x="780" y="40" width="28" height="26"/><rect x="740" y="60" width="28" height="26"/><rect x="740" y="80" width="28" height="26"/><rect x="740" y="100" width="28" height="26"/><rect x="800" y="100" width="28" height="26"/><rect x="760" y="120" width="28" height="26"/><rect x="780" y="120" width="28" height="26"/></clipPath>
+          <pattern id="tituloCodigo" width="640" height="180" patternUnits="userSpaceOnUse"><g class="cod" font-size="26" fill="#a24d12"><text x="0.0" y="17">if</text><text x="79.6" y="17">else</text><text x="212.2" y="17">while</text><text x="371.3" y="17">for</text><text x="477.4" y="17">break</text><text x="636.5" y="17">elif</text><text x="-39.1" y="37">for</text><text x="67.0" y="37">break</text><text x="226.1" y="37">elif</text><text x="358.7" y="37">in</text><text x="438.3" y="37">and</text><text x="544.3" y="37">or</text><text x="623.9" y="37">not</text><text x="730.0" y="37">if</text><text x="-78.2" y="57">in</text><text x="1.4" y="57">and</text><text x="107.4" y="57">or</text><text x="187.0" y="57">not</text><text x="293.1" y="57">if</text><text x="372.6" y="57">else</text><text x="505.2" y="57">while</text><text x="664.4" y="57">for</text><text x="-32.3" y="77">not</text><text x="73.8" y="77">if</text><text x="153.3" y="77">else</text><text x="285.9" y="77">while</text><text x="445.1" y="77">for</text><text x="551.1" y="77">break</text><text x="710.3" y="77">elif</text><text x="-71.4" y="97">while</text><text x="87.7" y="97">for</text><text x="193.8" y="97">break</text><text x="352.9" y="97">elif</text><text x="485.5" y="97">in</text><text x="565.1" y="97">and</text><text x="671.2" y="97">or</text><text x="-25.5" y="117">elif</text><text x="107.1" y="117">in</text><text x="186.7" y="117">and</text><text x="292.7" y="117">or</text><text x="372.3" y="117">not</text><text x="478.4" y="117">if</text><text x="557.9" y="117">else</text><text x="690.5" y="117">while</text><text x="-64.6" y="137">or</text><text x="15.0" y="137">not</text><text x="121.0" y="137">if</text><text x="200.6" y="137">else</text><text x="333.2" y="137">while</text><text x="492.3" y="137">for</text><text x="598.4" y="137">break</text><text x="-18.7" y="157">else</text><text x="113.9" y="157">while</text><text x="273.0" y="157">for</text><text x="379.1" y="157">break</text><text x="538.2" y="157">elif</text><text x="670.8" y="157">in</text><text x="-57.8" y="177">break</text><text x="101.3" y="177">elif</text><text x="233.9" y="177">in</text><text x="313.5" y="177">and</text><text x="419.6" y="177">or</text><text x="499.1" y="177">not</text><text x="605.2" y="177">if</text><text x="684.8" y="177">else</text></g></pattern>
+          <linearGradient id="tituloOuro" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0b8"/><stop offset=".5" stop-color="#ffd36b"/><stop offset="1" stop-color="#f2a33a"/></linearGradient>
+        </defs>
+        <g clip-path="url(#tituloForma)" transform="translate(7 8)" opacity=".55"><rect x="0" y="0" width="836" height="182" fill="#000"/></g>
+        <g clip-path="url(#tituloForma)"><rect x="0" y="0" width="828" height="182" fill="url(#tituloOuro)"/><rect x="0" y="0" width="828" height="182" fill="url(#tituloCodigo)" opacity=".55"/></g>
+      </svg></h1>
+      <p class="chamada">Aprenda Python explorando mundos. Cada porta fecha com um desafio de código; resolva e ela abre.</p>
+      <div class="cena">
+        <figure class="moldura">
+          <svg class="quadro" viewBox="0 0 64 76" width="256" height="304" shape-rendering="crispEdges" role="img" aria-label="O rato chef na cozinha de um restaurante"><rect x="0" y="0" width="64" height="52" fill="#4a4560"/><rect x="8" y="22" width="8" height="6" fill="#514b68"/><rect x="24" y="22" width="8" height="6" fill="#514b68"/><rect x="40" y="22" width="8" height="6" fill="#514b68"/><rect x="56" y="22" width="8" height="6" fill="#514b68"/><rect x="0" y="28" width="8" height="6" fill="#514b68"/><rect x="16" y="28" width="8" height="6" fill="#514b68"/><rect x="32" y="28" width="8" height="6" fill="#514b68"/><rect x="48" y="28" width="8" height="6" fill="#514b68"/><rect x="8" y="34" width="8" height="6" fill="#514b68"/><rect x="24" y="34" width="8" height="6" fill="#514b68"/><rect x="40" y="34" width="8" height="6" fill="#514b68"/><rect x="56" y="34" width="8" height="6" fill="#514b68"/><rect x="0" y="50" width="64" height="2" fill="#25222f"/><rect x="0" y="52" width="8" height="6" fill="#2d2a3c"/><rect x="8" y="52" width="8" height="6" fill="#363248"/><rect x="16" y="52" width="8" height="6" fill="#2d2a3c"/><rect x="24" y="52" width="8" height="6" fill="#363248"/><rect x="32" y="52" width="8" height="6" fill="#2d2a3c"/><rect x="40" y="52" width="8" height="6" fill="#363248"/><rect x="48" y="52" width="8" height="6" fill="#2d2a3c"/><rect x="56" y="52" width="8" height="6" fill="#363248"/><rect x="0" y="58" width="8" height="6" fill="#363248"/><rect x="8" y="58" width="8" height="6" fill="#2d2a3c"/><rect x="16" y="58" width="8" height="6" fill="#363248"/><rect x="24" y="58" width="8" height="6" fill="#2d2a3c"/><rect x="32" y="58" width="8" height="6" fill="#363248"/><rect x="40" y="58" width="8" height="6" fill="#2d2a3c"/><rect x="48" y="58" width="8" height="6" fill="#363248"/><rect x="56" y="58" width="8" height="6" fill="#2d2a3c"/><rect x="0" y="64" width="8" height="6" fill="#2d2a3c"/><rect x="8" y="64" width="8" height="6" fill="#363248"/><rect x="16" y="64" width="8" height="6" fill="#2d2a3c"/><rect x="24" y="64" width="8" height="6" fill="#363248"/><rect x="32" y="64" width="8" height="6" fill="#2d2a3c"/><rect x="40" y="64" width="8" height="6" fill="#363248"/><rect x="48" y="64" width="8" height="6" fill="#2d2a3c"/><rect x="56" y="64" width="8" height="6" fill="#363248"/><rect x="0" y="70" width="8" height="6" fill="#363248"/><rect x="8" y="70" width="8" height="6" fill="#2d2a3c"/><rect x="16" y="70" width="8" height="6" fill="#363248"/><rect x="24" y="70" width="8" height="6" fill="#2d2a3c"/><rect x="32" y="70" width="8" height="6" fill="#363248"/><rect x="40" y="70" width="8" height="6" fill="#2d2a3c"/><rect x="48" y="70" width="8" height="6" fill="#363248"/><rect x="56" y="70" width="8" height="6" fill="#2d2a3c"/><rect x="6" y="6" width="18" height="14" fill="#25222f"/><rect x="7" y="7" width="16" height="12" fill="#1f3a5a"/><rect x="14" y="7" width="1" height="12" fill="#25222f"/><rect x="7" y="12" width="16" height="1" fill="#25222f"/><rect x="18" y="9" width="3" height="3" fill="#f4efe4"/><rect x="6" y="20" width="18" height="2" fill="#3a3550"/><rect x="28" y="16" width="28" height="1" fill="#6b4a30"/><rect x="30" y="11" width="4" height="5" fill="#c9a85a"/><rect x="36" y="12" width="4" height="4" fill="#8a9a7a"/><rect x="42" y="10" width="5" height="6" fill="#a07a6a"/><rect x="49" y="12" width="4" height="4" fill="#9aa3ad"/><rect x="30" y="22" width="26" height="1" fill="#9aa3ad"/><rect x="34" y="23" width="1" height="6" fill="#9aa3ad"/><rect x="33" y="29" width="3" height="2" fill="#9aa3ad"/><rect x="44" y="23" width="1" height="3" fill="#9aa3ad"/><rect x="42" y="26" width="6" height="4" fill="#2a2a34"/><rect x="52" y="23" width="1" height="6" fill="#9aa3ad"/><rect x="51" y="29" width="3" height="2" fill="#c9a85a"/><rect x="36" y="40" width="28" height="16" fill="#5a3f2a"/><rect x="49" y="42" width="1" height="12" fill="#3d2a1b"/><rect x="47" y="47" width="1" height="3" fill="#c9a85a"/><rect x="51" y="47" width="1" height="3" fill="#c9a85a"/><rect x="35" y="38" width="30" height="3" fill="#8a7a68"/><rect x="36" y="56" width="28" height="1" fill="#25222f"/><rect x="40" y="30" width="12" height="8" fill="#9aa3ad"/><rect x="39" y="29" width="14" height="2" fill="#c7cdd3"/><rect x="38" y="32" width="2" height="1" fill="#2a2a34"/><rect x="52" y="32" width="2" height="1" fill="#2a2a34"/><rect x="44" y="24" width="1" height="3" fill="#f4efe4" opacity=".45"/><rect x="47" y="21" width="1" height="4" fill="#f4efe4" opacity=".45"/><rect x="5" y="64" width="22" height="3" fill="#000" opacity=".3"/><g class="bob"><g transform="translate(4 28)"><path fill="#f7f5f0" d="M12 0h1v1h-1zM14 0h2v1h-2zM17 0h2v1h-2zM12 1h1v1h-1zM14 1h2v1h-2zM17 1h2v1h-2zM12 2h1v1h-1zM14 2h2v1h-2zM17 2h2v1h-2zM9 3h4v1h-4zM14 3h2v1h-2zM17 3h2v1h-2zM20 3h3v1h-3zM9 4h4v1h-4zM14 4h2v1h-2zM17 4h2v1h-2zM20 4h3v1h-3zM9 5h4v1h-4zM14 5h2v1h-2zM17 5h2v1h-2zM20 5h3v1h-3zM9 6h4v1h-4zM14 6h2v1h-2zM17 6h2v1h-2zM20 6h3v1h-3zM9 7h4v1h-4zM14 7h2v1h-2zM17 7h2v1h-2zM20 7h3v1h-3zM11 8h2v1h-2zM14 8h2v1h-2zM17 8h2v1h-2zM20 8h1v1h-1zM11 9h2v1h-2zM14 9h2v1h-2zM17 9h2v1h-2zM20 9h1v1h-1zM11 10h2v1h-2zM14 10h2v1h-2zM17 10h2v1h-2zM20 10h1v1h-1z"/><path fill="#dcd8ce" d="M13 0h1v1h-1zM16 0h1v1h-1zM19 0h1v1h-1zM13 1h1v1h-1zM16 1h1v1h-1zM19 1h1v1h-1zM13 2h1v1h-1zM16 2h1v1h-1zM19 2h1v1h-1zM13 3h1v1h-1zM16 3h1v1h-1zM19 3h1v1h-1zM13 4h1v1h-1zM16 4h1v1h-1zM19 4h1v1h-1zM13 5h1v1h-1zM16 5h1v1h-1zM19 5h1v1h-1zM13 6h1v1h-1zM16 6h1v1h-1zM19 6h1v1h-1zM13 7h1v1h-1zM16 7h1v1h-1zM19 7h1v1h-1zM13 8h1v1h-1zM16 8h1v1h-1zM19 8h1v1h-1zM13 9h1v1h-1zM16 9h1v1h-1zM19 9h1v1h-1zM13 10h1v1h-1zM16 10h1v1h-1zM19 10h1v1h-1zM10 34h1v1h-1zM21 34h1v1h-1zM10 35h1v1h-1zM21 35h1v1h-1z"/><path fill="#8f897b" d="M8 11h3v1h-3zM21 11h3v1h-3zM8 12h1v1h-1zM23 12h1v1h-1zM8 13h1v1h-1zM23 13h1v1h-1zM8 14h1v1h-1zM11 14h10v1h-10zM23 14h1v1h-1zM8 15h1v1h-1zM11 15h10v1h-10zM23 15h1v1h-1zM8 16h1v1h-1zM11 16h10v1h-10zM23 16h1v1h-1zM8 17h16v1h-16zM11 18h10v1h-10zM11 19h2v1h-2zM15 19h2v1h-2zM19 19h2v1h-2zM11 20h10v1h-10zM11 21h2v1h-2zM19 21h2v1h-2zM11 22h2v1h-2zM19 22h2v1h-2z"/><path fill="#e7e3da" d="M11 11h10v1h-10zM11 12h10v1h-10z"/><path fill="#c79a96" d="M9 12h2v1h-2zM21 12h2v1h-2zM9 13h2v1h-2zM21 13h2v1h-2zM9 14h2v1h-2zM21 14h2v1h-2zM9 15h2v1h-2zM21 15h2v1h-2zM9 16h2v1h-2zM21 16h2v1h-2zM4 30h2v1h-2zM4 31h2v1h-2zM4 32h2v1h-2zM7 32h3v1h-3zM22 32h3v1h-3zM4 33h2v1h-2zM7 33h3v1h-3zM22 33h3v1h-3zM4 34h2v1h-2zM4 35h2v1h-2zM4 36h8v1h-8z"/><path fill="#c9c4b8" d="M11 13h10v1h-10z"/><path fill="#14110f" d="M13 19h2v1h-2zM17 19h2v1h-2z"/><path fill="#a39d8e" d="M13 21h6v1h-6zM13 22h6v1h-6zM13 23h2v1h-2zM17 23h2v1h-2z"/><path fill="#cfcabd" d="M7 22h4v1h-4zM21 22h4v1h-4zM8 24h3v1h-3zM21 24h3v1h-3z"/><path fill="#b5483f" d="M12 23h1v1h-1zM19 23h1v1h-1zM12 24h3v1h-3zM17 24h3v1h-3zM12 25h8v1h-8zM15 26h2v1h-2z"/><path fill="#2e2428" d="M15 23h2v1h-2zM15 24h2v1h-2z"/><path fill="#f4f2ee" d="M11 24h1v1h-1zM20 24h1v1h-1zM7 25h5v1h-5zM20 25h4v1h-4zM7 26h6v1h-6zM17 26h1v1h-1zM20 26h4v1h-4zM7 27h6v1h-6zM15 27h1v1h-1zM17 27h1v1h-1zM20 27h4v1h-4zM7 28h9v1h-9zM17 28h8v1h-8zM7 29h6v1h-6zM15 29h1v1h-1zM17 29h1v1h-1zM20 29h5v1h-5zM7 30h6v1h-6zM15 30h1v1h-1zM17 30h1v1h-1zM20 30h5v1h-5zM10 31h1v1h-1zM21 31h1v1h-1z"/><path fill="#b78f50" d="M24 25h3v1h-3zM24 26h3v1h-3zM24 27h3v1h-3z"/><path fill="#3a4a66" d="M13 26h2v1h-2zM18 26h2v1h-2zM13 27h2v1h-2zM18 27h2v1h-2zM13 29h2v1h-2zM18 29h2v1h-2zM13 30h2v1h-2zM18 30h2v1h-2z"/><path fill="#d5d1c7" d="M16 27h1v1h-1zM16 28h1v1h-1zM16 29h1v1h-1zM16 30h1v1h-1z"/><path fill="#c9a56a" d="M25 28h1v1h-1zM25 29h1v1h-1zM25 30h1v1h-1zM25 31h1v1h-1zM25 32h1v1h-1zM25 33h1v1h-1zM25 34h1v1h-1z"/><path fill="#cfcabf" d="M7 31h3v1h-3zM22 31h3v1h-3z"/><path fill="#2f4a73" d="M11 31h1v1h-1zM20 31h1v1h-1zM10 32h12v1h-12zM10 33h12v1h-12zM11 34h10v1h-10zM11 35h10v1h-10z"/><path fill="#3d5d8f" d="M12 31h8v1h-8z"/><path fill="#d3d3da" d="M12 36h1v1h-1zM14 36h1v1h-1zM17 36h1v1h-1zM19 36h1v1h-1z"/><path fill="#44444b" d="M13 36h1v1h-1zM18 36h1v1h-1z"/><path fill="#2e2a26" d="M11 37h10v1h-10zM11 38h10v1h-10z"/></g></g></svg>
+          <span class="etiqueta">if porta == "trancada":</span>
+          <figcaption>Mundo 1: condicionais</figcaption>
+        </figure>
+        <figure class="moldura">
+          <svg class="quadro" viewBox="0 0 64 76" width="256" height="304" shape-rendering="crispEdges" role="img" aria-label="O preso na quadra do pátio da prisão"><rect x="0" y="0" width="64" height="30" fill="#1f2540"/><rect x="6" y="5" width="1" height="1" fill="#f4efe4" opacity=".7"/><rect x="14" y="12" width="1" height="1" fill="#f4efe4" opacity=".7"/><rect x="24" y="4" width="1" height="1" fill="#f4efe4" opacity=".7"/><rect x="33" y="10" width="1" height="1" fill="#f4efe4" opacity=".7"/><rect x="44" y="6" width="1" height="1" fill="#f4efe4" opacity=".7"/><rect x="58" y="14" width="1" height="1" fill="#f4efe4" opacity=".7"/><rect x="20" y="18" width="1" height="1" fill="#f4efe4" opacity=".7"/><rect x="0" y="22" width="64" height="14" fill="#5a4a44"/><rect x="0" y="22" width="7" height="1" fill="#4a3c37"/><rect x="8" y="22" width="7" height="1" fill="#4a3c37"/><rect x="16" y="22" width="7" height="1" fill="#4a3c37"/><rect x="24" y="22" width="7" height="1" fill="#4a3c37"/><rect x="32" y="22" width="7" height="1" fill="#4a3c37"/><rect x="40" y="22" width="7" height="1" fill="#4a3c37"/><rect x="48" y="22" width="7" height="1" fill="#4a3c37"/><rect x="56" y="22" width="7" height="1" fill="#4a3c37"/><rect x="64" y="22" width="7" height="1" fill="#4a3c37"/><rect x="0" y="26" width="64" height="0" fill="#4a3c37"/><rect x="-4" y="27" width="7" height="1" fill="#4a3c37"/><rect x="4" y="27" width="7" height="1" fill="#4a3c37"/><rect x="12" y="27" width="7" height="1" fill="#4a3c37"/><rect x="20" y="27" width="7" height="1" fill="#4a3c37"/><rect x="28" y="27" width="7" height="1" fill="#4a3c37"/><rect x="36" y="27" width="7" height="1" fill="#4a3c37"/><rect x="44" y="27" width="7" height="1" fill="#4a3c37"/><rect x="52" y="27" width="7" height="1" fill="#4a3c37"/><rect x="60" y="27" width="7" height="1" fill="#4a3c37"/><rect x="0" y="31" width="64" height="0" fill="#4a3c37"/><rect x="0" y="32" width="7" height="1" fill="#4a3c37"/><rect x="8" y="32" width="7" height="1" fill="#4a3c37"/><rect x="16" y="32" width="7" height="1" fill="#4a3c37"/><rect x="24" y="32" width="7" height="1" fill="#4a3c37"/><rect x="32" y="32" width="7" height="1" fill="#4a3c37"/><rect x="40" y="32" width="7" height="1" fill="#4a3c37"/><rect x="48" y="32" width="7" height="1" fill="#4a3c37"/><rect x="56" y="32" width="7" height="1" fill="#4a3c37"/><rect x="64" y="32" width="7" height="1" fill="#4a3c37"/><rect x="0" y="36" width="64" height="0" fill="#4a3c37"/><rect x="0" y="21" width="64" height="1" fill="#9aa3ad"/><rect x="0" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="2" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="4" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="6" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="8" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="10" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="12" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="14" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="16" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="18" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="20" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="22" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="24" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="26" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="28" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="30" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="32" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="34" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="36" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="38" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="40" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="42" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="44" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="46" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="48" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="50" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="52" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="54" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="56" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="58" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="60" y="19" width="1" height="2" fill="#9aa3ad"/><rect x="62" y="18" width="1" height="2" fill="#9aa3ad"/><rect x="50" y="6" width="8" height="16" fill="#2a2a34"/><rect x="48" y="2" width="12" height="6" fill="#3a3f4a"/><rect class="lampada" x="52" y="4" width="4" height="2" fill="#ffd66b"/><polygon points="54,8 26,52 52,52" fill="#ffd66b" opacity=".10"/><rect x="0" y="36" width="64" height="40" fill="#3a3f4a"/><rect x="4" y="40" width="56" height="1" fill="#9a9fb0" opacity=".8"/><rect x="4" y="72" width="56" height="1" fill="#9a9fb0" opacity=".8"/><rect x="4" y="40" width="1" height="33" fill="#9a9fb0" opacity=".8"/><rect x="59" y="40" width="1" height="33" fill="#9a9fb0" opacity=".8"/><rect x="4" y="56" width="56" height="1" fill="#9a9fb0" opacity=".8"/><rect x="27" y="52" width="10" height="8" fill="#3a3f4a"/><rect x="27" y="52" width="10" height="1" fill="#9a9fb0" opacity=".8"/><rect x="27" y="59" width="10" height="1" fill="#9a9fb0" opacity=".8"/><rect x="27" y="52" width="1" height="8" fill="#9a9fb0" opacity=".8"/><rect x="36" y="52" width="1" height="8" fill="#9a9fb0" opacity=".8"/><rect x="7" y="22" width="1" height="22" fill="#9aa3ad"/><rect x="8" y="20" width="9" height="6" fill="#d8d8e0"/><rect x="10" y="22" width="5" height="3" fill="#8a8aa0" opacity=".5"/><rect x="8" y="26" width="8" height="1" fill="#e2872f"/><rect x="9" y="27" width="6" height="1" fill="#f4efe4" opacity=".6"/><rect x="10" y="28" width="4" height="1" fill="#f4efe4" opacity=".45"/><g opacity=".28"><rect x="0" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="3" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="6" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="9" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="12" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="15" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="18" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="21" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="24" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="27" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="30" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="33" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="36" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="39" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="42" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="45" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="48" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="51" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="54" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="57" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="60" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="63" y="36" width="1" height="6" fill="#9aa3ad"/><rect x="0" y="36" width="64" height="1" fill="#9aa3ad"/></g><rect x="21" y="64" width="22" height="3" fill="#000" opacity=".3"/><g class="bob"><g transform="translate(15 28)"><path fill="#4a3322" d="M11 12h10v1h-10zM11 13h10v1h-10zM10 14h12v1h-12zM10 15h2v1h-2zM20 15h2v1h-2zM10 16h2v1h-2zM20 16h2v1h-2zM13 17h2v1h-2zM17 17h2v1h-2z"/><path fill="#e0ac84" d="M12 15h8v1h-8zM12 16h8v1h-8zM10 17h3v1h-3zM15 17h2v1h-2zM19 17h3v1h-3zM10 18h3v1h-3zM15 18h2v1h-2zM19 18h3v1h-3zM10 19h3v1h-3zM15 19h2v1h-2zM19 19h3v1h-3zM11 20h4v1h-4zM17 20h4v1h-4zM14 24h4v1h-4zM7 33h3v1h-3zM22 33h3v1h-3zM7 34h3v1h-3zM22 34h3v1h-3zM7 35h3v1h-3zM22 35h3v1h-3z"/><path fill="#ffffff" d="M13 18h1v1h-1zM17 18h1v1h-1zM13 19h1v1h-1zM17 19h1v1h-1z"/><path fill="#2a2a30" d="M14 18h1v1h-1zM18 18h1v1h-1zM14 19h1v1h-1zM18 19h1v1h-1zM13 29h1v1h-1zM13 30h1v1h-1zM11 40h10v1h-10zM11 41h10v1h-10z"/><path fill="#c48a64" d="M15 20h2v1h-2zM13 25h6v1h-6z"/><path fill="#c9a07a" d="M11 21h10v1h-10zM11 22h3v1h-3zM18 22h3v1h-3zM11 23h10v1h-10z"/><path fill="#7a4a3a" d="M14 22h4v1h-4z"/><path fill="#a85a14" d="M10 25h3v1h-3zM19 25h3v1h-3zM16 27h1v1h-1zM16 28h1v1h-1zM16 29h1v1h-1zM16 30h1v1h-1zM16 31h1v1h-1zM16 32h1v1h-1zM16 33h1v1h-1zM10 34h12v1h-12zM16 35h1v1h-1zM12 38h3v1h-3zM17 38h3v1h-3z"/><path fill="#e2872f" d="M7 26h18v1h-18zM7 27h9v1h-9zM17 27h8v1h-8zM7 28h5v1h-5zM15 28h1v1h-1zM17 28h8v1h-8zM7 29h5v1h-5zM15 29h1v1h-1zM17 29h8v1h-8zM7 30h5v1h-5zM15 30h1v1h-1zM17 30h7v1h-7zM7 31h5v1h-5zM15 31h1v1h-1zM17 31h7v1h-7zM7 32h9v1h-9zM17 32h7v1h-7zM10 33h6v1h-6zM17 33h5v1h-5zM10 35h6v1h-6zM17 35h5v1h-5zM10 36h12v1h-12zM10 37h12v1h-12zM12 39h3v1h-3zM17 39h3v1h-3z"/><path fill="#f4efe4" d="M12 28h3v1h-3zM12 29h1v1h-1zM14 29h1v1h-1zM12 30h1v1h-1zM14 30h1v1h-1zM12 31h3v1h-3z"/><path fill="#aeb4c2" d="M24 30h3v1h-3zM24 31h3v1h-3zM24 32h3v1h-3z"/><path fill="#c9ced9" d="M25 33h1v1h-1zM25 34h1v1h-1zM25 35h1v1h-1zM25 36h1v1h-1zM25 37h1v1h-1zM25 38h1v1h-1z"/></g></g></svg>
+          <span class="etiqueta">while preso:</span>
+          <figcaption>Mundo 2: repetição</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="cartao-login">
+      <div class="cab-login">
+        <h2>Quem vai jogar?</h2>
+        <p>Seu nome e seu avatar aparecem no ranking.</p>
+      </div>
+      <div id="continuar" class="continuar" hidden>
+        <p>Neste computador</p>
+        <ul class="jogadores" id="jogadores"></ul>
+      </div>
+      <form id="loginForm" autocomplete="off">
+        <label class="campo"><span>Nome</span> <input id="loginNome" maxlength="16" placeholder="Como te chamam" required></label>
+        <label class="campo"><span>Turma <span class="opc">(se tiver)</span></span> <input id="loginTurma" maxlength="12" placeholder="Ex.: 7B"></label>
+        <fieldset class="avatares" id="loginAvatares"><legend>Seu avatar no ranking</legend></fieldset>
+        <p class="erro" id="loginErro" role="alert" hidden></p>
+        <button class="entrar" type="submit">Jogar</button>
+      </form>
+      <div class="rodape-login">
+        <button type="button" id="loginVisitante" class="sem-rank">Jogar sem ranking</button>
+        <p class="help">Não precisa de senha. O nome só identifica você neste navegador.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Página 2: escolher o mundo -->
+<section class="pagina" id="pag-mundos" hidden aria-labelledby="mundosTitulo">
+  <header class="marquise">
+    <div class="titulos"><a class="logo-link" href="#mundos" data-logo aria-label="PyQuest, ir ao mapa de mundos"></a><h1 id="mundosTitulo">Escolha o mundo</h1></div>
+    <nav class="abas" aria-label="Menu">
+      <span class="ola" id="olaJogador"></span>
+      <button id="mundosLoja" class="link loja-btn"><i class="moeda" aria-hidden="true"></i> Loja <b id="lojaSaldo">0</b></button>
+      <button id="mundosRanking" class="link">Ranking</button>
+      <button id="mundosTrocar" class="link">Trocar de jogador</button>
+    </nav>
+  </header>
+  <p class="chamada">Ande com W A S D (ou as setas) e aperte E perto de um lugar para entrar. Clicar em um lugar também leva o personagem até ele, e dá para voltar a um mundo já aberto quando quiser.</p>
+  <div class="mapa" id="mapa">
+    <svg class="mapa-cena" id="mapaSvg" viewBox="0 0 320 140" shape-rendering="crispEdges" aria-hidden="true"></svg>
+    <ul class="mapa-nos" id="mapaNos"></ul>
+    <div class="viajante" id="viajante" aria-hidden="true"></div>
+    <div class="mapa-dica" id="mapaDica" hidden role="status"></div>
+  </div>
+  <div class="mundo-info" id="mundoInfo" aria-live="polite"></div>
+</section>
+
+<!-- Página 3: o jogo -->
+<div class="pagina" id="pag-jogo" hidden>
+  <header class="marquise">
+    <div class="titulos"><a class="logo-link" href="#mundos" data-logo aria-label="PyQuest, ir ao mapa de mundos"></a><h1 id="titulo">O Restaurante</h1></div>
+    <nav class="abas" aria-label="Menu">
+      <button id="verMapa" class="link">Mundos</button>
+      <button id="verRanking" class="link">Ranking</button>
+      <button id="verJogador" class="link">Entrar</button>
+    </nav>
+  </header>
+
+  <main class="jogo">
+    <div class="jogo-col">
+    <div class="hud">
+      <div class="hud-sala">
+        <p class="sala-tag" id="salaTag"></p>
+        <ul class="chips" id="chips" aria-label="Painéis da sala"></ul>
+      </div>
+      <div class="hud-medidas">
+        <span class="perfil" id="hudPerfil" hidden></span>
+        <span class="moedas" id="moedas" title="Seus pontos"><i class="moeda" aria-hidden="true"></i><span class="so-leitor">Pontos: </span><b id="pontos">0</b></span>
+        <span class="tempo" title="Tempo restante da sala"><svg class="rel-ic" viewBox="0 0 12 12" shape-rendering="crispEdges" aria-hidden="true"><path d="M3 0h6v1H3zM2 1h1v1H2zM9 1h1v1H9zM1 2h1v8H1zM10 2h1v8h-1zM2 10h1v1H2zM9 10h1v1H9zM3 11h6v1H3zM5 3h2v3h2v1H5z" fill="currentColor"/></svg><span class="timer" id="timer" role="timer">06:00</span></span>
+      </div>
+      <div class="timebar" aria-hidden="true"><i id="timefill"></i></div>
+    </div>
+
+    <section class="tela">
+      <div class="bisel">
+        <canvas id="game" width="480" height="320" aria-label="Cenário do jogo com o personagem e uma porta de saída"></canvas>
+        <div class="prompt" id="prompt" hidden></div>
+        <div class="toast" id="toast" hidden></div>
+      </div>
+      <div class="rodape">
+        <p class="legenda" id="intro"></p>
+        <p class="stats">
+          <span>Porta <b id="doorState">trancada</b></span>
+          <span>Tentativas <b id="tries">0</b></span>
+        </p>
+        <div class="comandos">
+          <div class="dpad" aria-label="Controles de movimento">
+            <button class="up" data-dir="up" aria-label="Cima">▲</button>
+            <button class="left" data-dir="left" aria-label="Esquerda">◀</button>
+            <button class="down" data-dir="down" aria-label="Baixo">▼</button>
+            <button class="right" data-dir="right" aria-label="Direita">▶</button>
+          </div>
+          <button class="primary" id="act" disabled>Interagir (E)</button>
+        </div>
+      </div>
+      <p class="help">Mova com as setas ou WASD. Chegue perto de um móvel com o balão e aperte E.</p>
+    </section>
+    </div>
+    <aside class="perfil-card" id="perfilCard" aria-label="Seu perfil" hidden></aside>
+  </main>
+
+  <section class="log">
+    <h2>Registro de tentativas</h2>
+    <ol id="logList"><li class="empty">Nenhuma tentativa ainda.</li></ol>
+  </section>
+</div>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="chTitle">
+    <p class="tipo-puzzle" id="chTipo"></p>
+    <h2 id="chTitle"></h2>
+    <p class="story" id="chStory"></p>
+    <p class="goal" id="chGoal"></p>
+    <section class="narrador" id="narrador" hidden aria-live="polite">
+      <div class="narr-fig" id="narrFig" aria-hidden="true"></div>
+      <div class="narr-fala">
+        <p class="narr-nome" id="narrNome"></p>
+        <p class="narr-texto" id="narrTexto"></p>
+        <p class="narr-pergunta" id="narrPergunta"></p>
+        <div class="narr-opcoes" id="narrOpcoes" role="group" aria-label="Respostas"></div>
+        <p class="narr-retorno" id="narrRetorno" role="status"></p>
+      </div>
+    </section>
+    <div class="codeview" id="codeview" aria-label="Código Python"></div>
+    <div class="palette" id="palette" aria-label="Blocos disponíveis"></div>
+    <p class="hint" id="chAjuda">Arraste um bloco até o espaço tracejado, ou toque no bloco para encaixar. Toque no bloco encaixado para tirar.</p>
+    <div class="row">
+      <button class="primary" id="run">Executar e testar</button>
+      <button id="hintBtn">Ver dica</button>
+      <button id="iaBtn" hidden disabled title="Tente uma vez antes de pedir ajuda">Pedir dica à IA</button>
+      <button id="reset">Limpar</button>
+      <button id="close">Sair</button>
+    </div>
+    <div class="result" id="result" aria-live="polite">A saída do programa aparece aqui.</div>
+    <p class="tests" id="chTests"></p>
+    <p class="hint" id="chHint" hidden></p>
+    <p class="hint ia" id="iaDica" role="status" aria-live="polite" hidden></p>
+  </div>
+</div>
+
+<div class="modal" id="ranking" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="rankTitulo">
+    <h2 id="rankTitulo"><svg class="trofeu" viewBox="0 0 12 12" shape-rendering="crispEdges" aria-hidden="true"><path fill="#f2b632" d="M3 1h6v1H3zM3 2h6v3H3zM1 2h2v3H1zM9 2h2v3H9zM4 5h4v2H4zM5 7h2v2H5zM3 9h6v2H3z"/><path fill="#fff0b8" d="M4 2h1v3H4z"/></svg> Ranking</h2>
+    <div class="abas-mundo" id="rankAbas" role="tablist" aria-label="Mundo"></div>
+    <label class="marca" id="rankTurmaRotulo" hidden><input type="checkbox" id="rankTurma"> <span></span></label>
+    <ol class="podio" id="rankPodio" hidden aria-label="Os três primeiros"></ol>
+    <div class="perto" id="rankPerto" hidden></div>
+    <table class="rank" id="rankTabela">
+      <caption class="so-leitor">Melhores pontuações do mundo escolhido</caption>
+      <thead><tr><th scope="col">Posição</th><th scope="col">Jogador</th><th scope="col" class="num"><i class="moeda" aria-hidden="true"></i> Pontos</th><th scope="col" class="num">Tempo</th></tr></thead>
+      <tbody id="rankCorpo"></tbody>
+    </table>
+    <p class="story" id="rankVazio" hidden>Ninguém terminou este mundo ainda. Termine as três áreas para abrir o ranking.</p>
+    <p class="hint">O ranking fica salvo neste navegador. Vale a melhor pontuação de cada jogador.</p>
+    <div class="row"><button id="rankFechar">Fechar</button></div>
+  </div>
+</div>
+
+<div class="modal" id="loja" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="lojaTitulo">
+    <h2 id="lojaTitulo">Loja de acessórios</h2>
+    <p class="story">Gaste as moedas que você ganha ao terminar as áreas. O acessório aparece no seu avatar, no mapa de mundos e no ranking. No jogo você continua sendo o rato e o preso.</p>
+    <div class="loja-topo">
+      <div class="loja-prev" id="lojaPrev" aria-label="Como você está vestido"></div>
+      <p class="loja-saldo"><i class="moeda grande" aria-hidden="true"></i><b id="lojaSaldo2">0</b><span>moedas</span></p>
+    </div>
+    <div id="lojaItens"></div>
+    <p class="hint" id="lojaMsg" role="status"></p>
+    <div class="row"><button id="lojaFechar">Fechar</button></div>
+  </div>
+</div>
+
+<div class="modal" id="end" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="endTitle">
+    <h2 id="endTitle">O rato escapou!</h2>
+    <p class="fim-moedas" id="endMoedas" hidden><i class="moeda grande" aria-hidden="true"></i><b id="endPontos">0</b><span>pontos</span></p>
+    <p id="endText"></p>
+    <p class="fim-carteira" id="endCarteira" hidden></p>
+    <section class="resumo" id="endResumo" hidden aria-labelledby="resumoTitulo">
+      <h3 id="resumoTitulo">O que você aprendeu</h3>
+      <p class="resumo-sub" id="resumoSub"></p>
+      <ul class="resumo-lista" id="resumoLista"></ul>
+    </section>
+    <div class="row"><button class="primary" id="again">Jogar de novo</button><button id="again2" hidden>Mapa de mundos</button><button id="again3" hidden>Mapa de mundos</button></div>
+  </div>
+</div>
+
+<div class="som flutuante" id="som">
+  <button type="button" id="somBtn" aria-pressed="true" aria-label="Desligar a música e os sons"><svg viewBox="0 0 12 12" shape-rendering="crispEdges" aria-hidden="true"><path d="M4 1h6v1H4zM4 2h1v6H4zM9 2h1v5H9zM2 7h3v1H2zM1 8h4v2H1zM7 6h3v1H7zM6 7h4v2H6z" fill="currentColor"/><path class="corte" d="M0 11L11 0l1 1L1 12z" fill="currentColor"/></svg></button>
+  <input type="range" id="somVol" min="0" max="100" value="50" aria-label="Volume da música e dos sons">
+</div>
+
+<script src="lib/skulpt/skulpt.min.js"></script>
+<script src="lib/skulpt/skulpt-stdlib.js"></script>
+<script src="js/config.js"></script>
+<script src="js/mundos.js"></script>
+<script src="js/armazenamento.js"></script>
+<script src="js/avatares.js"></script>
+<script src="js/acessorios.js"></script>
+<script src="js/pontos.js"></script>
+<script src="js/paginas.js"></script>
+<script src="js/logo.js"></script>
+<script src="js/jogador.js"></script>
+<script src="js/carteira.js"></script>
+<script src="js/progresso.js"></script>
+<script src="js/desenho/util.js"></script>
+<script src="js/desenho/rato.js"></script>
+<script src="js/desenho/balao.js"></script>
+<script src="js/desenho/bancada.js"></script>
+<script src="js/desenho/luz.js"></script>
+<script src="js/desenho/porta.js"></script>
+<script src="js/desenho/efeitos.js"></script>
+<script src="js/python.js"></script>
+<script src="js/interface.js"></script>
+<script src="js/narrador.js"></script>
+<script src="js/blocos.js"></script>
+<script src="js/ia.js"></script>
+<script src="js/painel.js"></script>
+<script src="js/mapa.js"></script>
+<script src="js/ranking.js"></script>
+<script src="js/loja.js"></script>
+<script src="js/perfil.js"></script>
+<script src="js/mundos/restaurante/mundo.js"></script>
+<script src="js/mundos/restaurante/desafios/cozinha.js"></script>
+<script src="js/mundos/restaurante/desafios/despensa.js"></script>
+<script src="js/mundos/restaurante/desafios/salao.js"></script>
+<script src="js/mundos/restaurante/salas/cozinha.js"></script>
+<script src="js/mundos/restaurante/salas/despensa.js"></script>
+<script src="js/mundos/restaurante/salas/salao.js"></script>
+<script src="js/mundos/prisao/personagem.js"></script>
+<script src="js/mundos/prisao/mundo.js"></script>
+<script src="js/mundos/prisao/desafios/cela.js"></script>
+<script src="js/mundos/prisao/desafios/patio.js"></script>
+<script src="js/mundos/prisao/desafios/tunel.js"></script>
+<script src="js/mundos/prisao/salas/cela.js"></script>
+<script src="js/mundos/prisao/salas/patio.js"></script>
+<script src="js/mundos/prisao/salas/tunel.js"></script>
+<script src="js/desenho/ambiente.js"></script>
+<script src="js/musica.js"></script>
+<script src="js/jogo.js"></script>
+<script src="js/principal.js"></script>
+</body>
+</html>
