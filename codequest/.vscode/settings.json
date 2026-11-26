@@ -1,9 +1,0 @@
-{
-  "editor.tabSize": 2,
-  "editor.insertSpaces": true,
-  "files.eol": "\n",
-  "files.exclude": { "dist": false },
-  "liveServer.settings.root": "/",
-  "liveServer.settings.donotShowInfoMsg": true,
-  "search.exclude": { "lib": true, "dist": true }
-}
