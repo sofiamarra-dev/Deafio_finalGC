@@ -31,6 +31,11 @@ export function layoutApp(conteudo, { ativo = 'trilha', lateral = null } = {}) {
     marca(),
     el('a', { className: 'menu-item', href: '#trilha', 'aria-current': ativo === 'trilha' ? 'page' : null },
       icone('casa'), el('span', {}, 'Aprender')),
+    sessao.usuario?.papel === 'aluno' ? [
+      el('a', { className: 'menu-item', href: '#ranking', 'aria-current': ativo === 'ranking' ? 'page' : null },
+        icone('trofeu'), el('span', {}, 'Ranking')),
+      el('a', { className: 'menu-item', href: '#perfil', 'aria-current': ativo === 'perfil' ? 'page' : null },
+        icone('pessoa'), el('span', {}, 'Perfil'))] : null,
     el('div', { className: 'rodape-menu' },
       el('span', { className: 'quem' }, sessao.usuario ? sessao.usuario.nome : ''), sair));
 

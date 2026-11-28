@@ -14,6 +14,11 @@ def conferir_banco() -> list[str]:
     faltando = set(Base.metadata.tables) - existentes
     if faltando:
         return ["O banco de dados ainda não tem as tabelas. Pare o servidor (Ctrl+C) e rode: python -m alembic upgrade head"]
+    inspetor = inspect(motor)
+    for nome, tabela in Base.metadata.tables.items():
+        if set(tabela.columns.keys()) - {c["name"] for c in inspetor.get_columns(nome)}:
+            return ["O banco de dados está desatualizado (o código ganhou coisas novas). "
+                    "Pare o servidor (Ctrl+C) e rode: python -m alembic upgrade head"]
     with FabricaSessao() as sessao:
         if sessao.scalar(select(Exercicio.id).limit(1)) is None:
             return ["Não há exercícios no banco. Rode: python -m app.conteudo.importar"]

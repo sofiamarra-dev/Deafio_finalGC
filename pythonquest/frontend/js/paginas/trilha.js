@@ -1,5 +1,6 @@
 /* A trilha: módulos em sequência, cada um com seus exercícios como nós clicáveis em zigue-zague.
    Tudo o que aparece aqui (estados, progresso, ovo) vem de /api/trilha, calculado no servidor. */
+import { sessao } from '../estado.js';
 import { el, irPara, textoRico, NOME_DIFICULDADE, NOME_TIPO } from '../util.js';
 import { api } from '../api.js';
 import { layoutApp } from '../componentes/layout.js';
@@ -170,7 +171,7 @@ function colunaDireita(dados) {
     cartaoJogador(dados.jogador),
     el('section', { className: 'cartao cartao-ovo' },
       el('h2', {}, 'Seu ovo'),
-      el('div', { className: 'ovo-palco' }, criarOvo(ovo.estagio)),
+      el('div', { className: 'ovo-palco' }, criarOvo(ovo.estagio, { cor: sessao.usuario?.avatar })),
       el('p', { className: 'ovo-nome' }, ESTAGIOS[Math.min(ovo.estagio, ESTAGIOS.length - 1)].nome),
       el('p', { className: 'ovo-frase' }, ESTAGIOS[Math.min(ovo.estagio, ESTAGIOS.length - 1)].frase),
       el('p', { className: 'ovo-contagem' }, `${resumo.modulos_concluidos} de ${ovo.estagios} módulos concluídos`)),

@@ -37,6 +37,10 @@ const ICONES = {
     '.....dddd.', '....dddd..', '...dddd...', '..dddd....', '.ddddddd..',
     '....dddd..', '...dddd...', '..ddd.....', '.dd.......', 'd.........'
   ],
+  pessoa: [
+    '...cccc...', '..cccccc..', '..cccccc..', '..cccccc..', '...cccc...',
+    '..........', '.vvvvvvvv.', 'vvvvvvvvvv', 'vvvvvvvvvv', 'vvvvvvvvvv'
+  ],
   livro: [
     'cccc..cccc', 'cggc..cggc', 'cccc..cccc', 'cggcvvcggc', 'ccccvvcccc',
     'cggcvvcggc', 'ccccvvcccc', 'cggcvvcggc', 'cccccccccc', '..........'

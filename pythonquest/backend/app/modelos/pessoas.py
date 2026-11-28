@@ -16,7 +16,8 @@ class Usuario(Base):
     email: Mapped[str] = mapped_column(String(254), unique=True, index=True)
     senha_hash: Mapped[str] = mapped_column(String(255))
     papel: Mapped[str] = mapped_column(String(20), default="aluno")  # aluno | professor
-    avatar: Mapped[str] = mapped_column(String(30), default="padrao")
+    apelido: Mapped[str | None] = mapped_column(String(30))  # nome que aparece no ranking
+    avatar: Mapped[str] = mapped_column(String(30), default="verde")  # cor das manchas do ovo
     fuso: Mapped[str] = mapped_column(String(40), default="America/Sao_Paulo")
     criado_em: Mapped[datetime] = mapped_column(default=agora)
     ultimo_acesso_em: Mapped[datetime | None]

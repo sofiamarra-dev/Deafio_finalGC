@@ -1,5 +1,6 @@
 /* A tela de um exercício: enunciado, exemplos, área de resposta, dicas, Executar (no navegador)
    e Verificar (correção oficial no servidor), com feedback de acerto ou erro. */
+import { sessao } from '../estado.js';
 import { el, irPara, textoRico, NOME_DIFICULDADE, NOME_TIPO } from '../util.js';
 import { api } from '../api.js';
 import { executarExemplos } from '../python-local.js';
@@ -45,14 +46,14 @@ function listaCasos(casos, exercicio) {
 
 function mostrarEvolucaoDoOvo(ovo) {
   const estagio = Math.min(ovo.para, ESTAGIOS.length - 1);
-  const palco = el('div', { className: 'ovo-palco ovo-evoluindo' }, criarOvo(ovo.de, { animar: false }));
+  const palco = el('div', { className: 'ovo-palco ovo-evoluindo' }, criarOvo(ovo.de, { animar: false, cor: sessao.usuario?.avatar }));
   const modal = abrirModal({
     titulo: 'Módulo concluído!',
     conteudo: el('div', { className: 'evolucao' }, palco,
       el('p', { className: 'ovo-nome' }, ESTAGIOS[estagio].nome), el('p', {}, ESTAGIOS[estagio].frase)),
     acoes: [el('button', { className: 'botao', type: 'button', onclick: () => modal.fechar() }, 'Continuar')]
   });
-  setTimeout(() => { palco.replaceChildren(criarOvo(ovo.para)); palco.classList.add('ovo-mudou'); soltarConfete(70); }, 900);
+  setTimeout(() => { palco.replaceChildren(criarOvo(ovo.para, { cor: sessao.usuario?.avatar })); palco.classList.add('ovo-mudou'); soltarConfete(70); }, 900);
 }
 
 export async function paginaExercicio(id) {

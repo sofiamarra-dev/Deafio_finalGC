@@ -1,4 +1,7 @@
-def test_saude_responde_servidor_e_banco(cliente):
+def test_saude_responde_servidor_e_banco(cliente, fabrica, monkeypatch):
+    from app import diagnostico
+    monkeypatch.setattr(diagnostico, "motor", fabrica.kw["bind"])
+    monkeypatch.setattr(diagnostico, "FabricaSessao", fabrica)
     resposta = cliente.get("/api/saude")
     assert resposta.status_code == 200
     dados = resposta.json()
@@ -27,3 +30,15 @@ def test_sqlite_relativo_aponta_para_a_pasta_backend():
     from app.config import PASTA_BACKEND, Configuracao
     url = Configuracao(url_banco="sqlite:///./pythonquest.db").url_banco
     assert url == f"sqlite:///{(PASTA_BACKEND / 'pythonquest.db').resolve()}"
+
+
+def test_banco_desatualizado_pede_alembic(tmp_path, monkeypatch):
+    import sqlalchemy as sa
+    from app import diagnostico
+    from app.db import Base, criar_motor
+    motor = criar_motor(f"sqlite:///{tmp_path / 'velho.db'}")
+    Base.metadata.create_all(motor)
+    with motor.begin() as conexao:  # simula um banco de antes da coluna apelido
+        conexao.execute(sa.text("ALTER TABLE usuarios DROP COLUMN apelido"))
+    monkeypatch.setattr(diagnostico, "motor", motor)
+    assert "desatualizado" in diagnostico.conferir_banco()[0]

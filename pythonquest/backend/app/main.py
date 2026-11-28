@@ -9,7 +9,7 @@ from sqlalchemy.exc import OperationalError
 
 from app.config import obter_configuracao
 from app.diagnostico import conferir_banco
-from app.rotas import contas, exercicios, professor, saude, trilha
+from app.rotas import contas, exercicios, perfil, professor, saude, trilha
 
 log = logging.getLogger("uvicorn.error")
 
@@ -23,7 +23,7 @@ async def ciclo_de_vida(_app: FastAPI):
 
 def criar_app() -> FastAPI:
     app = FastAPI(title="PythonQuest", docs_url="/api/docs", openapi_url="/api/openapi.json", lifespan=ciclo_de_vida)
-    for modulo in (saude, contas, trilha, exercicios, professor):
+    for modulo in (saude, contas, trilha, exercicios, perfil, professor):
         app.include_router(modulo.rotas)
 
     @app.exception_handler(OperationalError)

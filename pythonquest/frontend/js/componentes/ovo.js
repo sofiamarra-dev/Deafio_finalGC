@@ -5,6 +5,8 @@ const SVG = 'http://www.w3.org/2000/svg';
 const LARGURAS = [4, 6, 8, 10, 10, 12, 12, 14, 14, 14, 16, 16, 16, 16, 16, 14, 14, 12, 10, 6];
 const COR = { casca: '#f3f3f3', sombra: '#c9cfd4', brilho: '#ffffff', mancha: '#00b312', contorno: '#0b0d0f',
   luz: '#f2b443', criatura: '#3ddc4f', criaturaSombra: '#00b312', olho: '#0b0d0f' };
+/* Cores que o aluno pode escolher para as manchas do ovo (as mesmas que o servidor aceita). */
+export const CORES_OVO = { verde: '#00b312', azul: '#3b82f6', roxo: '#a855f7', laranja: '#f97316', rosa: '#ec4899', amarelo: '#eab308' };
 const MANCHAS = [[5, 6], [6, 6], [10, 9], [11, 9], [11, 10], [4, 13], [5, 13], [9, 15], [10, 15]];
 
 /* Rachaduras: cada estágio soma as suas às anteriores. */
@@ -33,7 +35,7 @@ function pixel(alvo, x, y, cor) {
   alvo.appendChild(r);
 }
 
-function desenharCasca(grupo, estagio) {
+function desenharCasca(grupo, estagio, mancha) {
   const topoAberto = estagio >= 6 ? 9 : 0; // na eclosão, a parte de cima da casca some
   LARGURAS.forEach((largura, y) => {
     if (y < topoAberto) return;
@@ -45,7 +47,7 @@ function desenharCasca(grupo, estagio) {
     }
   });
   if (estagio < 6) [[5, 3], [5, 4], [4, 5]].forEach(([x, y]) => pixel(grupo, x, y, COR.brilho));
-  MANCHAS.filter(([, y]) => y >= topoAberto).forEach(([x, y]) => pixel(grupo, x, y, COR.mancha));
+  MANCHAS.filter(([, y]) => y >= topoAberto).forEach(([x, y]) => pixel(grupo, x, y, mancha));
   for (let e = 1; e <= Math.min(estagio, 5); e++) {
     RACHADURAS[e].forEach(([x, y]) => pixel(grupo, x, y, e >= 3 && estagio >= 3 ? COR.luz : COR.contorno));
   }
@@ -61,7 +63,7 @@ function desenharCriatura(grupo) {
   }));
 }
 
-export function criarOvo(estagio = 0, { animar = true } = {}) {
+export function criarOvo(estagio = 0, { animar = true, cor = 'verde' } = {}) {
   estagio = Math.max(0, Math.min(estagio, ESTAGIOS.length - 1));
   const svg = document.createElementNS(SVG, 'svg');
   svg.setAttribute('viewBox', '-1 -1 18 23');
@@ -74,7 +76,7 @@ export function criarOvo(estagio = 0, { animar = true } = {}) {
   const grupo = document.createElementNS(SVG, 'g');
   if (animar) grupo.setAttribute('class', estagio >= 2 && estagio < 6 ? 'ovo-tremendo' : 'ovo-balanco');
   if (estagio >= 6) desenharCriatura(grupo);
-  desenharCasca(grupo, estagio);
+  desenharCasca(grupo, estagio, CORES_OVO[cor] || COR.mancha);
   svg.appendChild(grupo);
   return svg;
 }
