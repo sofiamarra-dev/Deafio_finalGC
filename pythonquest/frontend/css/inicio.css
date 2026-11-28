@@ -1,34 +1,104 @@
-/* Página inicial: apresentação, a jornada dos 6 módulos e o ovo. */
+/* Página inicial: cena 2D, como funciona, tipos de desafio e mapa das salas. */
 .acoes-topo{display:flex;align-items:center;gap:16px}
-.inicio{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center}
-.inicio h1{font-family:var(--fonte-titulo);font-size:clamp(34px,6vw,56px);line-height:1.05;margin:0 0 16px}
-.inicio h1 em{font-style:normal;color:var(--verde)}
-.inicio .chamada{font-size:18px;color:var(--texto-2);max-width:46ch;margin:0 0 24px}
+
+.heroi{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:16px 0 8px}
+.selo{display:inline-block;margin:0 0 14px;font:700 12px var(--fonte-texto);letter-spacing:1px;text-transform:uppercase;color:var(--verde-claro);
+  background:var(--verde-fundo);border:2px solid var(--verde);border-radius:8px;padding:4px 10px}
+.heroi h1{font-family:var(--fonte-titulo);font-size:clamp(36px,6vw,60px);line-height:1.05;margin:0 0 16px;text-shadow:4px 4px 0 #0b0d0f}
+.heroi h1 em{font-style:normal;color:var(--verde)}
+.chamada{font-size:18px;color:var(--texto-2);max-width:44ch;margin:0 0 26px}
 .chamada-acoes{display:flex;gap:12px;flex-wrap:wrap}
+.botao.grande{padding:16px 26px;font-size:16px}
 
-.cena-ovo{display:flex;flex-direction:column;align-items:center;gap:12px}
-.cena-ovo svg{width:min(240px,60vw);height:auto}
-.cena-ovo p{margin:0;color:var(--texto-2);font-size:14px;text-align:center;max-width:32ch}
+/* A cena */
+.cena{position:relative;height:360px;border-radius:20px;overflow:hidden;border:3px solid #2a3a2d;box-shadow:0 6px 0 #0b0d0f;
+  background:linear-gradient(#10261a 0%,#163322 60%,#1c3f29 100%)}
+.estrela-ceu{position:absolute;width:6px;height:6px;background:#f3f3f3;animation:piscar 2.4s steps(2) infinite}
+.e1{left:12%;top:14%}.e2{left:46%;top:9%;animation-delay:.6s}.e3{left:78%;top:18%;animation-delay:1.2s}.e4{left:64%;top:32%;width:4px;height:4px;animation-delay:1.8s}
+@keyframes piscar{50%{opacity:.25}}
+.nuvem{position:absolute;height:14px;background:#2c4a36;box-shadow:12px -10px 0 #2c4a36,24px 0 0 #2c4a36;width:36px;animation:nuvem 18s linear infinite}
+.n1{top:22%;left:-60px}.n2{top:40%;left:-60px;animation-delay:-9s;animation-duration:24s}
+@keyframes nuvem{to{transform:translateX(calc(100cqw + 600px))}}
+.cena{container-type:inline-size}
+.cena-chao{position:absolute;left:0;right:0;bottom:0;height:64px;
+  background:repeating-conic-gradient(#245c33 0 25%,#1f5230 0 50%) 0 0/24px 24px;border-top:4px solid #2f7a42}
+.cena-trilha{position:absolute;left:7%;right:7%;bottom:58px;display:flex;align-items:flex-end;justify-content:space-between}
+.cena-parada{position:relative;transform:translateY(calc(var(--i) * -22px - 18px))}
+.cena-no{width:52px;height:46px;border-radius:50%;display:grid;place-items:center;color:#fff;box-shadow:0 6px 0 var(--lado)}
+.cena-feito{background:var(--dourado);--lado:var(--dourado-lado)}
+.cena-atual{background:var(--verde);--lado:var(--verde-escuro);outline:4px solid rgba(0,179,18,.4);outline-offset:5px}
+.cena-trancado{background:var(--cinza-botao);--lado:var(--cinza-botao-lado);color:#c9cfd4}
+.cena-porta{width:54px;height:76px;border-radius:27px 27px 4px 4px;
+  background:repeating-linear-gradient(90deg,#7a5230 0 9px,#6b4729 9px 18px);box-shadow:0 5px 0 #2e1d10, inset 0 0 0 4px #3d2715}
+.cena-ovo{position:absolute;left:50%;bottom:calc(100% - 8px);width:64px;margin-left:-32px;animation:cena-pula 1.6s ease-in-out infinite}
+.cena-ovo svg{display:block;width:64px;height:auto;filter:drop-shadow(0 4px 0 rgba(0,0,0,.45))}
+@keyframes cena-pula{0%,55%,100%{transform:translateY(0)}70%{transform:translateY(-14px)}85%{transform:translateY(0) scaleY(.94)}}
 
-.jornada{margin-top:48px}
-.jornada h2{font-family:var(--fonte-titulo);font-size:26px;margin:0 0 4px}
-.jornada > p{color:var(--texto-2);margin:0 0 20px}
-.modulos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.modulo{display:flex;gap:14px;align-items:flex-start}
-.modulo .numero{flex:none;width:44px;height:44px;display:grid;place-items:center;font-family:var(--fonte-titulo);font-size:20px;
-  background:var(--superficie-2);border:2px solid var(--verde);color:var(--verde-claro);border-radius:10px;box-shadow:var(--sombra-2d)}
-.modulo h3{margin:0 0 2px;font-size:16px}
-.modulo p{margin:0;color:var(--texto-2);font-size:14px}
-.niveis{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.niveis span{font-size:11px;font-family:var(--fonte-codigo);padding:2px 6px;border:1px solid var(--borda);border-radius:4px;color:var(--texto-2)}
+/* Seções */
+.secao-inicio{margin-top:64px}
+.secao-inicio h2,.faixa-final h2{font-family:var(--fonte-titulo);font-size:28px;margin:0 0 6px}
+.secao-sub{color:var(--texto-2);margin:0 0 20px}
+.secao-inicio > h2 + :not(p){margin-top:18px}
 
+.passos-como{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.passo-como{position:relative;padding-top:28px}
+.passo-como h3{margin:0 0 6px;font-size:18px}
+.passo-como p{margin:0;color:var(--texto-2);font-size:15px}
+.passo-numero{position:absolute;top:-16px;left:18px;width:36px;height:36px;display:grid;place-items:center;font:20px var(--fonte-titulo);
+  background:var(--verde);color:#fff;border-radius:10px;box-shadow:0 4px 0 var(--verde-escuro)}
+
+.evolucao{list-style:none;margin:28px 0 0;padding:20px;display:flex;justify-content:space-around;align-items:flex-end;gap:12px;
+  background:var(--superficie);border:2px solid var(--borda);border-radius:16px;position:relative}
+.evolucao::before{content:"";position:absolute;left:12%;right:12%;top:50%;height:4px;
+  background:repeating-linear-gradient(90deg,var(--borda) 0 10px,transparent 10px 20px)}
+.evolucao-passo{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;color:var(--texto-2);text-align:center}
+.evolucao-ovo{background:var(--superficie);padding:0 8px}
+.evolucao-ovo svg{width:56px;height:auto}
+.evolucao-passo:last-child span{color:var(--verde-claro);font-weight:700}
+
+.grade-desafios{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.desafio{--h:calc(var(--sala) * 55 + 125);border-top:6px solid hsl(var(--h) 60% 45%);transition:transform .15s}
+.desafio:hover{transform:translateY(-4px)}
+.desafio h3{margin:0 0 6px;font-size:17px}
+.desafio p{margin:0;color:var(--texto-2);font-size:14px}
+
+.mapa-salas{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:18px 28px}
+.mapa-sala{--h:calc(var(--sala) * 55 + 125);position:relative;display:flex;align-items:center;gap:14px;padding:16px;border-radius:16px;
+  background:repeating-conic-gradient(hsl(var(--h) 18% 15%) 0 25%,hsl(var(--h) 18% 13%) 0 50%) 0 0/24px 24px;
+  border:3px solid hsl(var(--h) 25% 26%);box-shadow:0 5px 0 #0b0d0f}
+.mapa-sala:nth-child(even){transform:translateY(24px)}
+.mapa-sala h3{margin:0 0 2px;font-size:16px}
+.mapa-sala p{margin:0;color:var(--texto-2);font-size:14px}
+.mapa-numero{flex:none;width:44px;height:44px;display:grid;place-items:center;font:20px var(--fonte-titulo);color:#fff;
+  background:hsl(var(--h) 60% 38%);border-radius:10px;box-shadow:0 4px 0 hsl(var(--h) 60% 22%)}
+.mapa-icone{margin-left:auto;flex:none;color:var(--texto-2)}
+.mapa-sala:first-child .mapa-icone{color:var(--verde-claro)}
+
+.faixa-final{margin:88px 0 8px;display:flex;align-items:center;gap:24px;padding:24px 28px;border-radius:20px;
+  background:var(--verde);color:#fff;box-shadow:0 6px 0 var(--verde-escuro)}
+.faixa-final p{margin:0;opacity:.92}
+.faixa-final > div:nth-child(2){flex:1}
+.faixa-final-ovo svg{width:64px;height:auto}
+.faixa-final .botao{--cor:#fff;--lado:#c9cfd4;--tinta:var(--verde-escuro)}
+
+@media (max-width:960px){
+  .grade-desafios{grid-template-columns:repeat(2,1fr)}
+}
 @media (max-width:860px){
-  .inicio{grid-template-columns:1fr}
-  .cena-ovo{order:-1}
-  .modulos{grid-template-columns:1fr}
+  .heroi{grid-template-columns:1fr;gap:24px}
+  .cena{height:280px}
+  .passos-como{grid-template-columns:1fr;gap:28px}
+  .mapa-salas{grid-template-columns:1fr}
+  .mapa-sala:nth-child(even){transform:none}
+  .faixa-final{flex-direction:column;text-align:center}
   .acoes-topo .status{display:none}
 }
-@media (min-width:861px) and (max-width:1000px){.modulos{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){
+  .grade-desafios{grid-template-columns:1fr}
+  .evolucao-ovo svg{width:42px}
+  .evolucao{padding:14px 8px}
+  .chamada-acoes .botao{flex:1 1 100%;text-align:center}
+}
 
 /* Ovo: animações */
 .ovo{overflow:visible}
