@@ -60,8 +60,11 @@ code,pre{font-family:var(--fonte-codigo)}
   .menu-lateral{position:fixed;bottom:0;top:auto;left:0;right:0;height:auto;flex-direction:row;justify-content:space-around;
     border-right:0;border-top:2px solid var(--borda);background:var(--fundo);padding:6px 8px;z-index:20}
   .menu-lateral .marca,.quem{display:none}
-  .menu-lateral .rodape-menu{margin:0;flex-direction:row}
-  .menu-item{flex-direction:column;gap:2px;font-size:11px;padding:6px 10px;width:auto}
+  .menu-lateral .rodape-menu{display:contents}
+  .menu-lateral{padding:6px 4px;gap:2px}
+  .menu-item{flex:1 1 0;min-width:0;flex-direction:column;gap:2px;font-size:11px;letter-spacing:0;text-transform:none;padding:6px 2px;width:auto}
+  .menu-item span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .menu-item svg{width:24px;height:24px}
   .app-corpo{padding:16px 16px 96px}
   .topo-celular{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 0}
 }

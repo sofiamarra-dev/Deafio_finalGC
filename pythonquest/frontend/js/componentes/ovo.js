@@ -35,19 +35,54 @@ function pixel(alvo, x, y, cor) {
   alvo.appendChild(r);
 }
 
-function desenharCasca(grupo, estagio, mancha) {
+/* Itens da lojinha. Cascas: um desenho por cima da casca (só nos pixels de dentro, nunca na borda). */
+const CASCA_DOURADA = { casca: '#f6d365', sombra: '#c99a2e', brilho: '#fff6cc' };
+const DESENHO_CASCA = {
+  'casca-listras': (x, y, mancha) => (y % 4 === 1 ? mancha : null),
+  'casca-binaria': (x, y) => ((x + y * 3) % 7 === 0 && y % 2 === 0 ? '#1f6f2b' : null),
+  'casca-estrelas': (x, y) => {
+    const centros = [[5, 5], [10, 8], [6, 12], [11, 15], [4, 17]];
+    return centros.some(([cx, cy]) => Math.abs(cx - x) + Math.abs(cy - y) <= 1 && (cx === x || cy === y)) ? '#f2b443' : null;
+  }
+};
+
+/* Ninhos: linhas de pixels embaixo do ovo (y 17 a 21), desenhadas por cima da parte de baixo da casca. */
+const NINHOS = {
+  'ninho-palha': { cores: { a: '#d6a756', b: '#9c6b2a', c: '#6b4419' },
+    linhas: ['..ab.ba..ab.ba..', '.abababababababa.', 'babababababababab', '.cbcbcbcbcbcbcbc.', '..ccccccccccccc..'] },
+  'ninho-circuito': { cores: { a: '#14532d', b: '#3ddc4f', c: '#0b2e19', d: '#f2b443' },
+    linhas: ['..ab.aa..aa.ba..', '.aaaabaaaabaaaaa.', 'aabadaabaadabaaba', '.cccccccccccccc..', '..ccccccccccccc..'] },
+  'ninho-cristal': { cores: { a: '#7dd3fc', b: '#0ea5e9', c: '#0c4a6e', d: '#e0f2fe' },
+    linhas: ['.da..ad..da..ad..', '.ab.dab.dab.dab..', 'abbbabbbabbbabbba', '.cccccccccccccc..', '..ccccccccccccc..'] },
+  'ninho-vulcao': { cores: { a: '#44403c', b: '#f97316', c: '#1c1917', d: '#fde047' },
+    linhas: ['..ab.ba..ab.ba..', '.aaabaaadaaabaaa.', 'abaadabbaadaabaab', '.cbcccbcccbcccbc.', '..ccccccccccccc..'] }
+};
+
+function desenharNinho(svg, id) {
+  const ninho = NINHOS[id];
+  if (!ninho) return false;
+  ninho.linhas.forEach((linha, i) => [...linha].forEach((letra, x) => {
+    if (ninho.cores[letra]) pixel(svg, x - 0.5, 17 + i, ninho.cores[letra]);
+  }));
+  return true;
+}
+
+function desenharCasca(grupo, estagio, mancha, casca = null) {
   const topoAberto = estagio >= 6 ? 9 : 0; // na eclosão, a parte de cima da casca some
+  const cores = casca === 'casca-dourada' ? { ...COR, ...CASCA_DOURADA } : COR;
+  const desenho = DESENHO_CASCA[casca];
   LARGURAS.forEach((largura, y) => {
     if (y < topoAberto) return;
     const inicio = (16 - largura) / 2;
     for (let x = inicio; x < inicio + largura; x++) {
       const borda = x === inicio || x === inicio + largura - 1 || y === topoAberto || y === LARGURAS.length - 1;
       const sombra = x >= inicio + largura - 3 || y >= LARGURAS.length - 3;
-      pixel(grupo, x, y, borda ? COR.contorno : (sombra ? COR.sombra : COR.casca));
+      const extra = !borda && desenho ? desenho(x, y, mancha) : null;
+      pixel(grupo, x, y, borda ? cores.contorno : (extra || (sombra ? cores.sombra : cores.casca)));
     }
   });
-  if (estagio < 6) [[5, 3], [5, 4], [4, 5]].forEach(([x, y]) => pixel(grupo, x, y, COR.brilho));
-  MANCHAS.filter(([, y]) => y >= topoAberto).forEach(([x, y]) => pixel(grupo, x, y, mancha));
+  if (estagio < 6) [[5, 3], [5, 4], [4, 5]].forEach(([x, y]) => pixel(grupo, x, y, cores.brilho));
+  if (casca !== 'casca-dourada') MANCHAS.filter(([, y]) => y >= topoAberto).forEach(([x, y]) => pixel(grupo, x, y, mancha));
   for (let e = 1; e <= Math.min(estagio, 5); e++) {
     RACHADURAS[e].forEach(([x, y]) => pixel(grupo, x, y, e >= 3 && estagio >= 3 ? COR.luz : COR.contorno));
   }
@@ -57,7 +92,8 @@ function desenharCasca(grupo, estagio, mancha) {
 export { CRIATURAS, criarCriatura } from './criaturas.js';
 import { criarCriatura } from './criaturas.js';
 
-export function criarOvo(estagio = 0, { animar = true, cor = 'verde', especie = null } = {}) {
+/* ninho e casca: ids dos itens equipados na lojinha (ou null). */
+export function criarOvo(estagio = 0, { animar = true, cor = 'verde', especie = null, ninho = null, casca = null } = {}) {
   estagio = Math.max(0, Math.min(estagio, ESTAGIOS.length - 1));
   if (estagio >= 6) {
     // eclodiu: a criatura de corpo inteiro, em pé entre os pedaços da casca
@@ -67,16 +103,17 @@ export function criarOvo(estagio = 0, { animar = true, cor = 'verde', especie = 
     return criatura;
   }
   const svg = document.createElementNS(SVG, 'svg');
-  svg.setAttribute('viewBox', '-1 -1 18 23');
+  svg.setAttribute('viewBox', '-1.5 -1 19 23');
   svg.setAttribute('role', 'img');
   svg.setAttribute('aria-label', `Ovo no estágio ${estagio}: ${ESTAGIOS[estagio].nome}`);
   svg.setAttribute('shape-rendering', 'crispEdges');
   svg.classList.add('ovo');
 
-  for (let x = 3; x < 13; x++) pixel(svg, x, 21, '#0b0d0f'); // sombra chapada no chão
+  if (!NINHOS[ninho]) for (let x = 3; x < 13; x++) pixel(svg, x, 21, '#0b0d0f'); // sombra chapada no chão
   const grupo = document.createElementNS(SVG, 'g');
   if (animar) grupo.setAttribute('class', estagio >= 2 && estagio < 6 ? 'ovo-tremendo' : 'ovo-balanco');
-  desenharCasca(grupo, estagio, CORES_OVO[cor] || COR.mancha);
+  desenharCasca(grupo, estagio, CORES_OVO[cor] || COR.mancha, casca);
   svg.appendChild(grupo);
+  desenharNinho(svg, ninho); // o ninho fica na frente do pé do ovo
   return svg;
 }

@@ -46,7 +46,7 @@ function listaCasos(casos, exercicio) {
 
 function mostrarEvolucaoDoOvo(ovo, criatura = null) {
   const estagio = Math.min(ovo.para, ESTAGIOS.length - 1);
-  const palco = el('div', { className: 'ovo-palco ovo-evoluindo' }, criarOvo(ovo.de, { animar: false, cor: sessao.usuario?.avatar }));
+  const palco = el('div', { className: 'ovo-palco ovo-evoluindo' }, criarOvo(ovo.de, { animar: false, cor: sessao.usuario?.avatar, ninho: sessao.usuario?.ninho, casca: sessao.usuario?.casca }));
   const modal = abrirModal({
     titulo: 'Módulo concluído!',
     conteudo: el('div', { className: 'evolucao' }, palco,
@@ -54,7 +54,7 @@ function mostrarEvolucaoDoOvo(ovo, criatura = null) {
       el('p', {}, criatura ? criatura.frase : ESTAGIOS[estagio].frase)),
     acoes: [el('button', { className: 'botao', type: 'button', onclick: () => modal.fechar() }, 'Continuar')]
   });
-  setTimeout(() => { palco.replaceChildren(criarOvo(ovo.para, { cor: sessao.usuario?.avatar, especie: criatura?.especie })); palco.classList.add('ovo-mudou'); soltarConfete(70); }, 900);
+  setTimeout(() => { palco.replaceChildren(criarOvo(ovo.para, { cor: sessao.usuario?.avatar, ninho: sessao.usuario?.ninho, casca: sessao.usuario?.casca, especie: criatura?.especie })); palco.classList.add('ovo-mudou'); soltarConfete(70); }, 900);
 }
 
 export async function paginaExercicio(id) {

@@ -7,7 +7,7 @@ XP, ranking, sequência de estudos, conquistas, um ovo que evolui com o progress
 A proposta completa de arquitetura (páginas, banco, correção segura, regras de progressão, métricas e etapas)
 foi aprovada antes do início do desenvolvimento.
 
-## Estado atual: etapas 1 a 4 de 8
+## Estado atual
 
 Já funciona:
 
@@ -24,10 +24,17 @@ Já funciona:
 - **Registro de tudo**: cada envio, resultado por teste, dica aberta, tempo até acertar e conclusão de módulo
   ficam no banco. Isso é a base das métricas das próximas etapas.
 
+- **Jogo**: XP (só na primeira vez que acerta, com bônus de primeira e desconto por erro e dica), níveis,
+  sequência de dias, conquistas, o ovo que anda pela trilha de sala em sala e a criatura que nasce do jeito de estudar.
+- **Ranking e perfil**: ranking geral, da semana e da turma; perfil público com apelido e cor do ovo; ovo da turma.
+- **Minha evolução** para o aluno e **painel da turma** para o professor (erros mais comuns, assuntos difíceis).
+- **Lojinha**: o aluno ganha bytes (metade do XP + 15 por conquista) e compra ninhos, cascas e escudos de
+  sequência. A loja não vende XP, dica nem resposta, então o ranking continua medindo estudo.
+
 Os módulos 3 a 6 aparecem na trilha como "Conteúdo em produção" até ganharem exercícios.
 
-Próximas etapas: XP, níveis, sequência e conquistas; ranking e perfil; Minha evolução e painel do professor;
-resto do conteúdo e acabamento.
+Depois de dar `git pull`, rode `python -m alembic upgrade head` dentro de `backend/`: algumas atualizações
+criam colunas ou tabelas novas no banco. Se esquecer, a página de saúde (`/api/saude`) avisa.
 
 ## Como rodar no seu computador
 

@@ -46,6 +46,8 @@ class UsuarioPublico(BaseModel):
     email: str
     papel: str
     avatar: str
+    ninho: str | None = None
+    casca: str | None = None
     turmas: list[str] = []
 
 

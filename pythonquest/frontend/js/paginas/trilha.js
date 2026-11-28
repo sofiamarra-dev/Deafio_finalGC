@@ -158,7 +158,11 @@ export function cartaoJogador(jogador) {
       icone('fogo', { tamanho: 26 }),
       el('div', {},
         el('p', { className: 'jogador-titulo' }, sequencia.dias === 1 ? '1 dia seguido' : `${sequencia.dias} dias seguidos`),
-        el('p', { className: 'jogador-legenda' }, textoSequencia))));
+        el('p', { className: 'jogador-legenda' }, textoSequencia),
+        sequencia.escudos ? el('p', { className: 'jogador-legenda escudos-guardados' }, icone('escudo', { tamanho: 14 }),
+          sequencia.escudos === 1 ? ' 1 escudo protege sua sequência' : ` ${sequencia.escudos} escudos protegem sua sequência`) : null)),
+    jogador.bytes === undefined ? null : el('a', { className: 'bytes-jogador', href: '#loja' },
+      icone('moeda', { tamanho: 22 }), el('span', {}, `${jogador.bytes} bytes`), el('small', {}, 'Ir para a loja')));
 }
 
 /* O ovo coletivo da turma: aquece com as salas concluídas por todos. */
@@ -192,7 +196,7 @@ function colunaDireita(dados) {
     cartaoJogador(dados.jogador),
     el('section', { className: 'cartao cartao-ovo' },
       el('h2', {}, 'Seu ovo'),
-      el('div', { className: 'ovo-palco' }, criarOvo(ovo.estagio, { cor: sessao.usuario?.avatar, especie: dados.criatura.especie })),
+      el('div', { className: 'ovo-palco' }, criarOvo(ovo.estagio, { cor: sessao.usuario?.avatar, ninho: sessao.usuario?.ninho, casca: sessao.usuario?.casca, especie: dados.criatura.especie })),
       el('p', { className: 'ovo-nome' }, ESTAGIOS[Math.min(ovo.estagio, ESTAGIOS.length - 1)].nome),
       el('p', { className: 'ovo-frase' }, ESTAGIOS[Math.min(ovo.estagio, ESTAGIOS.length - 1)].frase),
       el('a', { className: 'ovo-criatura', href: '#perfil' }, fraseDaCriatura(dados.criatura)),

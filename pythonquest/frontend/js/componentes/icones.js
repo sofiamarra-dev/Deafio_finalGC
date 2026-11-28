@@ -29,6 +29,14 @@ const ICONES = {
     'dddddddddd', 'd.dddddd.d', 'd.dddddd.d', '.ddddddd d', '..dddddd..',
     '...dddd...', '....dd....', '....dd....', '..DDDDDD..', '..DDDDDD..'
   ],
+  escudo: [
+    'vvvvvvvvvv', 'vVVVVVVVVv', 'vVccVVVVVv', 'vVcVVVVVVv', 'vVVVVVVVVv',
+    'vVVVVVVVVv', '.vVVVVVVv.', '.vVVVVVVv.', '..vVVVVv..', '...vvvv...'
+  ],
+  moeda: [
+    '...dddd...', '..dddddd..', '.ddDDDDdd.', '.dDddddDd.', '.dDdccdDd.',
+    '.dDdccdDd.', '.dDddddDd.', '.ddDDDDdd.', '..dddddd..', '...dddd...'
+  ],
   fogo: [
     '....r.....', '....rr....', '...rrr..r.', '..rrrrr.rr', '..rrdrrrrr',
     '.rrddrrrr.', '.rrdddrrr.', '.rrdddddr.', '..rdddddr.', '...rrrrr..'

@@ -51,7 +51,7 @@ export function colocarAvatar(trilha, dados) {
   avatar.setAttribute('aria-hidden', 'true');
   const corpo = document.createElement('div');
   corpo.className = 'avatar-corpo';
-  corpo.append(criarOvo(dados.ovo.estagio, { animar: false, cor: sessao.usuario?.avatar }));
+  corpo.append(criarOvo(dados.ovo.estagio, { animar: false, cor: sessao.usuario?.avatar, ninho: sessao.usuario?.ninho, casca: sessao.usuario?.casca }));
   avatar.append(corpo);
   trilha.append(avatar);
 

@@ -36,6 +36,8 @@ export function layoutApp(conteudo, { ativo = 'trilha', lateral = null } = {}) {
         icone('trofeu'), el('span', {}, 'Ranking')),
       el('a', { className: 'menu-item', href: '#evolucao', 'aria-current': ativo === 'evolucao' ? 'page' : null },
         icone('grafico'), el('span', {}, 'Evolução')),
+      el('a', { className: 'menu-item', href: '#loja', 'aria-current': ativo === 'loja' ? 'page' : null },
+        icone('moeda'), el('span', {}, 'Loja')),
       el('a', { className: 'menu-item', href: '#perfil', 'aria-current': ativo === 'perfil' ? 'page' : null },
         icone('pessoa'), el('span', {}, 'Perfil'))] : null,
     el('div', { className: 'rodape-menu' },

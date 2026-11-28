@@ -92,7 +92,7 @@ function secaoCriatura(c, proprio) {
 function montar(perfil, pagina) {
   const estagio = Math.min(perfil.ovo, ESTAGIOS.length - 1);
   const topo = el('section', { className: 'perfil-topo' },
-    el('div', { className: 'perfil-ovo' }, criarOvo(perfil.ovo, { cor: perfil.cor, especie: perfil.criatura.especie })),
+    el('div', { className: 'perfil-ovo' }, criarOvo(perfil.ovo, { cor: perfil.cor, ninho: perfil.ninho, casca: perfil.casca, especie: perfil.criatura.especie })),
     el('div', {},
       el('h1', { className: 'titulo-pagina' }, perfil.nome_exibido),
       el('p', { className: 'perfil-sub' }, `Nível ${perfil.jogador.nivel} · ${perfil.jogador.xp} XP · ${ESTAGIOS[estagio].nome}`),

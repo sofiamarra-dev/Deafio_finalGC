@@ -54,6 +54,7 @@ def ranking(sessao: Session, aluno_id: int, escopo: str) -> dict:
     def linha(posicao, l):
         total = l.xp if escopo != "semana" else xp_total(sessao, l.Usuario.id)
         return {"posicao": posicao, "id": l.Usuario.id, "nome": nome_exibido(l.Usuario), "cor": l.Usuario.avatar,
+                "ninho": l.Usuario.ninho, "casca": l.Usuario.casca,
                 "xp": int(l.xp), "nivel": nivel_de(int(total)), "ovo": estagios.get(l.Usuario.id, 0),
                 "eu": l.Usuario.id == aluno_id}
 

@@ -19,7 +19,7 @@ def publico(sessao: Session, usuario: Usuario) -> UsuarioPublico:
     turmas = sessao.scalars(select(Turma.nome).join(Matricula, Matricula.turma_id == Turma.id)
                             .where(Matricula.aluno_id == usuario.id)).all()
     return UsuarioPublico(id=usuario.id, nome=usuario.nome, email=usuario.email, papel=usuario.papel,
-                          avatar=usuario.avatar, turmas=list(turmas))
+                          avatar=usuario.avatar, ninho=usuario.ninho, casca=usuario.casca, turmas=list(turmas))
 
 
 def _conferir_codigo_professor(dados: Cadastro, request: Request) -> None:

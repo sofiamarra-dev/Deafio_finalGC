@@ -9,6 +9,7 @@ import { paginaProfessor } from './paginas/professor.js';
 import { paginaRanking } from './paginas/ranking.js';
 import { paginaPerfil } from './paginas/perfil.js';
 import { paginaEvolucao } from './paginas/evolucao.js';
+import { paginaLoja } from './paginas/loja.js';
 
 registrarRota('inicio', paginaInicio, { padrao: true, acesso: 'visitante' });
 registrarRota('entrar', paginaEntrar, { acesso: 'visitante' });
@@ -18,6 +19,7 @@ registrarRota('exercicio', paginaExercicio, { acesso: 'aluno' });
 registrarRota('ranking', paginaRanking, { acesso: 'aluno' });
 registrarRota('perfil', paginaPerfil, { acesso: 'aluno' });
 registrarRota('evolucao', paginaEvolucao, { acesso: 'aluno' });
+registrarRota('loja', paginaLoja, { acesso: 'aluno' });
 registrarRota('professor', paginaProfessor, { acesso: 'professor' });
 
 await sessao.carregar();
