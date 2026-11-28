@@ -6,6 +6,7 @@ import { layoutApp } from '../componentes/layout.js';
 import { icone } from '../componentes/icones.js';
 import { criarOvo, ESTAGIOS } from '../componentes/ovo.js';
 import { abrirModal } from '../componentes/modal.js';
+import { colocarAvatar } from '../componentes/avatar-trilha.js';
 
 const DESLOCAMENTO = [0, 1, 1.6, 1, 0, -1, -1.6, -1]; // forma do zigue-zague
 
@@ -61,9 +62,34 @@ function criarNo(exercicio, indice, { atual, posicao, total }) {
   });
 
   const desloc = DESLOCAMENTO[indice % DESLOCAMENTO.length];
-  return el('li', { className: 'passo', style: `--desloc:${desloc}` },
-    atual ? el('span', { className: 'comecar-aqui', 'aria-hidden': 'true' }, 'Começar') : null,
-    no, balao);
+  no.dataset.parada = exercicio.id; // ponto onde o ovo pode parar
+  return el('li', { className: `passo${atual ? ' passo-com-ovo' : ''}`, style: `--desloc:${desloc}` }, no, balao);
+}
+
+/* A porta no fim de cada sala. Ela abre quando o módulo é concluído (estado vindo do servidor). */
+function criarPorta(modulo, seguinte) {
+  const aberta = modulo.estado === 'concluido';
+  const balao = el('div', { className: 'balao-no', hidden: true, role: 'dialog', 'aria-label': 'Porta' });
+  balao.append(
+    el('p', { className: 'balao-titulo' }, aberta ? `Porta para: ${seguinte.titulo}` : 'Porta trancada'),
+    el('p', { className: 'balao-texto' }, aberta
+      ? (seguinte.estado === 'em_producao' ? 'A próxima sala ainda está em produção.' : 'Seu ovo já pode seguir para a próxima sala.')
+      : `Conclua os exercícios Fácil, Intermediário e o desafio final de ${modulo.titulo} para abrir.`));
+  const porta = el('button', {
+    type: 'button', className: `porta ${aberta ? 'porta-aberta' : 'porta-trancada'}`,
+    'aria-label': aberta ? `Porta aberta para ${seguinte.titulo}` : 'Porta trancada', 'aria-expanded': 'false'
+  }, el('span', { className: 'porta-folha', 'aria-hidden': 'true' }), aberta ? null : icone('cadeado', { tamanho: 22 }));
+  porta.dataset.parada = 'porta-' + modulo.id;
+  porta.addEventListener('click', evento => {
+    evento.stopPropagation();
+    const abrir = balao.hidden;
+    fecharBaloes(balao);
+    balao.hidden = !abrir;
+    porta.parentElement.classList.toggle('passo-aberto', abrir);
+    porta.setAttribute('aria-expanded', String(abrir));
+    if (!aberta) { porta.classList.remove('tremer'); void porta.offsetWidth; porta.classList.add('tremer'); }
+  });
+  return el('div', { className: 'passagem' }, porta, balao);
 }
 
 function abrirGuia(modulo) {
@@ -88,14 +114,17 @@ function secaoModulo(modulo, proximo) {
 
   const faixa = el('header', { className: `faixa-modulo ${classes[modulo.estado]}` },
     el('div', {},
-      el('p', { className: 'faixa-rotulo' }, `Módulo ${modulo.ordem} · ${subtitulo}`),
+      el('p', { className: 'faixa-rotulo' }, `Sala ${modulo.ordem} · ${subtitulo}`),
       el('h2', {}, modulo.titulo),
       el('p', { className: 'faixa-descricao' }, modulo.descricao)),
     modulo.tem_guia && modulo.estado !== 'bloqueado'
       ? el('button', { className: 'botao-guia', type: 'button', onclick: () => abrirGuia(modulo) }, icone('livro', { tamanho: 22 }), 'Guia')
       : null);
 
-  const secao = el('section', { className: 'modulo-trilha', 'aria-label': `Módulo ${modulo.ordem}: ${modulo.titulo}` }, faixa);
+  const secao = el('section', {
+    className: `modulo-trilha sala sala-${modulo.estado}`, style: `--sala:${(modulo.ordem - 1) % 6}`,
+    'aria-label': `Sala ${modulo.ordem}: ${modulo.titulo}`
+  }, faixa);
   if (!modulo.exercicios.length) return secao;
 
   let indice = 0;
@@ -141,10 +170,15 @@ export async function paginaTrilha() {
     if (erro.status === 401) { irPara('entrar'); return el('div'); }
     return layoutApp(el('p', { className: 'aviso erro' }, erro.message));
   }
-  const centro = el('div', { className: 'trilha' }, dados.modulos.map(m => secaoModulo(m, dados.proximo_exercicio)));
+  const salas = [];
+  dados.modulos.forEach((m, i) => {
+    salas.push(secaoModulo(m, dados.proximo_exercicio));
+    if (i < dados.modulos.length - 1) salas.push(criarPorta(m, dados.modulos[i + 1]));
+  });
+  const centro = el('div', { className: 'trilha' }, salas);
   centro.addEventListener('click', () => fecharBaloes());
   document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharBaloes(); }, { once: true });
   const pagina = layoutApp(centro, { ativo: 'trilha', lateral: colunaDireita(dados) });
-  requestAnimationFrame(() => pagina.querySelector('.no-atual')?.scrollIntoView({ block: 'center', behavior: 'smooth' }));
+  requestAnimationFrame(() => colocarAvatar(centro, dados));
   return pagina;
 }
