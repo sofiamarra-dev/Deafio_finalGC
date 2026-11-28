@@ -1,0 +1,35 @@
+/* Estilos comuns a todas as páginas: casca, topo, rodapé, botões e acessibilidade. */
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--fundo)}
+body{
+  color:var(--texto);font-family:var(--fonte-texto);font-size:16px;line-height:1.55;
+  min-height:100vh;display:flex;flex-direction:column;
+}
+img{max-width:100%;display:block}
+a{color:var(--verde-claro)}
+:focus-visible{outline:3px solid var(--verde-claro);outline-offset:2px}
+
+.pular{position:absolute;left:-9999px;top:8px;background:var(--verde);color:#fff;padding:8px 12px;border-radius:var(--raio);z-index:10}
+.pular:focus{left:16px}
+
+.topo,.rodape,main{width:100%;max-width:var(--largura-max);margin:0 auto;padding-inline:16px}
+.topo{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:16px}
+.marca{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--texto)}
+.marca-nome{font-family:var(--fonte-titulo);font-size:24px;letter-spacing:.5px}
+.marca-nome b{color:var(--verde);font-weight:700}
+
+.status{font-size:13px;color:var(--texto-2);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.status::before{content:"";width:10px;height:10px;background:var(--texto-2)}
+.status[data-estado="ok"]::before{background:var(--verde)}
+.status[data-estado="erro"]::before{background:var(--erro)}
+
+main{flex:1;padding-block:24px 48px}
+main:focus{outline:none}
+
+.rodape{display:flex;align-items:center;gap:8px;padding-block:24px;color:var(--texto-2);font-size:13px;border-top:2px solid var(--borda)}
+
+/* Cartão 2D: borda grossa e sombra chapada, como um bloco de jogo. */
+.cartao{background:var(--superficie);border:2px solid var(--borda);border-radius:var(--raio);box-shadow:var(--sombra-2d);padding:20px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

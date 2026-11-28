@@ -1,0 +1,24 @@
+/* Cores, fontes e medidas. Tudo que é visual e se repete mora aqui.
+   As cores seguem a logo do Geração Caldeira: verde #00B312 e cinza-claro #F3F3F3 sobre grafite. */
+:root{
+  --fundo:#15181b;          /* grafite da página */
+  --superficie:#1e2226;     /* cartões e painéis */
+  --superficie-2:#272c31;   /* cartão em destaque, campos */
+  --borda:#363c43;
+  --texto:#f3f3f3;          /* cinza-claro da logo */
+  --texto-2:#a9b0b7;
+  --verde:#00b312;          /* verde da logo: destaque, XP, acertos */
+  --verde-claro:#3ddc4f;
+  --verde-fundo:rgba(0,179,18,.14);
+  --erro:#ff7a59;
+  --aviso:#f2b443;
+  --sombra-2d:0 4px 0 #0b0d0f; /* sombra "chapada", sem desfoque: o visual é 2D */
+
+  --fonte-titulo:"Pixelify Sans","IBM Plex Mono",ui-monospace,monospace;
+  --fonte-texto:"IBM Plex Sans",system-ui,sans-serif;
+  --fonte-codigo:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+
+  --raio:6px;
+  --largura-max:1120px;
+  color-scheme:dark;
+}
