@@ -65,12 +65,15 @@ export function paginaInicio() {
   const TRACOS = { certeira: 'Acerta de primeira', persistente: 'Não desiste depois de errar', exploradora: 'Faz os desafios opcionais',
     independente: 'Resolve sem pedir dica', constante: 'Estuda um pouco todo dia' };
   const criaturas = el('section', { className: 'secao-inicio', 'aria-labelledby': 'tituloCriaturas' },
-    el('h2', { id: 'tituloCriaturas' }, 'Que criatura vai nascer do seu ovo?'),
+    el('h2', { id: 'tituloCriaturas' }, 'Qual criatura vai nascer do seu ovo?'),
     el('p', { className: 'secao-sub' }, 'Depende do seu jeito de estudar. E a turma ainda choca um ovo coletivo, juntando as salas de todo mundo.'),
     el('ul', { className: 'grade-criaturas' }, Object.entries(CRIATURAS).map(([id, c]) =>
       el('li', { className: 'cartao criatura-vitrine' },
         el('div', { className: 'vitrine-desenho' }, criarCriatura(id)),
-        el('h3', {}, c.nome), el('p', { className: 'vitrine-traco' }, TRACOS[id]), el('p', {}, c.tema)))));
+        el('h3', {}, c.nome),
+        el('div', { className: 'ficha' }, el('span', { className: 'tipo', style: `--tipo:${c.corTipo}` }, c.tipo),
+          el('span', { className: 'habilidade' }, c.habilidade)),
+        el('p', { className: 'vitrine-traco' }, TRACOS[id]), el('p', {}, c.tema)))));
 
   const desafios = el('section', { className: 'secao-inicio', 'aria-labelledby': 'tituloDesafios' },
     el('h2', { id: 'tituloDesafios' }, 'Tipos de desafio'),

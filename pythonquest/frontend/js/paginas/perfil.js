@@ -3,7 +3,7 @@ import { el, irPara } from '../util.js';
 import { api } from '../api.js';
 import { sessao } from '../estado.js';
 import { layoutApp } from '../componentes/layout.js';
-import { criarOvo, criarCriatura, CORES_OVO, ESTAGIOS } from '../componentes/ovo.js';
+import { criarOvo, criarCriatura, CRIATURAS, CORES_OVO, ESTAGIOS } from '../componentes/ovo.js';
 import { icone } from '../componentes/icones.js';
 import { cartaoJogador } from './trilha.js';
 
@@ -77,6 +77,8 @@ function secaoCriatura(c, proprio) {
       el('div', { className: `criatura-desenho${nasceu ? '' : ' em-formacao'}` }, criarCriatura(c.especie, { silhueta: !nasceu })),
       el('div', { className: 'criatura-info' },
         el('p', { className: 'criatura-nome' }, nasceu ? c.nome : `Com cara de ${c.nome}`),
+        el('div', { className: 'ficha' }, el('span', { className: 'tipo', style: `--tipo:${CRIATURAS[c.especie]?.corTipo || '#888'}` }, c.tipo),
+          el('span', { className: 'habilidade' }, `Habilidade: ${c.habilidade}`)),
         el('p', { className: 'texto-2' }, c.frase),
         nasceu ? null : el('p', { className: 'campo-ajuda' }, 'Ainda pode mudar: a espécie só fica definida quando o ovo eclode, na última sala.'),
         el('ul', { className: 'tracos' }, c.tracos.map(t =>

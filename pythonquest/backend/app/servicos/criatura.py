@@ -16,11 +16,16 @@ from app.modelos import Envio, Exercicio, Matricula, ProgressoExercicio, Progres
 from app.servicos.jogador import dia_local
 
 ESPECIES = {
-    "certeira": {"nome": "Coruja Binária", "traco": "Certeira", "frase": "Pensa antes de enviar e costuma acertar de primeira."},
-    "persistente": {"nome": "Tartaruga Loop", "traco": "Persistente", "frase": "Erra, tenta de novo e não desiste até passar nos testes."},
-    "exploradora": {"nome": "Dragãozinho Pyxel", "traco": "Exploradora", "frase": "Vai atrás dos desafios avançados mesmo quando não são obrigatórios."},
-    "independente": {"nome": "Gato Sintaxe", "traco": "Independente", "frase": "Gosta de descobrir sozinho, quase sem pedir dica."},
-    "constante": {"nome": "Abelha Commit", "traco": "Constante", "frase": "Estuda um pouco a cada dia, sem pular."},
+    "certeira": {"nome": "Strixel", "traco": "Certeira", "tipo": "Precisão", "habilidade": "Mira Binária",
+                 "frase": "Calcula tudo antes de agir e quase nunca erra o alvo."},
+    "persistente": {"nome": "Loopadon", "traco": "Persistente", "tipo": "Rocha", "habilidade": "Tenta de Novo",
+                    "frase": "Cada erro deixa a armadura mais forte. Não desiste até passar nos testes."},
+    "exploradora": {"nome": "Pyrrax", "traco": "Exploradora", "tipo": "Fogo", "habilidade": "Além do Mapa",
+                    "frase": "Não fica só no caminho obrigatório: vai atrás dos desafios extras."},
+    "independente": {"nome": "Synthra", "traco": "Independente", "tipo": "Sombra", "habilidade": "Sem Dicas",
+                     "frase": "Resolve tudo sozinho e em silêncio, quase sem pedir dica."},
+    "constante": {"nome": "Commitix", "traco": "Constante", "tipo": "Elétrico", "habilidade": "Commit Diário",
+                  "frase": "Um pouco por dia, sem pular nenhum."},
 }
 ORDEM = list(ESPECIES)  # desempate: a ordem acima
 MINIMO_EXERCICIOS = 3
