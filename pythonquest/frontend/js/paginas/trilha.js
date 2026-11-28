@@ -138,6 +138,28 @@ function secaoModulo(modulo, proximo) {
   return secao;
 }
 
+/* Nível, XP e sequência de dias: números calculados no servidor a partir dos envios. */
+export function cartaoJogador(jogador) {
+  const { xp, nivel, xp_inicio_nivel: inicio, xp_proximo_nivel: proximo, sequencia } = jogador;
+  const pct = Math.round(100 * (xp - inicio) / (proximo - inicio));
+  const textoSequencia = sequencia.dias === 0 ? 'Acerte um exercício hoje para começar uma sequência.'
+    : sequencia.estudou_hoje ? 'Você já estudou hoje. Volte amanhã para continuar!'
+    : 'Acerte um exercício hoje para não perder a sequência.';
+  return el('section', { className: 'cartao cartao-jogador' },
+    el('div', { className: 'jogador-linha' },
+      el('div', { className: 'selo-nivel', 'aria-label': `Nível ${nivel}` }, el('small', {}, 'Nível'), String(nivel)),
+      el('div', { className: 'jogador-xp' },
+        el('p', { className: 'jogador-titulo' }, icone('raio', { tamanho: 18 }), `${xp} XP`),
+        el('div', { className: 'barra barra-xp', role: 'progressbar', 'aria-label': 'XP até o próximo nível',
+          'aria-valuemin': inicio, 'aria-valuemax': proximo, 'aria-valuenow': xp }, el('i', { style: `width:${pct}%` })),
+        el('p', { className: 'jogador-legenda' }, `Faltam ${proximo - xp} XP para o nível ${nivel + 1}`))),
+    el('div', { className: `sequencia${sequencia.estudou_hoje ? ' sequencia-ativa' : ''}` },
+      icone('fogo', { tamanho: 26 }),
+      el('div', {},
+        el('p', { className: 'jogador-titulo' }, sequencia.dias === 1 ? '1 dia seguido' : `${sequencia.dias} dias seguidos`),
+        el('p', { className: 'jogador-legenda' }, textoSequencia))));
+}
+
 function colunaDireita(dados) {
   const { ovo, resumo } = dados;
   const pct = resumo.exercicios_total ? Math.round(100 * resumo.exercicios_concluidos / resumo.exercicios_total) : 0;
@@ -145,6 +167,7 @@ function colunaDireita(dados) {
     ? el('a', { className: 'botao largo', href: '#exercicio/' + encodeURIComponent(dados.proximo_exercicio) }, 'Continuar')
     : null;
   return [
+    cartaoJogador(dados.jogador),
     el('section', { className: 'cartao cartao-ovo' },
       el('h2', {}, 'Seu ovo'),
       el('div', { className: 'ovo-palco' }, criarOvo(ovo.estagio)),

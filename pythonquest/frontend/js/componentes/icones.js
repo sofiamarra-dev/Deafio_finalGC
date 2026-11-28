@@ -29,6 +29,14 @@ const ICONES = {
     'dddddddddd', 'd.dddddd.d', 'd.dddddd.d', '.ddddddd d', '..dddddd..',
     '...dddd...', '....dd....', '....dd....', '..DDDDDD..', '..DDDDDD..'
   ],
+  fogo: [
+    '....r.....', '....rr....', '...rrr..r.', '..rrrrr.rr', '..rrdrrrrr',
+    '.rrddrrrr.', '.rrdddrrr.', '.rrdddddr.', '..rdddddr.', '...rrrrr..'
+  ],
+  raio: [
+    '.....dddd.', '....dddd..', '...dddd...', '..dddd....', '.ddddddd..',
+    '....dddd..', '...dddd...', '..ddd.....', '.dd.......', 'd.........'
+  ],
   livro: [
     'cccc..cccc', 'cggc..cggc', 'cccc..cccc', 'cggcvvcggc', 'ccccvvcccc',
     'cggcvvcggc', 'ccccvvcccc', 'cggcvvcggc', 'cccccccccc', '..........'

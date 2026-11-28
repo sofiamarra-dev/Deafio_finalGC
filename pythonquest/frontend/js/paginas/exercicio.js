@@ -145,15 +145,23 @@ export async function paginaExercicio(id) {
       detalhes.push(el('details', { className: 'painel-casos', open: !acertou },
         el('summary', {}, `${r.passados} de ${r.total} testes passaram`), listaCasos(r.casos, exercicio)));
     }
+    const xp = r.xp?.ganho > 0 ? el('span', { className: 'xp-ganho', title: r.xp.partes.map(p => `${p.motivo}: ${p.xp > 0 ? '+' : ''}${p.xp}`).join('\n') },
+      `+${r.xp.ganho} XP`) : null;
+    if (r.xp?.ganho > 0) {
+      detalhes.unshift(el('ul', { className: 'xp-partes' }, r.xp.partes.map(p =>
+        el('li', { className: p.xp < 0 ? 'xp-menos' : '' }, `${p.xp > 0 ? '+' : ''}${p.xp} ${p.motivo.toLowerCase()}`))));
+    }
+    if (acertou && !r.primeira_conclusao) detalhes.unshift(el('p', { className: 'painel-nota' }, 'Refazer é ótimo para treinar, mas o XP só vem na primeira vez.'));
+    if (r.xp?.subiu_de_nivel) detalhes.unshift(el('p', { className: 'subiu-nivel' }, `Subiu para o nível ${r.jogador.nivel}!`));
     painel.replaceChildren(el('div', { className: 'painel-conteudo' },
       el('div', { className: 'painel-texto' },
-        el('p', { className: 'painel-titulo' }, acertou ? (r.primeira_conclusao ? 'Mandou bem!' : 'Certo de novo!') : 'Quase lá'),
+        el('p', { className: 'painel-titulo' }, acertou ? (r.primeira_conclusao ? 'Mandou bem!' : 'Certo de novo!') : 'Quase lá', xp),
         detalhes),
       el('div', { className: 'painel-acoes' }, continuar)));
     painel.hidden = false;
     continuar.focus({ preventScroll: true });
     if (acertou) {
-      soltarConfete();
+      soltarConfete(r.xp?.subiu_de_nivel ? 90 : undefined);
       if (r.modulo_concluido && r.ovo.para > r.ovo.de) mostrarEvolucaoDoOvo(r.ovo);
     } else {
       areaResposta.classList.remove('tremer'); void areaResposta.offsetWidth; areaResposta.classList.add('tremer');
