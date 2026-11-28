@@ -47,9 +47,9 @@
 .passo-numero{position:absolute;top:-16px;left:18px;width:36px;height:36px;display:grid;place-items:center;font:20px var(--fonte-titulo);
   background:var(--verde);color:#fff;border-radius:10px;box-shadow:0 4px 0 var(--verde-escuro)}
 
-.evolucao{list-style:none;margin:28px 0 0;padding:20px;display:flex;justify-content:space-around;align-items:flex-end;gap:12px;
+.linha-evolucao{list-style:none;margin:28px 0 0;padding:20px;display:flex;justify-content:space-around;align-items:flex-end;gap:12px;
   background:var(--superficie);border:2px solid var(--borda);border-radius:16px;position:relative}
-.evolucao::before{content:"";position:absolute;left:12%;right:12%;top:50%;height:4px;
+.linha-evolucao::before{content:"";position:absolute;left:12%;right:12%;top:50%;height:4px;
   background:repeating-linear-gradient(90deg,var(--borda) 0 10px,transparent 10px 20px)}
 .evolucao-passo{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;color:var(--texto-2);text-align:center}
 .evolucao-ovo{background:var(--superficie);padding:0 8px}
@@ -96,7 +96,7 @@
 @media (max-width:520px){
   .grade-desafios{grid-template-columns:1fr}
   .evolucao-ovo svg{width:42px}
-  .evolucao{padding:14px 8px}
+  .linha-evolucao{padding:14px 8px}
   .chamada-acoes .botao{flex:1 1 100%;text-align:center}
 }
 
@@ -106,3 +106,13 @@
 .ovo-tremendo{animation:tremido 1.6s ease-in-out infinite;transform-origin:50% 90%;transform-box:fill-box}
 @keyframes balanco{0%,80%,100%{transform:rotate(0)}85%{transform:rotate(-3deg)}90%{transform:rotate(3deg)}95%{transform:rotate(-2deg)}}
 @keyframes tremido{0%,60%,100%{transform:rotate(0)}65%{transform:rotate(-5deg)}70%{transform:rotate(5deg)}75%{transform:rotate(-4deg)}80%{transform:rotate(4deg)}85%{transform:rotate(-2deg)}}
+
+.grade-criaturas{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.criatura-vitrine{text-align:center;padding:16px 12px;transition:transform .15s}
+.criatura-vitrine:hover{transform:translateY(-4px) rotate(-1deg)}
+.vitrine-desenho{height:70px;display:grid;place-items:center;margin-bottom:8px}
+.vitrine-desenho svg{width:88px;height:auto}
+.criatura-vitrine h3{margin:0 0 4px;font-size:15px}
+.criatura-vitrine p{margin:0;font-size:13px;color:var(--texto-2)}
+@media (max-width:960px){.grade-criaturas{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:520px){.grade-criaturas{grid-template-columns:repeat(2,1fr)}}

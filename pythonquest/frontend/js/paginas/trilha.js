@@ -5,7 +5,7 @@ import { el, irPara, textoRico, NOME_DIFICULDADE, NOME_TIPO } from '../util.js';
 import { api } from '../api.js';
 import { layoutApp } from '../componentes/layout.js';
 import { icone } from '../componentes/icones.js';
-import { criarOvo, ESTAGIOS } from '../componentes/ovo.js';
+import { criarOvo, ESTAGIOS, CRIATURAS } from '../componentes/ovo.js';
 import { abrirModal } from '../componentes/modal.js';
 import { colocarAvatar } from '../componentes/avatar-trilha.js';
 
@@ -161,6 +161,27 @@ export function cartaoJogador(jogador) {
         el('p', { className: 'jogador-legenda' }, textoSequencia))));
 }
 
+/* O ovo coletivo da turma: aquece com as salas concluídas por todos. */
+export function cartaoOvoTurma(ovo) {
+  const falta = ovo.salas_para_proximo;
+  return el('section', { className: 'cartao cartao-ovo-turma' },
+    el('h2', {}, `Ovo da turma`),
+    el('p', { className: 'turma-nome' }, ovo.turma),
+    el('div', { className: 'ovo-turma-linha' },
+      el('div', { className: 'ovo-turma-desenho' }, criarOvo(ovo.estagio, { cor: 'amarelo', especie: ovo.especie })),
+      el('div', {},
+        el('p', { className: 'jogador-titulo' }, `${ovo.salas} sala(s) somadas`),
+        el('p', { className: 'jogador-legenda' }, ovo.estagio >= 6 ? 'O ovo da turma eclodiu!'
+          : `Faltam ${falta} sala(s) da turma para a próxima rachadura. Ajudar um colega também conta.`),
+        ovo.nome_especie ? el('p', { className: 'jogador-legenda' }, `Lá dentro: algo com cara de ${ovo.nome_especie}.`) : null)));
+}
+
+function fraseDaCriatura(criatura) {
+  if (criatura.situacao === 'nasceu') return `${criatura.nome}: ${criatura.frase}`;
+  if (criatura.situacao === 'formando') return `Lá dentro está se formando algo com cara de ${criatura.nome}. Veja no seu perfil.`;
+  return `Conclua ${criatura.minimo - criatura.feitos} exercício(s) para descobrir que criatura está se formando.`;
+}
+
 function colunaDireita(dados) {
   const { ovo, resumo } = dados;
   const pct = resumo.exercicios_total ? Math.round(100 * resumo.exercicios_concluidos / resumo.exercicios_total) : 0;
@@ -171,9 +192,10 @@ function colunaDireita(dados) {
     cartaoJogador(dados.jogador),
     el('section', { className: 'cartao cartao-ovo' },
       el('h2', {}, 'Seu ovo'),
-      el('div', { className: 'ovo-palco' }, criarOvo(ovo.estagio, { cor: sessao.usuario?.avatar })),
+      el('div', { className: 'ovo-palco' }, criarOvo(ovo.estagio, { cor: sessao.usuario?.avatar, especie: dados.criatura.especie })),
       el('p', { className: 'ovo-nome' }, ESTAGIOS[Math.min(ovo.estagio, ESTAGIOS.length - 1)].nome),
       el('p', { className: 'ovo-frase' }, ESTAGIOS[Math.min(ovo.estagio, ESTAGIOS.length - 1)].frase),
+      el('a', { className: 'ovo-criatura', href: '#perfil' }, fraseDaCriatura(dados.criatura)),
       el('p', { className: 'ovo-contagem' }, `${resumo.modulos_concluidos} de ${ovo.estagios} módulos concluídos`)),
     el('section', { className: 'cartao' },
       el('h2', {}, 'Seu progresso'),
@@ -182,7 +204,8 @@ function colunaDireita(dados) {
         el('i', { style: `width:${pct}%` })),
       el('p', { className: 'barra-legenda' },
         el('span', {}, `${resumo.exercicios_concluidos} de ${resumo.exercicios_total} exercícios`), el('span', {}, `${pct}%`)),
-      continuar ? el('div', { className: 'espaco-acima' }, continuar) : null)
+      continuar ? el('div', { className: 'espaco-acima' }, continuar) : null),
+    ...(dados.ovos_turma || []).map(cartaoOvoTurma)
   ];
 }
 

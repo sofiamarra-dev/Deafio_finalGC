@@ -73,3 +73,22 @@
   .perfil-topo{flex-direction:column;text-align:center}
   .podio-lugar{width:96px}
 }
+
+/* Criatura em formação */
+.criatura-cartao{display:flex;gap:20px;align-items:center}
+.criatura-desenho{flex:none;width:120px;height:120px;display:grid;place-items:center;border-radius:16px;background:var(--superficie-2);
+  border:2px solid var(--borda)}
+.criatura-desenho svg{width:96px;height:auto}
+.em-formacao svg{opacity:.85;animation:respirar-sombra 2.4s ease-in-out infinite}
+@keyframes respirar-sombra{50%{transform:scale(1.05)}}
+.misterio{font:52px var(--fonte-titulo);color:var(--texto-2)}
+.criatura-info{flex:1;min-width:0}
+.criatura-nome{margin:0 0 4px;font:20px var(--fonte-titulo);color:var(--verde-claro)}
+.criatura-info .texto-2{margin:0 0 6px}
+.tracos{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.tracos li{display:grid;grid-template-columns:100px 1fr 32px;gap:10px;align-items:center;font-size:13px;color:var(--texto-2)}
+.tracos .barra{margin:0}
+.traco-forte{color:var(--texto)!important;font-weight:700}
+.traco-forte .barra i{background:var(--verde-claro)}
+.traco-valor{text-align:right}
+@media (max-width:760px){.criatura-cartao{flex-direction:column;text-align:center}.tracos li{text-align:left}}

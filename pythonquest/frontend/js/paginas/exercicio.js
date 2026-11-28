@@ -44,16 +44,17 @@ function listaCasos(casos, exercicio) {
           caso.erro ? el('span', { className: 'caso-erro' }, caso.erro) : null))));
 }
 
-function mostrarEvolucaoDoOvo(ovo) {
+function mostrarEvolucaoDoOvo(ovo, criatura = null) {
   const estagio = Math.min(ovo.para, ESTAGIOS.length - 1);
   const palco = el('div', { className: 'ovo-palco ovo-evoluindo' }, criarOvo(ovo.de, { animar: false, cor: sessao.usuario?.avatar }));
   const modal = abrirModal({
     titulo: 'Módulo concluído!',
     conteudo: el('div', { className: 'evolucao' }, palco,
-      el('p', { className: 'ovo-nome' }, ESTAGIOS[estagio].nome), el('p', {}, ESTAGIOS[estagio].frase)),
+      el('p', { className: 'ovo-nome' }, criatura ? `Nasceu: ${criatura.nome}!` : ESTAGIOS[estagio].nome),
+      el('p', {}, criatura ? criatura.frase : ESTAGIOS[estagio].frase)),
     acoes: [el('button', { className: 'botao', type: 'button', onclick: () => modal.fechar() }, 'Continuar')]
   });
-  setTimeout(() => { palco.replaceChildren(criarOvo(ovo.para, { cor: sessao.usuario?.avatar })); palco.classList.add('ovo-mudou'); soltarConfete(70); }, 900);
+  setTimeout(() => { palco.replaceChildren(criarOvo(ovo.para, { cor: sessao.usuario?.avatar, especie: criatura?.especie })); palco.classList.add('ovo-mudou'); soltarConfete(70); }, 900);
 }
 
 export async function paginaExercicio(id) {
@@ -163,7 +164,7 @@ export async function paginaExercicio(id) {
     continuar.focus({ preventScroll: true });
     if (acertou) {
       soltarConfete(r.xp?.subiu_de_nivel ? 90 : undefined);
-      if (r.modulo_concluido && r.ovo.para > r.ovo.de) mostrarEvolucaoDoOvo(r.ovo);
+      if (r.modulo_concluido && r.ovo.para > r.ovo.de) mostrarEvolucaoDoOvo(r.ovo, r.criatura);
     } else {
       areaResposta.classList.remove('tremer'); void areaResposta.offsetWidth; areaResposta.classList.add('tremer');
     }

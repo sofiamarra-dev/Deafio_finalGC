@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 from app.db import obter_sessao
 from app.modelos import Modulo, Usuario
 from app.servicos.autenticacao import exigir_aluno
+from app.rotas.perfil import ovos_das_turmas
+from app.servicos.criatura import criatura_do_aluno
 from app.servicos.jogador import resumo_jogador
 from app.servicos.progressao import estado_da_trilha, estagio_do_ovo, proximo_exercicio
 
@@ -27,6 +29,8 @@ def trilha(aluno: Usuario = Depends(exigir_aluno), sessao: Session = Depends(obt
         "ovo": {"estagio": estagio_do_ovo(sessao, aluno.id), "estagios": len(modulos)},
         "proximo_exercicio": proximo_exercicio(sessao, aluno.id),
         "jogador": resumo_jogador(sessao, aluno.id),
+        "criatura": criatura_do_aluno(sessao, aluno),
+        "ovos_turma": ovos_das_turmas(sessao, aluno.id),
         "resumo": {
             "exercicios_concluidos": sum(m.concluidos for m in modulos),
             "exercicios_total": sum(len(m.exercicios) for m in modulos),

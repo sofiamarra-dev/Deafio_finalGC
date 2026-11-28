@@ -1,6 +1,6 @@
 /* Página inicial (visitante): uma cena 2D com o ovo na trilha, como funciona, os tipos de desafio e o mapa das salas. */
 import { el } from '../util.js';
-import { criarOvo, ESTAGIOS } from '../componentes/ovo.js';
+import { criarOvo, criarCriatura, CRIATURAS, ESTAGIOS } from '../componentes/ovo.js';
 import { icone } from '../componentes/icones.js';
 import { layoutPublico } from '../componentes/layout.js';
 
@@ -60,7 +60,17 @@ export function paginaInicio() {
         el('h3', {}, 'Abra a porta'), el('p', {}, 'Venceu o desafio final? A porta abre e o seu ovo anda até a próxima sala.')),
       el('li', { className: 'cartao passo-como' }, el('span', { className: 'passo-numero' }, '3'),
         el('h3', {}, 'Choque sua criatura'), el('p', {}, 'O ovo racha a cada sala concluída. Na última, ele eclode.'))),
-    el('ol', { className: 'evolucao', 'aria-label': 'Como o ovo evolui' }, evolucao));
+    el('ol', { className: 'linha-evolucao', 'aria-label': 'Como o ovo evolui' }, evolucao));
+
+  const TRACOS = { certeira: 'Acerta de primeira', persistente: 'Não desiste depois de errar', exploradora: 'Faz os desafios opcionais',
+    independente: 'Resolve sem pedir dica', constante: 'Estuda um pouco todo dia' };
+  const criaturas = el('section', { className: 'secao-inicio', 'aria-labelledby': 'tituloCriaturas' },
+    el('h2', { id: 'tituloCriaturas' }, 'Que criatura vai nascer do seu ovo?'),
+    el('p', { className: 'secao-sub' }, 'Depende do seu jeito de estudar. E a turma ainda choca um ovo coletivo, juntando as salas de todo mundo.'),
+    el('ul', { className: 'grade-criaturas' }, Object.entries(CRIATURAS).map(([id, c]) =>
+      el('li', { className: 'cartao criatura-vitrine' },
+        el('div', { className: 'vitrine-desenho' }, criarCriatura(id)),
+        el('h3', {}, c.nome), el('p', {}, TRACOS[id])))));
 
   const desafios = el('section', { className: 'secao-inicio', 'aria-labelledby': 'tituloDesafios' },
     el('h2', { id: 'tituloDesafios' }, 'Tipos de desafio'),
@@ -81,7 +91,7 @@ export function paginaInicio() {
     el('div', {}, el('h2', {}, 'Seu ovo está esperando.'), el('p', {}, 'Crie a conta em menos de um minuto e comece pela Sala 1.')),
     el('a', { className: 'botao grande', href: '#cadastro' }, 'Criar minha conta'));
 
-  return layoutPublico([heroi, comoFunciona, desafios, mapa, final], {
+  return layoutPublico([heroi, comoFunciona, criaturas, desafios, mapa, final], {
     acoesTopo: [el('a', { className: 'botao secundario pequeno', href: '#entrar' }, 'Entrar')]
   });
 }

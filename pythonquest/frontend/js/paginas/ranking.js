@@ -3,7 +3,7 @@ import { el, irPara } from '../util.js';
 import { api } from '../api.js';
 import { layoutApp } from '../componentes/layout.js';
 import { criarOvo } from '../componentes/ovo.js';
-import { cartaoJogador } from './trilha.js';
+import { cartaoJogador, cartaoOvoTurma } from './trilha.js';
 
 const ESCOPOS = [['geral', 'Geral'], ['semana', 'Esta semana'], ['turma', 'Minha turma']];
 let escopoAtual = 'geral';
@@ -38,7 +38,8 @@ async function conteudoRanking(escopo) {
   const lista = el('ol', { className: 'lista-ranking' }, dados.linhas.map(l => linhaRanking(l, escopo)));
   const fora = dados.eu && !dados.linhas.some(l => l.eu)
     ? el('ol', { className: 'lista-ranking lista-eu' }, linhaRanking(dados.eu, escopo)) : null;
-  return el('div', {}, dados.linhas.length >= 2 ? podio(dados.linhas) : null, lista, fora,
+  return el('div', {}, ...(dados.ovos_turma || []).map(cartaoOvoTurma),
+    dados.linhas.length >= 2 ? podio(dados.linhas) : null, lista, fora,
     escopo === 'semana' ? el('p', { className: 'nota-ranking' }, 'O ranking da semana recomeça toda segunda-feira à meia-noite.') : null);
 }
 

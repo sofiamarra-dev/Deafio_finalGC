@@ -3,7 +3,7 @@ import { el, irPara } from '../util.js';
 import { api } from '../api.js';
 import { sessao } from '../estado.js';
 import { layoutApp } from '../componentes/layout.js';
-import { criarOvo, CORES_OVO, ESTAGIOS } from '../componentes/ovo.js';
+import { criarOvo, criarCriatura, CORES_OVO, ESTAGIOS } from '../componentes/ovo.js';
 import { icone } from '../componentes/icones.js';
 import { cartaoJogador } from './trilha.js';
 
@@ -61,15 +61,41 @@ function formularioEdicao(perfil, aoSalvar) {
   return form;
 }
 
+function secaoCriatura(c, proprio) {
+  const titulo = proprio ? 'Sua criatura' : 'Criatura';
+  if (c.situacao === 'cedo') {
+    return el('section', { className: 'secao-perfil' }, el('h2', {}, titulo),
+      el('div', { className: 'cartao criatura-cartao' },
+        el('div', { className: 'criatura-desenho misterio', 'aria-hidden': 'true' }, '?'),
+        el('div', {}, el('p', { className: 'criatura-nome' }, 'Ainda é cedo'),
+          el('p', { className: 'texto-2' }, `Depois de ${c.minimo} exercícios concluídos dá para ver que criatura está se formando. ` +
+            'Ela depende do seu jeito de estudar, não só de quanto você estuda.'))));
+  }
+  const nasceu = c.situacao === 'nasceu';
+  return el('section', { className: 'secao-perfil' }, el('h2', {}, titulo),
+    el('div', { className: 'cartao criatura-cartao' },
+      el('div', { className: `criatura-desenho${nasceu ? '' : ' em-formacao'}` }, criarCriatura(c.especie, { silhueta: !nasceu })),
+      el('div', { className: 'criatura-info' },
+        el('p', { className: 'criatura-nome' }, nasceu ? c.nome : `Com cara de ${c.nome}`),
+        el('p', { className: 'texto-2' }, c.frase),
+        nasceu ? null : el('p', { className: 'campo-ajuda' }, 'Ainda pode mudar: a espécie só fica definida quando o ovo eclode, na última sala.'),
+        el('ul', { className: 'tracos' }, c.tracos.map(t =>
+          el('li', { className: t.id === c.especie ? 'traco-forte' : '' },
+            el('span', {}, t.nome),
+            el('div', { className: 'barra', role: 'progressbar', 'aria-label': t.nome, 'aria-valuemin': 0, 'aria-valuemax': 100,
+              'aria-valuenow': t.valor }, el('i', { style: `width:${t.valor}%` })),
+            el('span', { className: 'traco-valor' }, String(t.valor))))))));
+}
+
 function montar(perfil, pagina) {
   const estagio = Math.min(perfil.ovo, ESTAGIOS.length - 1);
   const topo = el('section', { className: 'perfil-topo' },
-    el('div', { className: 'perfil-ovo' }, criarOvo(perfil.ovo, { cor: perfil.cor })),
+    el('div', { className: 'perfil-ovo' }, criarOvo(perfil.ovo, { cor: perfil.cor, especie: perfil.criatura.especie })),
     el('div', {},
       el('h1', { className: 'titulo-pagina' }, perfil.nome_exibido),
       el('p', { className: 'perfil-sub' }, `Nível ${perfil.jogador.nivel} · ${perfil.jogador.xp} XP · ${ESTAGIOS[estagio].nome}`),
       el('p', { className: 'perfil-sub' }, `Sequência: ${perfil.jogador.sequencia.dias} dia(s) · melhor: ${perfil.jogador.sequencia.melhor}`)));
-  const partes = [topo];
+  const partes = [topo, secaoCriatura(perfil.criatura, perfil.proprio)];
   if (perfil.proprio && perfil.estatisticas) {
     partes.push(el('section', { className: 'secao-perfil' }, el('h2', {}, 'Seus números'), numeros(perfil.estatisticas)));
   }

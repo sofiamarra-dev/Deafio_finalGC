@@ -4,6 +4,7 @@ import { el, irPara } from '../util.js';
 import { sessao } from '../estado.js';
 import { api } from '../api.js';
 import { layoutPublico } from '../componentes/layout.js';
+import { criarOvo, ESTAGIOS } from '../componentes/ovo.js';
 
 function itemTurma(turma) {
   const copiar = el('button', { className: 'botao secundario pequeno', type: 'button', onclick: async () => {
@@ -12,7 +13,11 @@ function itemTurma(turma) {
     setTimeout(() => { copiar.textContent = 'Copiar código'; }, 1800);
   } }, 'Copiar código');
   return el('li', {},
-    el('div', {}, el('strong', {}, turma.nome), el('div', { className: 'turma-info' }, `${turma.alunos} aluno(s)`)),
+    el('div', { className: 'turma-ovo', title: 'Ovo da turma' }, criarOvo(turma.ovo?.estagio || 0, { animar: false, cor: 'amarelo', especie: turma.ovo?.especie })),
+    el('div', { className: 'turma-dados' }, el('strong', {}, turma.nome),
+      el('div', { className: 'turma-info' }, `${turma.alunos} aluno(s) · ${turma.ovo?.salas || 0} sala(s) concluídas somando todos`),
+      el('div', { className: 'turma-info' }, `Ovo da turma: ${ESTAGIOS[Math.min(turma.ovo?.estagio || 0, 6)].nome}` +
+        (turma.ovo?.nome_especie ? ` · tendência: ${turma.ovo.nome_especie}` : ''))),
     el('div', { className: 'turma-codigo' }, el('code', {}, turma.codigo_convite), copiar));
 }
 

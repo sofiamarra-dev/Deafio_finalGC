@@ -7,6 +7,7 @@ from app.db import obter_sessao
 from app.esquemas.contas import NovaTurma
 from app.modelos import Matricula, Turma, Usuario
 from app.servicos.autenticacao import exigir_professor
+from app.servicos.criatura import ovo_da_turma
 from app.servicos.turmas import criar_turma
 
 rotas = APIRouter(prefix="/api/professor", tags=["professor"])
@@ -17,7 +18,8 @@ def minhas_turmas(professor: Usuario = Depends(exigir_professor), sessao: Sessio
     linhas = sessao.execute(
         select(Turma, func.count(Matricula.id)).outerjoin(Matricula, Matricula.turma_id == Turma.id)
         .where(Turma.professor_id == professor.id).group_by(Turma.id).order_by(Turma.criada_em.desc())).all()
-    return [{"id": t.id, "nome": t.nome, "codigo_convite": t.codigo_convite, "alunos": n} for t, n in linhas]
+    return [{"id": t.id, "nome": t.nome, "codigo_convite": t.codigo_convite, "alunos": n, "ovo": ovo_da_turma(sessao, t.id)}
+            for t, n in linhas]
 
 
 @rotas.post("/turmas", status_code=status.HTTP_201_CREATED)

@@ -33,3 +33,5 @@
 .form-turma input{font:inherit;font-size:16px;color:var(--texto);background:var(--superficie-2);border:2px solid var(--borda);border-radius:12px;padding:12px 14px;min-height:48px}
 .form-turma input:focus{border-color:var(--verde);outline:none}
 @media (max-width:560px){.form-turma{flex-direction:column;align-items:stretch}}
+.turma-ovo svg{width:40px;height:auto;display:block}
+.turma-dados{flex:1;min-width:160px}

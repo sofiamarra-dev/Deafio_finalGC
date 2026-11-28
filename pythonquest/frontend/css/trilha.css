@@ -121,3 +121,10 @@
 .sequencia-ativa{border-color:#ff7a59}
 .sequencia-ativa svg{filter:none;animation:chama 1.2s ease-in-out infinite}
 @keyframes chama{50%{transform:scaleY(1.08) translateY(-1px)}}
+
+.ovo-criatura{display:block;margin-top:10px;font-size:13px;color:var(--verde-claro)}
+.cartao-ovo-turma h2{margin:0}
+.turma-nome{margin:2px 0 10px;font-size:13px;color:var(--texto-2)}
+.ovo-turma-linha{display:flex;gap:14px;align-items:center}
+.ovo-turma-desenho svg{width:56px;height:auto}
+.area-ranking .cartao-ovo-turma{margin-bottom:16px}

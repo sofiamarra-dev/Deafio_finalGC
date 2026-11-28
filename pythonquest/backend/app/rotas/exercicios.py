@@ -15,6 +15,7 @@ from app.modelos import (Abertura, Alternativa, CasoTeste, DicaVista, Envio, Exe
                          ResultadoTeste, Usuario)
 from app.modelos.tempo import agora
 from app.servicos.autenticacao import LimiteDeTentativas, exigir_aluno
+from app.servicos.criatura import ESPECIES, fixar_se_eclodiu
 from app.servicos.jogador import calcular_xp, nivel_de, resumo_jogador, xp_total
 from app.servicos.progressao import (estado_do_exercicio, estagio_do_ovo, proximo_exercicio,
                                      registrar_conclusao_do_modulo)
@@ -145,6 +146,9 @@ def enviar(exercicio_id: str, dados: NovoEnvio, aluno: Usuario = Depends(exigir_
     ovo_antes = estagio_do_ovo(sessao, aluno.id)
     nivel_antes = nivel_de(xp_total(sessao, aluno.id))
     modulo_concluido = primeira_conclusao and registrar_conclusao_do_modulo(sessao, aluno.id, exercicio.modulo_id)
+    if modulo_concluido:
+        sessao.flush()
+        fixar_se_eclodiu(sessao, aluno)
     ganho = None
     if primeira_conclusao:
         ganho = calcular_xp(exercicio.xp_base, progresso.tentativas, envio.dicas_vistas, modulo_concluido)
@@ -170,4 +174,5 @@ def enviar(exercicio_id: str, dados: NovoEnvio, aluno: Usuario = Depends(exigir_
         "xp": {"ganho": ganho.total if ganho else 0, "partes": ganho.partes if ganho else [],
                "nivel_antes": nivel_antes, "subiu_de_nivel": jogador["nivel"] > nivel_antes},
         "jogador": jogador,
+        "criatura": {"especie": aluno.criatura, **ESPECIES[aluno.criatura]} if modulo_concluido and aluno.criatura else None,
     }

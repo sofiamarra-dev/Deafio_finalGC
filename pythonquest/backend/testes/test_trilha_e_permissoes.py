@@ -103,4 +103,6 @@ def test_professor_ve_so_as_proprias_turmas(cliente, aluno):
     aluno.post("/api/contas/sair")
     cliente.post("/api/contas/entrar", json={"email": "prof@escola.br", "senha": "senha-prof"})
     turmas = cliente.get("/api/professor/turmas").json()
-    assert turmas == [{"id": turmas[0]["id"], "nome": "Turma A", "codigo_convite": "ABC234", "alunos": 0}]
+    assert len(turmas) == 1
+    assert {k: turmas[0][k] for k in ("nome", "codigo_convite", "alunos")} == {"nome": "Turma A", "codigo_convite": "ABC234", "alunos": 0}
+    assert turmas[0]["ovo"]["estagio"] == 0

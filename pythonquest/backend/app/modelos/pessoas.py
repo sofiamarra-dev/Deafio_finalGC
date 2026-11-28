@@ -18,6 +18,7 @@ class Usuario(Base):
     papel: Mapped[str] = mapped_column(String(20), default="aluno")  # aluno | professor
     apelido: Mapped[str | None] = mapped_column(String(30))  # nome que aparece no ranking
     avatar: Mapped[str] = mapped_column(String(30), default="verde")  # cor das manchas do ovo
+    criatura: Mapped[str | None] = mapped_column(String(20))  # espécie, gravada quando o ovo eclode
     fuso: Mapped[str] = mapped_column(String(40), default="America/Sao_Paulo")
     criado_em: Mapped[datetime] = mapped_column(default=agora)
     ultimo_acesso_em: Mapped[datetime | None]
