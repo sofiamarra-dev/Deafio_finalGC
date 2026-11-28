@@ -1,0 +1,72 @@
+/* Estilos comuns: casca das páginas, tipografia e acessibilidade. */
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--fundo)}
+body{color:var(--texto);font-family:var(--fonte-texto);font-size:16px;line-height:1.55;min-height:100vh}
+img{max-width:100%;display:block}
+a{color:var(--verde-claro)}
+:focus-visible{outline:3px solid var(--verde-claro);outline-offset:2px}
+#conteudo:focus{outline:none}
+h1,h2,h3{line-height:1.2}
+/* A fonte pixelada junta "fi" numa ligadura estranha; desligamos. */
+body{font-variant-ligatures:no-common-ligatures}
+code,pre{font-family:var(--fonte-codigo)}
+
+.pular{position:absolute;left:-9999px;top:8px;background:var(--verde);color:#fff;padding:8px 12px;border-radius:var(--raio);z-index:100}
+.pular:focus{left:16px}
+.visualmente-oculto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Casca pública (início, entrar, cadastro) */
+.publico{min-height:100vh;display:flex;flex-direction:column}
+.topo,.rodape,.publico main{width:100%;max-width:var(--largura-max);margin:0 auto;padding-inline:16px}
+.topo{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:16px}
+.publico main{flex:1;padding-block:24px 48px}
+.marca{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--texto)}
+.marca img{width:40px;height:40px}
+.marca-nome{font-family:var(--fonte-titulo);font-size:24px;letter-spacing:.5px}
+.marca-nome b{color:var(--verde);font-weight:700}
+.rodape{display:flex;align-items:center;gap:8px;padding-block:24px;color:var(--texto-2);font-size:13px;border-top:2px solid var(--borda)}
+.rodape img{width:24px;height:24px}
+
+.status{font-size:13px;color:var(--texto-2);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.status::before{content:"";width:10px;height:10px;background:var(--texto-2)}
+.status[data-estado="ok"]::before{background:var(--verde)}
+.status[data-estado="erro"]::before{background:var(--erro)}
+
+/* Casca do app (aluno logado): menu lateral, centro e coluna da direita */
+.app{display:grid;grid-template-columns:var(--largura-lateral) 1fr;min-height:100vh}
+.menu-lateral{position:sticky;top:0;height:100vh;border-right:2px solid var(--borda);padding:20px 14px;display:flex;flex-direction:column;gap:6px}
+.menu-lateral .marca{padding:4px 8px 20px}
+.menu-lateral .marca-nome{font-size:21px}
+.topo-celular{display:none}
+.menu-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;border:2px solid transparent;
+  color:var(--texto-2);text-decoration:none;font-weight:700;letter-spacing:.6px;text-transform:uppercase;font-size:14px;
+  background:none;font-family:inherit;cursor:pointer;width:100%;text-align:left}
+.menu-item:hover{background:var(--superficie)}
+.menu-item[aria-current="page"]{border-color:var(--verde);background:var(--verde-fundo);color:var(--verde-claro)}
+.menu-item svg{width:28px;height:28px;flex:none}
+.menu-lateral .rodape-menu{margin-top:auto;display:flex;flex-direction:column;gap:6px}
+.quem{font-size:13px;color:var(--texto-2);padding:0 12px 8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.app-corpo{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:40px;max-width:1080px;width:100%;margin:0 auto;padding:24px 24px 64px}
+.coluna-direita{display:flex;flex-direction:column;gap:20px;position:sticky;top:24px;align-self:start}
+
+@media (max-width:1100px){
+  .app-corpo{grid-template-columns:1fr;gap:24px}
+  .coluna-direita{position:static;order:-1}
+}
+@media (max-width:760px){
+  .app{grid-template-columns:1fr}
+  .menu-lateral{position:fixed;bottom:0;top:auto;left:0;right:0;height:auto;flex-direction:row;justify-content:space-around;
+    border-right:0;border-top:2px solid var(--borda);background:var(--fundo);padding:6px 8px;z-index:20}
+  .menu-lateral .marca,.quem{display:none}
+  .menu-lateral .rodape-menu{display:contents}
+  .menu-lateral{padding:6px 4px;gap:2px}
+  .menu-item{flex:1 1 0;min-width:0;flex-direction:column;gap:2px;font-size:11px;letter-spacing:0;text-transform:none;padding:6px 2px;width:auto}
+  .menu-item span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .menu-item svg{width:24px;height:24px}
+  .app-corpo{padding:16px 16px 96px}
+  .topo-celular{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 0}
+}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
