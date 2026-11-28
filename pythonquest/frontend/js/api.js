@@ -18,16 +18,17 @@ async function pedir(caminho, { metodo = 'GET', corpo } = {}) {
   }
   if (resposta.status === 204) return null;
   const dados = await resposta.json().catch(() => ({}));
-  if (!resposta.ok) throw new ErroApi(resposta.status, mensagemDeErro(dados));
+  if (!resposta.ok) throw new ErroApi(resposta.status, mensagemDeErro(dados, resposta.status));
   return dados;
 }
 
 /* O FastAPI devolve { detail: "texto" } ou, em erro de validação, { detail: [{ msg }] }. */
-function mensagemDeErro(dados) {
+function mensagemDeErro(dados, status) {
   if (typeof dados.detail === 'string') return dados.detail;
   if (Array.isArray(dados.detail) && dados.detail.length) {
     return dados.detail.map(d => String(d.msg || '').replace(/^Value error, /, '')).join(' ');
   }
+  if (status >= 500) return 'Erro no servidor. Veja a mensagem no terminal onde o servidor (uvicorn) está rodando.';
   return 'Algo deu errado. Tente de novo.';
 }
 

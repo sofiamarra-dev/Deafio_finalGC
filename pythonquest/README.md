@@ -33,19 +33,40 @@ resto do conteúdo e acabamento.
 
 Precisa de Python 3.12 ou mais novo e do **Docker Desktop aberto** (é ele que roda o código dos alunos com segurança).
 
-```bash
-cd pythonquest/backend
-python -m venv .venv
-# Windows: .venv\Scripts\activate    macOS/Linux: source .venv/bin/activate
+**Windows (PowerShell, o terminal padrão do VS Code):**
+
+```powershell
+cd pythonquest\backend
+python -m venv .venv                     # só na primeira vez
+.venv\Scripts\Activate.ps1               # toda vez que abrir um terminal novo
 pip install -r requirements.txt
-cp .env.exemplo .env          # no Windows: copy .env.exemplo .env
-alembic upgrade head          # cria as tabelas
-python -m app.conteudo.importar   # carrega os módulos e exercícios
-docker pull python:3.12-alpine    # imagem usada pelo corretor (só na primeira vez)
-uvicorn app.main:app --reload
+copy .env.exemplo .env                   # só na primeira vez; depois edite o CODIGO_PROFESSOR
+python -m alembic upgrade head           # cria/atualiza as tabelas
+python -m app.conteudo.importar          # carrega os módulos e exercícios
+docker pull python:3.12-alpine           # imagem usada pelo corretor (só na primeira vez)
+python -m uvicorn app.main:app --reload
 ```
 
-Abra http://127.0.0.1:8000, clique em "Começar agora" e crie uma conta de aluno.
+Se o PowerShell disser que a execução de scripts está desabilitada, rode uma vez
+`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` e responda `S`.
+
+**macOS / Linux:**
+
+```bash
+cd pythonquest/backend
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.exemplo .env
+python -m alembic upgrade head
+python -m app.conteudo.importar
+docker pull python:3.12-alpine
+python -m uvicorn app.main:app --reload
+```
+
+Abra http://127.0.0.1:8000, clique em "Começar agora" e crie uma conta de aluno. Não existe conta pronta:
+o banco começa vazio.
+
+Se o servidor disser no terminal que faltam tabelas ou exercícios, ele mostra o comando que falta rodar.
 
 **Professores** criam a conta pelo próprio site: em "Criar conta", escolhem "Sou professor" e digitam o
 **código de professor**, definido em `CODIGO_PROFESSOR` no `.env`. Passe esse código só para os professores.

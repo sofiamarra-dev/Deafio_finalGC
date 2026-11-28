@@ -3,6 +3,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 PASTA_BACKEND = Path(__file__).resolve().parent.parent
@@ -28,6 +29,18 @@ class Configuracao(BaseSettings):
     sandbox_tempo_caso_s: float = 2.0
     sandbox_tempo_total_s: float = 20.0
     envios_por_minuto: int = 10
+
+    @field_validator("url_banco")
+    @classmethod
+    def sqlite_relativo_ao_backend(cls, url: str) -> str:
+        """sqlite:///./pythonquest.db aponta sempre para a pasta backend, de onde quer que o servidor seja ligado.
+        Assim o alembic e o uvicorn usam o mesmo arquivo."""
+        prefixo = "sqlite:///"
+        if url.startswith(prefixo) and not url.startswith(prefixo + "/"):
+            caminho = Path(url[len(prefixo):])
+            if not caminho.is_absolute():
+                return prefixo + str((PASTA_BACKEND / caminho).resolve())
+        return url
 
 
 @lru_cache
