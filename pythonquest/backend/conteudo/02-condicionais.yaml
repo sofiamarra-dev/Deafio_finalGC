@@ -103,6 +103,50 @@ exercicios:
       - Existe uma palavra que significa "senão, se".
     explicacao: Com if no lugar de elif, a chama 3 mostraria "Forte" e também "Fraca".
 
+  - id: condicionais-f4
+    dificuldade: facil
+    tipo: montar
+    titulo: Monte o boletim
+    enunciado: |
+      Monte um programa que lê uma nota e mostra Aprovado se ela for 7 ou mais. Se não, mostra Recuperação.
+      Toque nas peças na ordem certa. Repare no recuo: as linhas de dentro do if e do else já vêm com o espaço.
+      Duas peças não servem.
+    assuntos: [if, else, comparacao]
+    solucao: |
+      nota = float(input())
+      if nota >= 7:
+          print("Aprovado")
+      else:
+          print("Recuperação")
+    distratores:
+      - 'if nota > 7:'
+      - '    print("Reprovado")'
+    respostas_erradas:
+      - |
+        nota = float(input())
+        if nota > 7:
+            print("Aprovado")
+        else:
+            print("Recuperação")
+      - |
+        nota = float(input())
+        if nota >= 7:
+            print("Recuperação")
+        else:
+            print("Aprovado")
+    modo_teste: stdin
+    casos:
+      - {entrada: "8.5", saida: "Aprovado", visivel: true}
+      - {entrada: "4", saida: "Recuperação", visivel: true}
+      - {entrada: "7", saida: "Aprovado"}
+      - {entrada: "6.9", saida: "Recuperação"}
+    dicas:
+      - Quem tirou exatamente 7 passa. Qual comparação inclui o 7?
+      - Depois do if vem o que acontece quando a condição é verdadeira; depois do else, quando é falsa.
+    explicacao: |
+      ">= 7" quer dizer "7 ou mais", então a nota 7 é aprovada. Com "> 7", quem tirou 7 iria para a recuperação.
+      O print logo abaixo do if roda quando a condição é verdadeira, e o de baixo do else quando é falsa.
+
   - id: condicionais-i1
     dificuldade: intermediario
     tipo: programa

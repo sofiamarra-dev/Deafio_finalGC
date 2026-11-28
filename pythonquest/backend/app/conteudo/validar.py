@@ -11,7 +11,7 @@ from app.correcao.corretor import corrigir_codigo
 def _como_objetos(ex: dict):
     exercicio = SimpleNamespace(tipo=ex["tipo"], codigo_inicial=ex.get("codigo_inicial", ""),
                                 modo_teste=ex.get("modo_teste", "stdin"), funcao=ex.get("funcao"),
-                                variavel=ex.get("variavel"))
+                                variavel=ex.get("variavel"), blocos=ex.get("blocos") or [])
     casos = [SimpleNamespace(ordem=i, entrada=str(c.get("entrada", "")), saida_esperada=str(c["saida"]),
                              visivel=bool(c.get("visivel"))) for i, c in enumerate(ex["casos"], start=1)]
     return exercicio, casos

@@ -35,7 +35,7 @@ export function textoRico(texto) {
 
 export const NOME_DIFICULDADE = { facil: 'Fácil', intermediario: 'Intermediário', avancado: 'Avançado' };
 export const NOME_TIPO = {
-  multipla_escolha: 'Múltipla escolha', completar: 'Completar código',
+  multipla_escolha: 'Múltipla escolha', completar: 'Completar código', montar: 'Montar o programa',
   achar_erro: 'Encontrar o erro', programa: 'Escrever programa'
 };
 

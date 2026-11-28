@@ -103,3 +103,26 @@
   .rodape-interno > .botao{flex:1}
   .exemplo{grid-template-columns:1fr}
 }
+
+/* Montar o programa com peças */
+.montar-rotulo{margin:16px 0 6px;font-weight:700;font-size:14px;color:var(--texto-2);text-transform:uppercase;letter-spacing:.8px}
+.montar-rotulo:first-child{margin-top:0}
+.montar-area{padding:10px;min-height:64px}
+.montar-programa{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.montar-vazio{color:var(--texto-2);font:14px var(--fonte-texto);padding:10px;border:2px dashed var(--borda);border-radius:10px;text-align:center}
+.linha-montada{display:flex;align-items:center;gap:8px}
+.linha-montada.encaixou .peca{animation:encaixe .22s ease}
+@keyframes encaixe{0%{transform:translateY(-6px);opacity:.4}100%{transform:none;opacity:1}}
+.linha-montada.arrastando{opacity:.45}
+.linha-montada.alvo-arraste .peca{border-color:var(--verde-claro)}
+.linha-numero{flex:none;width:22px;text-align:right;color:var(--texto-2);font:13px var(--fonte-codigo)}
+.peca{flex:1;text-align:left;min-width:0;overflow-x:auto}
+.peca code{white-space:pre;font:inherit}
+.peca-no-programa{background:var(--verde-fundo);border-color:var(--verde)}
+.montar-bandeja .peca{flex:0 1 auto}
+.linha-setas{display:flex;flex-direction:column;gap:2px;flex:none}
+.seta{width:28px;height:20px;padding:0;border:2px solid var(--borda);border-radius:6px;background:var(--superficie-2);color:var(--texto-2);
+  font-size:10px;cursor:pointer;line-height:1}
+.seta:disabled{opacity:.35;cursor:default}
+.seta:not(:disabled):active{transform:translateY(2px)}
+@media (max-width:480px){.peca{font-size:13px;padding-left:10px;padding-right:10px}}

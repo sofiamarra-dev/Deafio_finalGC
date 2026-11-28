@@ -40,6 +40,14 @@ def _conferir_exercicio(ex: dict, onde: str) -> None:
         exigir(ex.get("funcao"), "modo funcao precisa do campo 'funcao'")
     if modo == "variavel":
         exigir(ex.get("variavel"), "modo variavel precisa do campo 'variavel'")
+    if ex["tipo"] == "montar":
+        # As peças são as linhas da solução (com o recuo) mais as peças falsas, que não servem.
+        linhas = [l.rstrip() for l in ex["solucao"].splitlines() if l.strip()]
+        exigir(len(linhas) >= 3, "montar precisa de uma solução com pelo menos 3 linhas")
+        exigir(not ex.get("blocos"), "no tipo montar as peças saem da solução; use 'distratores' para peças extras")
+        distratores = [str(d).rstrip() for d in ex.get("distratores") or []]
+        exigir(not set(distratores) & set(linhas), "um distrator não pode ser igual a uma linha da solução")
+        ex["blocos"] = linhas + distratores
     if ex["tipo"] == "completar":
         exigir(ex.get("codigo_inicial", "").count("___") == 1, "o código precisa ter exatamente uma lacuna ___")
 

@@ -23,7 +23,7 @@ python -m app.conteudo.importar   # valida e grava no banco
 | --- | --- | --- |
 | `id` | sim | identificador fixo, único no projeto todo |
 | `dificuldade` | sim | `facil`, `intermediario` ou `avancado` (a ordem na lista é a ordem na trilha) |
-| `tipo` | sim | `multipla_escolha`, `completar`, `achar_erro` ou `programa` |
+| `tipo` | sim | `multipla_escolha`, `completar`, `montar`, `achar_erro` ou `programa` |
 | `titulo`, `enunciado` | sim | no enunciado, código vai entre linhas com ``` |
 | `dicas` | sim | lista; o aluno abre uma por vez |
 | `explicacao` | não | aparece quando o aluno erra pela 2ª vez (e quando acerta) |
@@ -32,6 +32,7 @@ python -m app.conteudo.importar   # valida e grava no banco
 | `alternativas` | múltipla escolha | `texto`, `correta` (exatamente uma) e `explicacao` (todas) |
 | `codigo_inicial` | não | o que já vem no editor; no tipo `completar`, tem uma lacuna `___` |
 | `blocos` | não | sugestões para a lacuna (tipo `completar`) |
+| `distratores` | não | no tipo `montar`, peças a mais que não servem (as peças certas saem das linhas da `solucao`, com o recuo) |
 | `solucao` | código | resposta de referência (nunca é mostrada ao aluno) |
 | `respostas_erradas` | não | respostas que precisam FALHAR; o validador confere |
 | `modo_teste` | código | `stdin` (entrada digitada), `funcao` (chama a função) ou `variavel` (troca o valor de uma variável) |
@@ -39,3 +40,6 @@ python -m app.conteudo.importar   # valida e grava no banco
 | `casos` | código | `entrada`, `saida` e `visivel` (os visíveis viram exemplos; precisa de pelo menos um escondido) |
 
 No modo `funcao`, `entrada` é a lista de argumentos (`"[1, 5, 3]"`) e `saida` é o valor devolvido, escrito como em Python (`"5"`, `"'texto'"`, `"[1, 2]"`).
+
+
+No tipo `montar`, o aluno recebe as linhas da `solucao` embaralhadas (mais os `distratores`) e monta o programa tocando nelas. Ele só pode usar essas peças, e quem decide se está certo são os casos de teste, então outra ordem que funcione também vale.

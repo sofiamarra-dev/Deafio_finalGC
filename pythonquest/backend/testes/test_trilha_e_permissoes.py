@@ -79,7 +79,7 @@ def test_erro_registra_tentativa_e_explica_no_segundo_erro(aluno):
 
 
 def test_concluir_modulo_1_choca_o_ovo_e_libera_o_modulo_2(aluno):
-    obrigatorios = ["fundamentos-f1", "fundamentos-f2", "fundamentos-f3", "fundamentos-i1", "fundamentos-i2",
+    obrigatorios = ["fundamentos-f1", "fundamentos-f2", "fundamentos-f3", "fundamentos-f4", "fundamentos-i1", "fundamentos-i2",
                     "fundamentos-i3", "fundamentos-a2"]
     for exercicio_id in obrigatorios[:-1]:
         r = _resolver(aluno, exercicio_id)
@@ -93,7 +93,7 @@ def test_concluir_modulo_1_choca_o_ovo_e_libera_o_modulo_2(aluno):
     # o próximo sugerido é o módulo 2, não o avançado opcional do módulo 1
     assert trilha["proximo_exercicio"] == "condicionais-f1"
     # o avançado opcional continua disponível
-    assert trilha["modulos"][0]["exercicios"][6]["estado"] == "liberado"
+    assert next(e for e in trilha["modulos"][0]["exercicios"] if e["id"] == "fundamentos-a1")["estado"] == "liberado"
     # refazer um exercício concluído não conclui de novo
     assert _resolver(aluno, "fundamentos-f1")["primeira_conclusao"] is False
 

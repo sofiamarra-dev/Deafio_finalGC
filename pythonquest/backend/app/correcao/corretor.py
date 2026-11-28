@@ -2,6 +2,7 @@
 Nunca compara o código do aluno com uma resposta pronta: só o comportamento nos casos de teste."""
 import ast
 import re
+from collections import Counter
 from dataclasses import dataclass, field
 
 from app.correcao import sandbox
@@ -52,6 +53,14 @@ def saidas_iguais(modo: str, esperado: str, obtido: str) -> bool:
 
 
 def montar_programa(exercicio, resposta: str) -> str:
+    if exercicio.tipo == "montar":
+        # Só valem as peças entregues, cada uma no máximo uma vez. A ordem quem julga são os testes.
+        sobrando = Counter(exercicio.blocos)
+        for linha in (l.rstrip() for l in resposta.splitlines() if l.strip()):
+            if sobrando[linha] <= 0:
+                raise RespostaInvalida("Monte o programa só com as peças disponíveis.")
+            sobrando[linha] -= 1
+        return resposta
     if exercicio.tipo == "completar":
         if "\n" in resposta.strip():
             raise RespostaInvalida("A lacuna aceita só uma linha.")

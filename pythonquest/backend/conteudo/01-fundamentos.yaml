@@ -82,6 +82,44 @@ exercicios:
       - Repare nas aspas em volta dos números.
     explicacao: Valores entre aspas são str (texto). "7" + "3" junta e vira "73".
 
+  - id: fundamentos-f4
+    dificuldade: facil
+    tipo: montar
+    titulo: Monte a apresentação
+    enunciado: |
+      Monte um programa que lê um nome e depois uma idade, e mostra assim:
+      ```
+      Ana tem 15 anos
+      ```
+      Toque nas peças para colocá-las no programa, na ordem certa. Cuidado: uma peça não serve.
+    assuntos: [input, int, print]
+    solucao: |
+      nome = input()
+      idade = int(input())
+      print(nome, "tem", idade, "anos")
+    distratores:
+      - 'print("nome", "tem", "idade", "anos")'
+    respostas_erradas:
+      - |
+        idade = int(input())
+        nome = input()
+        print(nome, "tem", idade, "anos")
+      - |
+        nome = input()
+        idade = int(input())
+        print("nome", "tem", "idade", "anos")
+    modo_teste: stdin
+    casos:
+      - {entrada: "Ana\n15", saida: "Ana tem 15 anos", visivel: true}
+      - {entrada: "Bia\n16", saida: "Bia tem 16 anos"}
+      - {entrada: "Caio\n9", saida: "Caio tem 9 anos"}
+    dicas:
+      - O programa lê as coisas na mesma ordem em que a pessoa digita. O que vem primeiro, o nome ou a idade?
+      - Entre aspas, o Python mostra o texto do jeito que está escrito. Sem aspas, mostra o valor da variável.
+    explicacao: |
+      Primeiro lê o nome, depois a idade (convertida com int), e só então mostra. Se a idade fosse lida primeiro,
+      int("Ana") daria erro. E print("nome") mostra a palavra nome, não o valor da variável.
+
   - id: fundamentos-i1
     dificuldade: intermediario
     tipo: programa

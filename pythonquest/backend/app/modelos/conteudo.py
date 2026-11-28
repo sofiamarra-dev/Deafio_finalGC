@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.db import Base
 
 DIFICULDADES = ("facil", "intermediario", "avancado")
-TIPOS = ("multipla_escolha", "completar", "achar_erro", "programa")
+TIPOS = ("multipla_escolha", "completar", "montar", "achar_erro", "programa")
 MODOS_TESTE = ("stdin", "funcao", "variavel")
 
 
@@ -31,7 +31,7 @@ class Exercicio(Base):
     titulo: Mapped[str] = mapped_column(String(100))
     enunciado: Mapped[str] = mapped_column(Text)
     codigo_inicial: Mapped[str] = mapped_column(Text, default="")
-    blocos: Mapped[list] = mapped_column(JSON, default=list)       # sugestões para a lacuna (tipo completar)
+    blocos: Mapped[list] = mapped_column(JSON, default=list)       # sugestões da lacuna (completar) ou peças do programa (montar)
     dicas: Mapped[list] = mapped_column(JSON, default=list)        # reveladas uma por vez
     explicacao: Mapped[str] = mapped_column(Text, default="")      # mostrada quando o aluno erra
     assuntos: Mapped[list] = mapped_column(JSON, default=list)     # ex.: ["for", "range"]

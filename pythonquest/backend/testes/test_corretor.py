@@ -37,3 +37,27 @@ def test_modo_funcao_compara_valor_e_ignora_prints():
     ex, casos = _programa([("[2, 3]", "5")], modo="funcao", funcao="soma")
     assert corrigir_codigo(ex, casos, "def soma(a, b):\n    print('oi')\n    return a + b").correto
     assert not corrigir_codigo(ex, casos, "def soma(a, b):\n    print(a + b)").correto
+
+
+def _montar():
+    exercicio = SimpleNamespace(tipo="montar", codigo_inicial="", modo_teste="stdin", funcao=None, variavel=None,
+                                blocos=["a = int(input())", "b = int(input())", "print(a * b)", "print(a + b)"])
+    casos = [SimpleNamespace(ordem=1, entrada="3\n4", saida_esperada="12", visivel=True)]
+    return exercicio, casos
+
+
+def test_montar_aceita_qualquer_ordem_que_funcione():
+    exercicio, casos = _montar()
+    assert corrigir_codigo(exercicio, casos, "a = int(input())\nb = int(input())\nprint(a * b)").correto
+    assert corrigir_codigo(exercicio, casos, "b = int(input())\na = int(input())\nprint(a * b)").correto
+    assert not corrigir_codigo(exercicio, casos, "a = int(input())\nb = int(input())\nprint(a + b)").correto
+
+
+def test_montar_recusa_linha_que_nao_e_peca():
+    import pytest
+    from app.correcao.corretor import RespostaInvalida
+    exercicio, casos = _montar()
+    with pytest.raises(RespostaInvalida):
+        corrigir_codigo(exercicio, casos, "print(12)")
+    with pytest.raises(RespostaInvalida):  # a mesma peça duas vezes
+        corrigir_codigo(exercicio, casos, "a = int(input())\na = int(input())\nprint(a * a)")

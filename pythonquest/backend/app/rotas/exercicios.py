@@ -1,4 +1,5 @@
 """Abrir um exercício, pedir dica e enviar resposta. O servidor confere o desbloqueio em todas as rotas."""
+import random
 from datetime import timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -38,6 +39,18 @@ def _dicas_vistas(sessao: Session, aluno_id: int, exercicio_id: str) -> int:
         DicaVista.aluno_id == aluno_id, DicaVista.exercicio_id == exercicio_id)) or 0
 
 
+def _blocos(exercicio) -> list[str]:
+    """No tipo montar, as peças guardadas estão na ordem da solução: embaralha antes de mandar."""
+    if exercicio.tipo != "montar":
+        return exercicio.blocos
+    pecas = list(exercicio.blocos)
+    for _ in range(10):
+        random.shuffle(pecas)
+        if pecas != exercicio.blocos:
+            break
+    return pecas
+
+
 @rotas.get("/{exercicio_id}")
 def abrir(exercicio_id: str, aluno: Usuario = Depends(exigir_aluno), sessao: Session = Depends(obter_sessao)) -> dict:
     exercicio, estado = _carregar(sessao, aluno, exercicio_id)
@@ -52,7 +65,7 @@ def abrir(exercicio_id: str, aluno: Usuario = Depends(exigir_aluno), sessao: Ses
     return {
         "id": exercicio.id, "modulo_id": exercicio.modulo_id, "titulo": exercicio.titulo,
         "dificuldade": exercicio.dificuldade, "tipo": exercicio.tipo, "desafio_final": exercicio.eh_desafio_final,
-        "enunciado": exercicio.enunciado, "codigo_inicial": exercicio.codigo_inicial, "blocos": exercicio.blocos,
+        "enunciado": exercicio.enunciado, "codigo_inicial": exercicio.codigo_inicial, "blocos": _blocos(exercicio),
         "modo_teste": exercicio.modo_teste, "funcao": exercicio.funcao, "variavel": exercicio.variavel,
         # Só os casos visíveis (exemplos) saem do servidor; os escondidos ficam aqui.
         "exemplos": [{"entrada": c.entrada, "saida": c.saida_esperada} for c in casos if c.visivel],

@@ -5,6 +5,7 @@ import { api } from '../api.js';
 import { executarExemplos } from '../python-local.js';
 import { criarMultiplaEscolha } from '../exercicios/multipla-escolha.js';
 import { criarCompletar } from '../exercicios/completar.js';
+import { criarMontar } from '../exercicios/montar.js';
 import { criarEditor } from '../exercicios/editor.js';
 import { criarOvo, ESTAGIOS } from '../componentes/ovo.js';
 import { abrirModal } from '../componentes/modal.js';
@@ -68,6 +69,7 @@ export async function paginaExercicio(id) {
   const aoMudar = () => { verificar.disabled = !resposta.pronta(); };
   const resposta = exercicio.tipo === 'multipla_escolha' ? criarMultiplaEscolha(exercicio, aoMudar)
     : exercicio.tipo === 'completar' ? criarCompletar(exercicio, aoMudar)
+    : exercicio.tipo === 'montar' ? criarMontar(exercicio, aoMudar)
     : criarEditor(exercicio, aoMudar);
 
   /* Dicas: cada clique pede a próxima ao servidor (que registra quantas o aluno usou). */
