@@ -145,3 +145,9 @@ details summary{cursor:pointer;font-weight:700}
 
 /* Números sempre na fonte mono (na fonte pixel o 5 parece um S e o 2 parece um Z) */
 .numero-perfil strong,.selo-nivel,.ranking-posicao,.podio-degrau,.mapa-numero,.passo-numero,.modulo .numero{font-family:var(--fonte-codigo)!important;font-weight:700}
+
+/* Criaturas */
+.criatura{overflow:visible}
+.silhueta .criatura-corpo{filter:brightness(0);opacity:.85}
+.criatura-feliz .criatura-corpo{animation:criatura-pula 2s ease-in-out infinite;transform-origin:50% 95%;transform-box:fill-box}
+@keyframes criatura-pula{0%,60%,100%{transform:translateY(0)}70%{transform:translateY(-4px) scaleY(1.03)}80%{transform:translateY(0) scaleY(.96)}}

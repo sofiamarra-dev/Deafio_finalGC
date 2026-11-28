@@ -54,43 +54,18 @@ function desenharCasca(grupo, estagio, mancha) {
   if (estagio === 4 || estagio === 5) [[6, 8], [9, 8]].forEach(([x, y]) => pixel(grupo, x, y, COR.olho));
 }
 
-/* As criaturas (cabeça saindo da casca). Cada uma tem 7 linhas de 13 colunas e as próprias cores.
-   Qual nasce depende do jeito de estudar do aluno (calculado no servidor, em servicos/criatura.py). */
-export const CRIATURAS = {
-  certeira: { nome: 'Coruja Bit', cores: { v: '#7a5230', V: '#c08a5a', w: '#f3f3f3', o: '#0b0d0f', r: '#f2b443' }, linhas: [
-    '..v.......v..', '..vv.....vv..', '..vVVVVVVVv..', '.vwwwVVVwwwv.', '.vwowVVVwowv.', '.vVVVVrVVVVv.', '..vVVVVVVVv..'] },
-  persistente: { nome: 'Tartaruga Loop', cores: { v: '#0f766e', V: '#2dd4bf', o: '#0b0d0f', r: '#ff7a59' }, linhas: [
-    '.............', '....vvvvv....', '...vVVVVVv...', '..vVoVVVoVv..', '..vVVVVVVVv..', '..vVVrrrVVv..', '...vVVVVVv...'] },
-  exploradora: { nome: 'Dragãozinho Pyxel', cores: { v: '#00b312', V: '#3ddc4f', o: '#0b0d0f', r: '#ff7a59' }, linhas: [
-    '..vv.....vv..', '..vVVVVVVVv..', '.vVVVVVVVVVv.', '.vVoVVVVVoVv.', '.vVVVVVVVVVv.', '.vVVVrrrVVVv.', '..vVVVVVVVv..'] },
-  independente: { nome: 'Gato Sintaxe', cores: { v: '#b07b1c', V: '#f2b443', o: '#0b0d0f', r: '#ff7a59', w: '#a9b0b7' }, linhas: [
-    '..v.......v..', '..vv.....vv..', '..vVvvvvvVv..', '..vVVVVVVVv..', '.wvVoVVVoVvw.', '..vVVVrVVVv..', '.w.vVVVVVv.w.'] },
-  constante: { nome: 'Abelha Commit', cores: { v: '#a16207', V: '#facc15', o: '#0b0d0f', r: '#ff7a59', e: '#0b0d0f' }, linhas: [
-    '...o.....o...', '....o...o....', '...vVVVVVv...', '..vVoVVVoVv..', '..eeeeeeeee..', '..vVVVrVVVv..', '...eeeeeee...'] }
-};
-
-function desenharCriatura(grupo, especie = 'exploradora', { silhueta = false, x0 = 1.5, y0 = 2 } = {}) {
-  const criatura = CRIATURAS[especie] || CRIATURAS.exploradora;
-  criatura.linhas.forEach((linha, y) => [...linha].forEach((c, x) => {
-    const cor = criatura.cores[c];
-    if (cor) pixel(grupo, x + x0, y + y0, silhueta ? '#0b0d0f' : cor);
-  }));
-}
-
-/* Só a criatura (sem casca): usada no perfil para mostrar a criatura em formação, como silhueta. */
-export function criarCriatura(especie, { silhueta = false } = {}) {
-  const svg = document.createElementNS(SVG, 'svg');
-  svg.setAttribute('viewBox', '0 0 13 7');
-  svg.setAttribute('shape-rendering', 'crispEdges');
-  svg.setAttribute('role', 'img');
-  svg.setAttribute('aria-label', silhueta ? 'Criatura em formação' : (CRIATURAS[especie]?.nome || 'Criatura'));
-  svg.classList.add('criatura');
-  desenharCriatura(svg, especie, { silhueta, x0: 0, y0: 0 });
-  return svg;
-}
+export { CRIATURAS, criarCriatura } from './criaturas.js';
+import { criarCriatura } from './criaturas.js';
 
 export function criarOvo(estagio = 0, { animar = true, cor = 'verde', especie = null } = {}) {
   estagio = Math.max(0, Math.min(estagio, ESTAGIOS.length - 1));
+  if (estagio >= 6) {
+    // eclodiu: a criatura de corpo inteiro, em pé entre os pedaços da casca
+    const criatura = criarCriatura(especie || 'exploradora', { comCasca: true, corMancha: CORES_OVO[cor] || COR.mancha });
+    criatura.classList.add('ovo', 'ovo-eclodido');
+    if (animar) criatura.classList.add('criatura-feliz');
+    return criatura;
+  }
   const svg = document.createElementNS(SVG, 'svg');
   svg.setAttribute('viewBox', '-1 -1 18 23');
   svg.setAttribute('role', 'img');
@@ -101,7 +76,6 @@ export function criarOvo(estagio = 0, { animar = true, cor = 'verde', especie = 
   for (let x = 3; x < 13; x++) pixel(svg, x, 21, '#0b0d0f'); // sombra chapada no chão
   const grupo = document.createElementNS(SVG, 'g');
   if (animar) grupo.setAttribute('class', estagio >= 2 && estagio < 6 ? 'ovo-tremendo' : 'ovo-balanco');
-  if (estagio >= 6) desenharCriatura(grupo, especie || 'exploradora');
   desenharCasca(grupo, estagio, CORES_OVO[cor] || COR.mancha);
   svg.appendChild(grupo);
   return svg;

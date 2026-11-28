@@ -70,7 +70,7 @@ export function paginaInicio() {
     el('ul', { className: 'grade-criaturas' }, Object.entries(CRIATURAS).map(([id, c]) =>
       el('li', { className: 'cartao criatura-vitrine' },
         el('div', { className: 'vitrine-desenho' }, criarCriatura(id)),
-        el('h3', {}, c.nome), el('p', {}, TRACOS[id])))));
+        el('h3', {}, c.nome), el('p', { className: 'vitrine-traco' }, TRACOS[id]), el('p', {}, c.tema)))));
 
   const desafios = el('section', { className: 'secao-inicio', 'aria-labelledby': 'tituloDesafios' },
     el('h2', { id: 'tituloDesafios' }, 'Tipos de desafio'),

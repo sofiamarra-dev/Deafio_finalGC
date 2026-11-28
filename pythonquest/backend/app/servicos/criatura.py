@@ -16,7 +16,7 @@ from app.modelos import Envio, Exercicio, Matricula, ProgressoExercicio, Progres
 from app.servicos.jogador import dia_local
 
 ESPECIES = {
-    "certeira": {"nome": "Coruja Bit", "traco": "Certeira", "frase": "Pensa antes de enviar e costuma acertar de primeira."},
+    "certeira": {"nome": "Coruja Binária", "traco": "Certeira", "frase": "Pensa antes de enviar e costuma acertar de primeira."},
     "persistente": {"nome": "Tartaruga Loop", "traco": "Persistente", "frase": "Erra, tenta de novo e não desiste até passar nos testes."},
     "exploradora": {"nome": "Dragãozinho Pyxel", "traco": "Exploradora", "frase": "Vai atrás dos desafios avançados mesmo quando não são obrigatórios."},
     "independente": {"nome": "Gato Sintaxe", "traco": "Independente", "frase": "Gosta de descobrir sozinho, quase sem pedir dica."},
