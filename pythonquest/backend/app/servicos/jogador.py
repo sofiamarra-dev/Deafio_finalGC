@@ -74,19 +74,35 @@ def xp_total(sessao: Session, aluno_id: int, desde: datetime | None = None) -> i
 
 
 def sequencia(sessao: Session, aluno_id: int, hoje: date | None = None) -> dict:
-    """Dias seguidos com pelo menos um acerto. Vale até ontem: quem ainda não estudou hoje não perde a sequência."""
+    """Dias seguidos com pelo menos um acerto. Vale até ontem: quem ainda não estudou hoje não perde a sequência.
+
+    Escudo de sequência (comprado na loja): se o aluno pula um dia, um escudo comprado antes desse dia é gasto
+    e a sequência continua. O cálculo percorre o histórico do começo ao fim, então cada escudo só serve uma vez."""
+    from app.modelos.loja import Compra  # aqui dentro para não criar import circular
     momentos = sessao.scalars(select(Envio.criado_em).where(Envio.aluno_id == aluno_id, Envio.correto)).all()
     dias = {dia_local(m) for m in momentos}
+    escudos_por_dia: dict[date, int] = {}
+    for momento in sessao.scalars(select(Compra.criado_em).where(Compra.aluno_id == aluno_id,
+                                                                 Compra.item_id == "escudo-sequencia")):
+        d = dia_local(momento)
+        escudos_por_dia[d] = escudos_por_dia.get(d, 0) + 1
     hoje = hoje or dia_local(agora())
-    atual, dia = 0, hoje if hoje in dias else hoje - timedelta(days=1)
-    while dia in dias:
-        atual += 1
-        dia -= timedelta(days=1)
-    melhor, corrida, anterior = 0, 0, None
-    for d in sorted(dias):
-        corrida = corrida + 1 if anterior and d - anterior == timedelta(days=1) else 1
-        melhor, anterior = max(melhor, corrida), d
-    return {"dias": atual, "estudou_hoje": hoje in dias, "melhor": melhor}
+    atual = melhor = escudos = usados = 0
+    inicio = min(dias | set(escudos_por_dia), default=hoje)
+    dia = inicio
+    while dia <= hoje:
+        if dia in dias:
+            atual += 1
+        elif dia != hoje:  # hoje ainda não acabou: não quebra a sequência
+            if atual > 0 and escudos > 0:
+                escudos -= 1
+                usados += 1
+            else:
+                atual = 0
+        melhor = max(melhor, atual)
+        escudos += escudos_por_dia.get(dia, 0)  # escudo comprado hoje protege a partir de amanhã
+        dia += timedelta(days=1)
+    return {"dias": atual, "estudou_hoje": hoje in dias, "melhor": melhor, "escudos": escudos, "escudos_usados": usados}
 
 
 def resumo_jogador(sessao: Session, aluno_id: int) -> dict:

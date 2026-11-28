@@ -50,6 +50,25 @@ def test_sequencia_de_dias(aluno, fabrica):
             s.add(Envio(aluno_id=aluno_id, exercicio_id=modelo.exercicio_id, resposta="x", correto=True,
                         criado_em=datetime(2026, 3, dia, 15)))
         s.commit()
-        assert sequencia(s, aluno_id, hoje=date(2026, 3, 12)) == {"dias": 3, "estudou_hoje": True, "melhor": 3}
+        seq = sequencia(s, aluno_id, hoje=date(2026, 3, 12))
+        assert (seq["dias"], seq["estudou_hoje"], seq["melhor"], seq["escudos"]) == (3, True, 3, 0)
         assert sequencia(s, aluno_id, hoje=date(2026, 3, 13))["dias"] == 3  # ainda não estudou hoje: mantém
         assert sequencia(s, aluno_id, hoje=date(2026, 3, 14))["dias"] == 0  # pulou um dia: zera
+
+
+def test_escudo_salva_um_dia_pulado(aluno, fabrica):
+    from app.modelos import Compra, Envio, Usuario
+    from app.servicos.jogador import sequencia
+    from sqlalchemy import select
+    _resolver(aluno, "fundamentos-f1")
+    with fabrica() as s:
+        aluno_id = s.scalar(select(Usuario.id).where(Usuario.papel == "aluno"))
+        exercicio = s.scalars(select(Envio.exercicio_id).where(Envio.aluno_id == aluno_id)).first()
+        s.query(Envio).filter(Envio.aluno_id == aluno_id).delete()
+        for dia in (10, 11, 13, 15):  # pulou o 12 e o 14
+            s.add(Envio(aluno_id=aluno_id, exercicio_id=exercicio, resposta="x", correto=True, criado_em=datetime(2026, 3, dia, 15)))
+        s.add(Compra(aluno_id=aluno_id, item_id="escudo-sequencia", preco=30, criado_em=datetime(2026, 3, 11, 15)))
+        s.commit()
+        seq = sequencia(s, aluno_id, hoje=date(2026, 3, 13))
+        assert seq["dias"] == 3 and seq["escudos_usados"] == 1 and seq["escudos"] == 0  # o 12 foi protegido
+        assert sequencia(s, aluno_id, hoje=date(2026, 3, 15))["dias"] == 1  # o 14 não tinha escudo: zerou
