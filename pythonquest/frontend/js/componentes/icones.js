@@ -37,6 +37,10 @@ const ICONES = {
     '.....dddd.', '....dddd..', '...dddd...', '..dddd....', '.ddddddd..',
     '....dddd..', '...dddd...', '..ddd.....', '.dd.......', 'd.........'
   ],
+  grafico: [
+    '..........', '........v.', '........v.', '.....v..v.', '.....v..v.',
+    '..v..v..v.', '..v..v..v.', '..v..v..v.', '..v..v..v.', 'cccccccccc'
+  ],
   pessoa: [
     '...cccc...', '..cccccc..', '..cccccc..', '..cccccc..', '...cccc...',
     '..........', '.vvvvvvvv.', 'vvvvvvvvvv', 'vvvvvvvvvv', 'vvvvvvvvvv'

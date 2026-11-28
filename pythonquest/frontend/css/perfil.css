@@ -92,3 +92,56 @@
 .traco-forte .barra i{background:var(--verde-claro)}
 .traco-valor{text-align:right}
 @media (max-width:760px){.criatura-cartao{flex-direction:column;text-align:center}.tracos li{text-align:left}}
+
+/* Gráficos e evolução */
+.grafico{background:var(--superficie);border:2px solid var(--borda);border-radius:14px;padding:14px}
+.legenda{display:flex;gap:16px;font-size:13px;color:var(--texto-2);margin-bottom:10px;flex-wrap:wrap}
+.legenda span{display:flex;align-items:center;gap:6px}
+.legenda i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.parte-acerto{background:var(--verde)}
+.parte-erro{background:#ff7a59}
+.colunas-dias{display:grid;grid-template-columns:repeat(14,1fr);gap:4px;height:150px;align-items:end}
+.coluna-dia{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;cursor:default}
+.pilha{width:100%;max-width:26px;display:flex;flex-direction:column;gap:2px;min-height:0}
+.pilha i{display:block;min-height:3px;border-radius:4px 4px 0 0}
+.pilha i + i{border-radius:0}
+.rotulo-dia{font-size:10px;color:var(--texto-2)}
+.coluna-dia:hover .pilha{filter:brightness(1.2)}
+.barras-h{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.barras-h li{display:grid;grid-template-columns:150px 1fr 44px;gap:10px;align-items:center;font-size:14px}
+.barras-h-trilho{height:12px;background:var(--superficie-2);border-radius:6px;overflow:hidden}
+.barras-h-trilho i{display:block;height:100%;background:var(--verde);border-radius:0 4px 4px 0}
+.barras-h-valor{text-align:right;color:var(--texto-2)}
+.secao-melhorar .rotulo-campo{margin:16px 0 4px}
+.erros-comuns{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.erros-comuns .cartao{padding:12px}
+.lista-simples{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.lista-simples li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px;background:var(--superficie);
+  border:2px solid var(--borda);border-radius:12px}
+.lista-simples small{color:var(--texto-2)}
+details summary{cursor:pointer;font-weight:700}
+@media (max-width:760px){
+  .barras-h li{grid-template-columns:100px 1fr 40px}
+  .erros-comuns{grid-template-columns:1fr}
+  .colunas-dias{gap:2px;height:120px}
+}
+
+/* Painel da turma (professor) */
+.painel-turma{display:flex;flex-direction:column}
+.voltar{color:var(--verde-claro);text-decoration:none;font-weight:700;margin-bottom:10px}
+.painel-turma .numeros-perfil{margin-top:16px}
+.numero-ovo{flex-direction:row!important;align-items:center;gap:10px}
+.numero-ovo svg{width:40px;height:auto;flex:none}
+.painel-duas-colunas{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.etiqueta-atencao{display:inline-block;font-size:12px;font-weight:700;color:#1b1408;background:var(--aviso);border-radius:6px;padding:2px 8px;margin-top:4px}
+.tabela-rolagem{overflow-x:auto;border:2px solid var(--borda);border-radius:14px}
+.tabela-alunos{width:100%;border-collapse:collapse;font-size:14px;min-width:640px}
+.tabela-alunos th,.tabela-alunos td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--borda)}
+.tabela-alunos th{color:var(--texto-2);font-size:12px;text-transform:uppercase;letter-spacing:.6px;background:var(--superficie)}
+.tabela-alunos small{color:var(--texto-2)}
+.linha-atencao{background:rgba(242,180,67,.06)}
+.ordenar{all:unset;cursor:pointer;text-decoration:underline dotted}
+@media (max-width:760px){.painel-duas-colunas{grid-template-columns:1fr;gap:0}}
+
+/* Números sempre na fonte mono (na fonte pixel o 5 parece um S e o 2 parece um Z) */
+.numero-perfil strong,.selo-nivel,.ranking-posicao,.podio-degrau,.mapa-numero,.passo-numero,.modulo .numero{font-family:var(--fonte-codigo)!important;font-weight:700}

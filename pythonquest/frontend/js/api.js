@@ -40,6 +40,8 @@ export const api = {
   sair: () => pedir('/contas/sair', { metodo: 'POST' }),
   trilha: () => pedir('/trilha'),
   perfil: () => pedir('/perfil'),
+  evolucao: () => pedir('/evolucao'),
+  painelTurma: id => pedir(`/professor/turmas/${encodeURIComponent(id)}/painel`),
   perfilDe: id => pedir(`/perfil/${encodeURIComponent(id)}`),
   editarPerfil: dados => pedir('/perfil', { metodo: 'PATCH', corpo: dados }),
   ranking: escopo => pedir(`/ranking?escopo=${encodeURIComponent(escopo)}`),

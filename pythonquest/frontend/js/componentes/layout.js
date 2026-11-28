@@ -34,6 +34,8 @@ export function layoutApp(conteudo, { ativo = 'trilha', lateral = null } = {}) {
     sessao.usuario?.papel === 'aluno' ? [
       el('a', { className: 'menu-item', href: '#ranking', 'aria-current': ativo === 'ranking' ? 'page' : null },
         icone('trofeu'), el('span', {}, 'Ranking')),
+      el('a', { className: 'menu-item', href: '#evolucao', 'aria-current': ativo === 'evolucao' ? 'page' : null },
+        icone('grafico'), el('span', {}, 'Evolução')),
       el('a', { className: 'menu-item', href: '#perfil', 'aria-current': ativo === 'perfil' ? 'page' : null },
         icone('pessoa'), el('span', {}, 'Perfil'))] : null,
     el('div', { className: 'rodape-menu' },

@@ -11,6 +11,7 @@ from app.modelos import Matricula, Turma, Usuario
 from app.servicos.autenticacao import exigir_aluno
 from app.servicos.criatura import criatura_do_aluno, ovo_da_turma
 from app.servicos.jogador import resumo_jogador
+from app.servicos.painel import evolucao_do_aluno
 from app.servicos.progressao import estagio_do_ovo
 from app.servicos.ranking import CORES, conquistas, estatisticas, nome_exibido, ranking
 
@@ -83,3 +84,8 @@ def ovos_das_turmas(sessao: Session, aluno_id: int) -> list[dict]:
     turmas = sessao.execute(select(Turma).join(Matricula, Matricula.turma_id == Turma.id)
                             .where(Matricula.aluno_id == aluno_id)).scalars().all()
     return [{"turma": t.nome, **ovo_da_turma(sessao, t.id)} for t in turmas]
+
+
+@rotas.get("/evolucao")
+def minha_evolucao(aluno: Usuario = Depends(exigir_aluno), sessao: Session = Depends(obter_sessao)) -> dict:
+    return evolucao_do_aluno(sessao, aluno.id)
