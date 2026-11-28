@@ -9,7 +9,6 @@ from sqlalchemy.orm import Session
 from app.db import obter_sessao
 from app.modelos import Matricula, Turma, Usuario
 from app.servicos.autenticacao import exigir_aluno
-from app.servicos.loja import forma_da_criatura
 from app.servicos.criatura import criatura_do_aluno, ovo_da_turma
 from app.servicos.jogador import resumo_jogador
 from app.servicos.painel import evolucao_do_aluno
@@ -37,7 +36,7 @@ class EdicaoPerfil(BaseModel):
 def _perfil(sessao: Session, usuario: Usuario, proprio: bool) -> dict:
     dados = {
         "id": usuario.id, "nome_exibido": nome_exibido(usuario), "cor": usuario.avatar,
-        "ninho": usuario.ninho, "casca": usuario.casca, "forma": forma_da_criatura(sessao, usuario.id),
+        "ninho": usuario.ninho, "casca": usuario.casca,
         "ovo": estagio_do_ovo(sessao, usuario.id), "jogador": resumo_jogador(sessao, usuario.id),
         "conquistas": conquistas(sessao, usuario.id), "proprio": proprio,
         "criatura": criatura_do_aluno(sessao, usuario),

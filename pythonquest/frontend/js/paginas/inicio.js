@@ -42,7 +42,7 @@ export function paginaInicio() {
       el('h1', {}, 'Aprenda Python ', el('em', {}, 'subindo de nível'), '.'),
       el('p', { className: 'chamada' },
         'Uma trilha de salas, do primeiro print até orientação a objetos. ' +
-        'A cada sala concluída, o seu ovo racha um pouco mais.'),
+        'Na primeira sala o seu ovo racha a cada exercício e choca no final. Depois, a criatura evolui com o seu estudo.'),
       el('div', { className: 'chamada-acoes' },
         el('a', { className: 'botao grande', href: '#cadastro' }, 'Começar a jornada'),
         el('a', { className: 'botao secundario grande', href: '#entrar' }, 'Já tenho conta'))),
@@ -59,7 +59,7 @@ export function paginaInicio() {
       el('li', { className: 'cartao passo-como' }, el('span', { className: 'passo-numero' }, '2'),
         el('h3', {}, 'Abra a porta'), el('p', {}, 'Venceu o desafio final? A porta abre e o seu ovo anda até a próxima sala.')),
       el('li', { className: 'cartao passo-como' }, el('span', { className: 'passo-numero' }, '3'),
-        el('h3', {}, 'Choque sua criatura'), el('p', {}, 'O ovo racha a cada sala concluída. Na última, ele eclode.'))),
+        el('h3', {}, 'Choque e evolua'), el('p', {}, 'O ovo choca no fim da primeira sala. Com os bytes que você ganha estudando, a criatura evolui na lojinha.'))),
     el('ol', { className: 'linha-evolucao', 'aria-label': 'Como o ovo evolui' }, evolucao));
 
   const TRACOS = { certeira: 'Acerta de primeira', persistente: 'Não desiste depois de errar', exploradora: 'Faz os desafios opcionais',
@@ -71,6 +71,7 @@ export function paginaInicio() {
       el('li', { className: 'cartao criatura-vitrine' },
         el('div', { className: 'vitrine-desenho' }, criarCriatura(id)),
         el('h3', {}, c.nome),
+        el('p', { className: 'vitrine-evolucao', 'aria-label': `Evolui para ${c.nomes[1]} e ${c.nomes[2]}` }, c.nomes.join(' › ')),
         el('div', { className: 'ficha' }, el('span', { className: 'tipo', style: `--tipo:${c.corTipo}` }, c.tipo),
           el('span', { className: 'habilidade' }, c.habilidade)),
         el('p', { className: 'vitrine-traco' }, TRACOS[id]), el('p', {}, c.tema)))));

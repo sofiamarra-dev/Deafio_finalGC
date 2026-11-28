@@ -78,15 +78,19 @@ def test_erro_registra_tentativa_e_explica_no_segundo_erro(aluno):
     assert all(c["entrada"] == "" for c in r2["casos"] if not c["visivel"])
 
 
+OBRIGATORIOS_MODULO_1 = ["fundamentos-f1", "fundamentos-f2", "fundamentos-f3", "fundamentos-f4", "fundamentos-i1",
+                         "fundamentos-i2", "fundamentos-i3", "fundamentos-a2"]
+
+
 def test_concluir_modulo_1_choca_o_ovo_e_libera_o_modulo_2(aluno):
-    obrigatorios = ["fundamentos-f1", "fundamentos-f2", "fundamentos-f3", "fundamentos-f4", "fundamentos-i1", "fundamentos-i2",
-                    "fundamentos-i3", "fundamentos-a2"]
+    obrigatorios = OBRIGATORIOS_MODULO_1
     for exercicio_id in obrigatorios[:-1]:
         r = _resolver(aluno, exercicio_id)
         assert r["modulo_concluido"] is False
     final = _resolver(aluno, "fundamentos-a2")
     assert final["modulo_concluido"] is True
-    assert final["ovo"] == {"de": 0, "para": 1}
+    assert 0 < final["ovo"]["de"] < 6 and final["ovo"]["para"] == 6  # rachou durante a sala e chocou no fim
+    assert final["criatura"]["situacao"] == "nasceu" and final["criatura"]["forma"] == 1
     trilha = aluno.get("/api/trilha").json()
     assert trilha["modulos"][0]["estado"] == "concluido"
     assert trilha["modulos"][1]["estado"] == "liberado"

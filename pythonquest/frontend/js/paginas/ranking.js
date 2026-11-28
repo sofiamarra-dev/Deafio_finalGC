@@ -11,7 +11,7 @@ let escopoAtual = 'geral';
 function linhaRanking(l, escopo) {
   return el('li', { className: `linha-ranking${l.eu ? ' linha-eu' : ''}${l.posicao <= 3 ? ' top-' + l.posicao : ''}` },
     el('span', { className: 'ranking-posicao' }, String(l.posicao)),
-    el('span', { className: 'ranking-ovo' }, criarOvo(l.ovo, { animar: false, cor: l.cor, ninho: l.ninho, casca: l.casca })),
+    el('span', { className: 'ranking-ovo' }, criarOvo(l.ovo, { animar: false, cor: l.cor, ninho: l.ninho, casca: l.casca, especie: l.especie, forma: l.forma })),
     el('a', { className: 'ranking-nome', href: '#perfil/' + l.id }, l.nome, l.eu ? el('small', {}, ' (você)') : null),
     el('span', { className: 'ranking-nivel' }, `Nível ${l.nivel}`),
     el('span', { className: 'ranking-xp' }, `${l.xp} XP`, escopo === 'semana' ? el('small', {}, ' na semana') : null));
@@ -21,7 +21,7 @@ function podio(linhas) {
   const ordem = [linhas[1], linhas[0], linhas[2]].filter(Boolean);
   return el('div', { className: 'podio', 'aria-hidden': 'true' }, ordem.map(l =>
     el('a', { className: `podio-lugar lugar-${l.posicao}`, href: '#perfil/' + l.id },
-      el('div', { className: 'podio-ovo' }, criarOvo(l.ovo, { cor: l.cor, ninho: l.ninho, casca: l.casca })),
+      el('div', { className: 'podio-ovo' }, criarOvo(l.ovo, { cor: l.cor, ninho: l.ninho, casca: l.casca, especie: l.especie, forma: l.forma })),
       el('span', { className: 'podio-nome' }, l.nome),
       el('span', { className: 'podio-xp' }, `${l.xp} XP`),
       el('div', { className: 'podio-degrau' }, String(l.posicao)))));

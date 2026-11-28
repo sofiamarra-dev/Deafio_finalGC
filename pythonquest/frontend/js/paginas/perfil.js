@@ -74,13 +74,15 @@ function secaoCriatura(c, proprio) {
   const nasceu = c.situacao === 'nasceu';
   return el('section', { className: 'secao-perfil' }, el('h2', {}, titulo),
     el('div', { className: 'cartao criatura-cartao' },
-      el('div', { className: `criatura-desenho${nasceu ? '' : ' em-formacao'}` }, criarCriatura(c.especie, { silhueta: !nasceu })),
+      el('div', { className: `criatura-desenho${nasceu ? '' : ' em-formacao'}` }, criarCriatura(c.especie, { silhueta: !nasceu, forma: c.forma })),
       el('div', { className: 'criatura-info' },
         el('p', { className: 'criatura-nome' }, nasceu ? c.nome : `Com cara de ${c.nome}`),
         el('div', { className: 'ficha' }, el('span', { className: 'tipo', style: `--tipo:${CRIATURAS[c.especie]?.corTipo || '#888'}` }, c.tipo),
           el('span', { className: 'habilidade' }, `Habilidade: ${c.habilidade}`)),
         el('p', { className: 'texto-2' }, c.frase),
-        nasceu ? null : el('p', { className: 'campo-ajuda' }, 'Ainda pode mudar: a espécie só fica definida quando o ovo eclode, na última sala.'),
+        nasceu ? el('p', { className: 'campo-ajuda' }, c.forma >= 3 ? 'Forma final! Não dá para evoluir mais.'
+          : el('span', {}, `Forma ${c.forma} de 3. `, proprio ? el('a', { href: '#loja' }, 'Evoluir na lojinha') : null)) : null,
+        nasceu ? null : el('p', { className: 'campo-ajuda' }, 'Ainda pode mudar: a espécie só fica definida quando o ovo choca, no fim da primeira sala.'),
         el('ul', { className: 'tracos' }, c.tracos.map(t =>
           el('li', { className: t.id === c.especie ? 'traco-forte' : '' },
             el('span', {}, t.nome),
@@ -92,7 +94,7 @@ function secaoCriatura(c, proprio) {
 function montar(perfil, pagina) {
   const estagio = Math.min(perfil.ovo, ESTAGIOS.length - 1);
   const topo = el('section', { className: 'perfil-topo' },
-    el('div', { className: 'perfil-ovo' }, criarOvo(perfil.ovo, { cor: perfil.cor, ninho: perfil.ninho, casca: perfil.casca, especie: perfil.criatura.especie })),
+    el('div', { className: 'perfil-ovo' }, criarOvo(perfil.ovo, { cor: perfil.cor, ninho: perfil.ninho, casca: perfil.casca, especie: perfil.criatura.especie, forma: perfil.criatura.forma })),
     el('div', {},
       el('h1', { className: 'titulo-pagina' }, perfil.nome_exibido),
       el('p', { className: 'perfil-sub' }, `Nível ${perfil.jogador.nivel} · ${perfil.jogador.xp} XP · ${ESTAGIOS[estagio].nome}`),

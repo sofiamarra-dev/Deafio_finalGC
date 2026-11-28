@@ -9,6 +9,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.modelos import Compra, Usuario
+from app.servicos.criatura import ESPECIES, forma_da_criatura
 from app.servicos.jogador import nivel_de, sequencia, xp_total
 from app.servicos.ranking import conquistas
 
@@ -36,8 +37,8 @@ CATALOGO = [
     Item("casca-binaria", "Casca binária", "A casca coberta de 0 e 1.", "casca", 40, 2),
     Item("casca-estrelas", "Casca estrelada", "Estrelas douradas pela casca.", "casca", 60, 3),
     Item("casca-dourada", "Casca de ouro", "A casca inteira dourada. Rara.", "casca", 150, 5),
-    Item("evolucao-2", "Evolução: forma 2", "Sua criatura evolui para a segunda forma. Precisa que ela já tenha nascido.", "evolucao", 100, 4),
-    Item("evolucao-3", "Evolução: forma final", "A forma final da sua criatura. Precisa da forma 2.", "evolucao", 250, 6),
+    Item("evolucao-2", "Evolução: forma 2", "Sua criatura cresce, ganha enfeites novos e um nome novo. Precisa que ela já tenha nascido.", "evolucao", 100, 4),
+    Item("evolucao-3", "Evolução: forma final", "A forma final, com aura e tudo. Precisa da forma 2.", "evolucao", 250, 6),
 ]
 ITENS = {i.id: i for i in CATALOGO}
 
@@ -59,11 +60,6 @@ def compras(sessao: Session, aluno_id: int) -> list[Compra]:
 def saldo(sessao: Session, aluno_id: int) -> int:
     gasto = sessao.scalar(select(func.coalesce(func.sum(Compra.preco), 0)).where(Compra.aluno_id == aluno_id))
     return bytes_ganhos(sessao, aluno_id)["total"] - int(gasto)
-
-
-def forma_da_criatura(sessao: Session, aluno_id: int) -> int:
-    feitas = {c.item_id for c in compras(sessao, aluno_id)}
-    return 3 if "evolucao-3" in feitas else 2 if "evolucao-2" in feitas else 1
 
 
 def _bloqueio(item: Item, aluno: Usuario, nivel: int, possui: set[str], escudos: int) -> str | None:
@@ -99,6 +95,7 @@ def vitrine(sessao: Session, aluno: Usuario) -> dict:
                       "equipado": item.id in (aluno.ninho, aluno.casca)})
     return {"saldo": disponivel, "ganhos": bytes_ganhos(sessao, aluno.id), "nivel": nivel, "escudos": seq["escudos"],
             "equipado": {"ninho": aluno.ninho, "casca": aluno.casca}, "forma": forma_da_criatura(sessao, aluno.id),
+            "criatura": ({"especie": aluno.criatura, "formas": ESPECIES[aluno.criatura]["formas"]} if aluno.criatura else None),
             "itens": itens}
 
 

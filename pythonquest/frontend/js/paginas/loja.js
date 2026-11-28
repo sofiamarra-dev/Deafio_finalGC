@@ -4,45 +4,62 @@ import { el, irPara } from '../util.js';
 import { api } from '../api.js';
 import { sessao } from '../estado.js';
 import { layoutApp } from '../componentes/layout.js';
-import { criarOvo } from '../componentes/ovo.js';
+import { criarOvo, criarCriatura } from '../componentes/ovo.js';
 import { icone } from '../componentes/icones.js';
 import { cartaoJogador } from './trilha.js';
 
 const SECOES = [
+  ['evolucao', 'Evolução da criatura', 'Sua criatura nasce no fim da primeira sala. Aqui ela cresce: forma 2 e forma final.'],
   ['escudo', 'Escudo de sequência', 'Pulou um dia? O escudo é gasto sozinho e sua sequência continua.'],
-  ['ninho', 'Ninhos', 'Onde o seu ovo fica. Aparece na trilha, no perfil e no ranking.'],
-  ['casca', 'Cascas', 'O desenho da casca do ovo. Combina com a cor que você escolheu no perfil.']
+  ['ninho', 'Ninhos', 'Onde o seu ovo fica e, depois que ela nasce, a sua criatura. Aparece na trilha, no perfil e no ranking.'],
+  ['casca', 'Cascas', 'O desenho da casca. Depois que a criatura nasce, os pedaços da casca ficam do lado dela.']
 ];
 
-function aparencia(equipado, extra = {}) {
-  return { animar: false, cor: sessao.usuario?.avatar, ninho: equipado.ninho, casca: equipado.casca, ...extra };
+function aparencia(dados, extra = {}) {
+  return { animar: false, cor: sessao.usuario?.avatar, ninho: dados.equipado.ninho, casca: dados.equipado.casca,
+    especie: dados.criatura?.especie, forma: dados.forma, ...extra };
+}
+
+const FORMA_DO_ITEM = { 'evolucao-2': 2, 'evolucao-3': 3 };
+
+function nomeDoItem(item, dados) {
+  if (item.categoria !== 'evolucao' || !dados.criatura) return item.nome;
+  return `Evoluir para ${dados.criatura.formas[FORMA_DO_ITEM[item.id] - 1]}`;
 }
 
 function vitrineDoItem(item, dados) {
   if (item.categoria === 'escudo') return el('div', { className: 'loja-icone' }, icone('escudo', { tamanho: 56 }));
-  const previa = { ninho: dados.equipado.ninho, casca: dados.equipado.casca, [item.categoria]: item.id };
+  if (item.categoria === 'evolucao') {
+    const especie = dados.criatura?.especie;
+    return el('div', { className: 'loja-previa loja-previa-criatura' }, especie
+      ? criarCriatura(especie, { forma: FORMA_DO_ITEM[item.id], rotulo: nomeDoItem(item, dados) })
+      : criarCriatura('exploradora', { silhueta: true, rotulo: 'Criatura que ainda não nasceu' }));
+  }
+  const previa = { ...dados, equipado: { ...dados.equipado, [item.categoria]: item.id } };
   return el('div', { className: 'loja-previa' }, criarOvo(dados.ovo, aparencia(previa)));
 }
 
 function botaoDoItem(item, agir) {
+  if (item.categoria === 'evolucao' && item.possui) return null;
   if (item.categoria !== 'escudo' && item.possui) {
     return item.equipado
       ? el('button', { type: 'button', className: 'botao secundario pequeno', onclick: () => agir(() => api.equipar(item.categoria, null), `${item.nome} guardado.`) }, 'Tirar')
       : el('button', { type: 'button', className: 'botao contorno-verde pequeno', onclick: () => agir(() => api.equipar(item.categoria, item.id), `Agora seu ovo usa: ${item.nome}.`) }, 'Usar');
   }
   return el('button', { type: 'button', className: 'botao pequeno', disabled: !item.pode_comprar,
-    onclick: () => agir(() => api.comprar(item.id), `Você comprou: ${item.nome}!`) },
+    onclick: () => agir(() => api.comprar(item.id), `Você comprou: ${nomeDoItem(item, dados)}!`) },
     icone('moeda', { tamanho: 18 }), `${item.preco}`);
 }
 
 function cartaoItem(item, dados, agir) {
   const situacao = item.equipado ? el('span', { className: 'selo-item selo-uso' }, 'Em uso')
+    : item.possui && item.categoria === 'evolucao' ? el('span', { className: 'selo-item selo-uso' }, 'Evoluiu!')
     : item.possui && item.categoria !== 'escudo' ? el('span', { className: 'selo-item' }, 'Seu')
     : item.motivo ? el('span', { className: 'motivo-item' }, item.motivo) : null;
   return el('li', { className: `item-loja${item.equipado ? ' item-equipado' : ''}${!item.pode_comprar && !item.possui ? ' item-travado' : ''}` },
     vitrineDoItem(item, dados),
     el('div', { className: 'item-texto' },
-      el('h3', {}, item.nome),
+      el('h3', {}, nomeDoItem(item, dados)),
       el('p', { className: 'texto-2' }, item.descricao),
       situacao),
     botaoDoItem(item, agir));
@@ -50,7 +67,7 @@ function cartaoItem(item, dados, agir) {
 
 function conteudo(dados, agir, aviso) {
   const topo = el('section', { className: 'loja-topo' },
-    el('div', { className: 'loja-palco' }, criarOvo(dados.ovo, { ...aparencia(dados.equipado), animar: true })),
+    el('div', { className: 'loja-palco' }, criarOvo(dados.ovo, { ...aparencia(dados), animar: true })),
     el('div', { className: 'loja-saldo' },
       el('p', { className: 'saldo-numero' }, icone('moeda', { tamanho: 32 }), el('span', {}, String(dados.saldo)), el('small', {}, 'bytes')),
       el('p', { className: 'texto-2' },
@@ -82,6 +99,7 @@ export async function paginaLoja() {
     try {
       dados = await pedido();
       if (sessao.usuario) Object.assign(sessao.usuario, dados.equipado); // o ovo da trilha já aparece com o item
+      if (trilha.criatura) trilha.criatura.forma = dados.forma;
       trilha.jogador.sequencia.escudos = dados.escudos;
       lateral.replaceChildren(cartaoJogador({ ...trilha.jogador, bytes: dados.saldo }));
       desenhar(sucesso);
@@ -92,6 +110,6 @@ export async function paginaLoja() {
   desenhar();
   return layoutApp(el('div', { className: 'pagina-loja' },
     el('h1', { className: 'titulo-pagina' }, 'Lojinha'),
-    el('p', { className: 'texto-2' }, 'Gaste seus bytes para deixar o ovo com a sua cara. A loja não vende XP, dica nem resposta.'),
+    el('p', { className: 'texto-2' }, 'Gaste seus bytes para evoluir sua criatura e deixar o ovo com a sua cara. A loja não vende XP, dica nem resposta.'),
     area), { ativo: 'loja', lateral: [lateral] });
 }

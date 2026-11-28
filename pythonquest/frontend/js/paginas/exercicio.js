@@ -51,10 +51,11 @@ function mostrarEvolucaoDoOvo(ovo, criatura = null) {
     titulo: 'Módulo concluído!',
     conteudo: el('div', { className: 'evolucao' }, palco,
       el('p', { className: 'ovo-nome' }, criatura ? `Nasceu: ${criatura.nome}!` : ESTAGIOS[estagio].nome),
-      el('p', {}, criatura ? criatura.frase : ESTAGIOS[estagio].frase)),
+      el('p', {}, criatura ? criatura.frase : ESTAGIOS[estagio].frase),
+      criatura ? el('p', { className: 'texto-2' }, 'Continue estudando para ganhar bytes e evoluir sua criatura na lojinha.') : null),
     acoes: [el('button', { className: 'botao', type: 'button', onclick: () => modal.fechar() }, 'Continuar')]
   });
-  setTimeout(() => { palco.replaceChildren(criarOvo(ovo.para, { cor: sessao.usuario?.avatar, ninho: sessao.usuario?.ninho, casca: sessao.usuario?.casca, especie: criatura?.especie })); palco.classList.add('ovo-mudou'); soltarConfete(70); }, 900);
+  setTimeout(() => { palco.replaceChildren(criarOvo(ovo.para, { cor: sessao.usuario?.avatar, ninho: sessao.usuario?.ninho, casca: sessao.usuario?.casca, especie: criatura?.especie, forma: criatura?.forma })); palco.classList.add('ovo-mudou'); soltarConfete(70); }, 900);
 }
 
 export async function paginaExercicio(id) {

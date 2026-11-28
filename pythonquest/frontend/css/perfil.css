@@ -192,3 +192,5 @@ details summary{cursor:pointer;font-weight:700}
   .grade-loja{grid-template-columns:1fr 1fr}
   .item-loja{padding:10px}
 }
+.loja-previa-criatura svg{height:80px;width:auto}
+.loja-palco .criatura{width:110px;height:auto}

@@ -7,7 +7,7 @@ from app.modelos import Modulo, Usuario
 from app.servicos.autenticacao import exigir_aluno
 from app.rotas.perfil import ovos_das_turmas
 from app.servicos.criatura import criatura_do_aluno
-from app.servicos.loja import forma_da_criatura, saldo
+from app.servicos.loja import saldo
 from app.servicos.jogador import resumo_jogador
 from app.servicos.progressao import estado_da_trilha, estagio_do_ovo, proximo_exercicio
 
@@ -17,6 +17,8 @@ rotas = APIRouter(prefix="/api", tags=["trilha"])
 @rotas.get("/trilha")
 def trilha(aluno: Usuario = Depends(exigir_aluno), sessao: Session = Depends(obter_sessao)) -> dict:
     modulos = estado_da_trilha(sessao, aluno.id)
+    criatura = criatura_do_aluno(sessao, aluno)
+    sessao.commit()  # se o ovo de quem já tinha concluído a sala 1 chocou agora, a espécie fica gravada
     return {
         "modulos": [{
             "id": m.modulo.id, "ordem": m.modulo.ordem, "titulo": m.modulo.titulo,
@@ -30,8 +32,7 @@ def trilha(aluno: Usuario = Depends(exigir_aluno), sessao: Session = Depends(obt
         "ovo": {"estagio": estagio_do_ovo(sessao, aluno.id), "estagios": len(modulos)},
         "proximo_exercicio": proximo_exercicio(sessao, aluno.id),
         "jogador": {**resumo_jogador(sessao, aluno.id), "bytes": saldo(sessao, aluno.id)},
-        "forma": forma_da_criatura(sessao, aluno.id),
-        "criatura": criatura_do_aluno(sessao, aluno),
+        "criatura": criatura,
         "ovos_turma": ovos_das_turmas(sessao, aluno.id),
         "resumo": {
             "exercicios_concluidos": sum(m.concluidos for m in modulos),

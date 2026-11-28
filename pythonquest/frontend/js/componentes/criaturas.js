@@ -13,8 +13,26 @@ const sombra = (cx, rx) => ['ellipse', { cx, cy: 61, rx, ry: 2.2, fill: L, opaci
 
 export const CRIATURAS = {
   certeira: {
+    nomes: ['Strixel', 'Strixar', 'Strixion'],
     nome: 'Strixel', tipo: 'Precisão', corTipo: '#38bdf8', habilidade: 'Mira Binária',
     tema: 'Ave de rapina com circuitos nas asas. Calcula tudo antes de agir e quase nunca erra o alvo.',
+    /* evolucoes[0] = forma 2, evolucoes[1] = forma final (somada à 2). atras = desenhado antes do corpo. */
+    evolucoes: [
+      { atras: [
+        ['path', { d: 'M21 30 L3 40 L9 41 L2 48 L12 47 L8 54 L21 46 Z', fill: '#1e2a44', ...C }],
+        ['path', { d: 'M43 30 L61 40 L55 41 L62 48 L52 47 L56 54 L43 46 Z', fill: '#1e2a44', ...C }],
+        ['path', { d: 'M7 44 h5 M57 44 h-5', stroke: '#22d3ee', 'stroke-width': 1.3 }]
+      ], frente: [
+        ['path', { d: 'M27 10 L24 0 L30 6 L32 -3 L34 6 L40 0 L37 10 Z', fill: '#22d3ee', ...C, 'stroke-width': 1.5 }],
+        ['path', { d: 'M23 18.5 h18', stroke: '#22d3ee', 'stroke-width': 0.9, opacity: 0.9 }]
+      ] },
+      { atras: [], frente: [
+        ['circle', { cx: 32, cy: -4, r: 4.5, fill: 'none', stroke: '#facc15', 'stroke-width': 1.4 }],
+        ['path', { d: 'M32 -10.5 v3.5 M32 -1 v3.5 M25.5 -4 h3.5 M35 -4 h3.5', stroke: '#facc15', 'stroke-width': 1.4 }],
+        ['circle', { cx: 32, cy: -4, r: 1, fill: '#facc15' }],
+        ['path', { d: 'M26 30 C24 40 26 50 32 53 C38 50 40 40 38 30', fill: 'none', stroke: '#facc15', 'stroke-width': 1.2, opacity: 0.8 }]
+      ] }
+    ],
     formas: [
       sombra(32, 14),
       ['path', { d: 'M26 50 L21 62 L29 56 L32 62 L35 56 L43 62 L38 50 Z', fill: '#26324d', ...C }],
@@ -39,8 +57,25 @@ export const CRIATURAS = {
     ]
   },
   persistente: {
+    nomes: ['Loopadon', 'Loopagor', 'Infiloop'],
     nome: 'Loopadon', tipo: 'Rocha', corTipo: '#a8a29e', habilidade: 'Tenta de Novo',
     tema: 'Fera blindada com uma runa de laço no casco. Cada erro deixa a armadura mais forte.',
+    evolucoes: [
+      { atras: [
+        ['path', { d: 'M25 28 l3 -13 l4 12 Z M35 26 l4 -14 l3 13 Z M45 28 l5 -11 l1 12 Z', fill: '#a8a29e', ...C, 'stroke-width': 1.6 }]
+      ], frente: [
+        ['path', { d: 'M20 51 h1.5 M30 52 h1.5 M43 52 h1.5 M52 51 h1.5', stroke: '#34d399', 'stroke-width': 2.4, 'stroke-linecap': 'round' }],
+        ['path', { d: 'M12 29 L13 19 L17 28 Z', fill: '#e7e5e4', ...C, 'stroke-width': 1.5 }],
+        ['path', { d: 'M15 44 C25 47 47 47 57 44', fill: 'none', stroke: '#34d399', 'stroke-width': 1.3, opacity: 0.8 }]
+      ] },
+      { atras: [
+        ['ellipse', { cx: 36, cy: 38, rx: 30, ry: 9, fill: 'none', stroke: '#34d399', 'stroke-width': 1.4, 'stroke-dasharray': '3 3', opacity: 0.7 }]
+      ], frente: [
+        ['path', { d: 'M29 24 l2 -10 l3 9 Z M38 22 l3 -12 l3 12 Z M47 25 l3 -9 l1.5 9 Z', fill: '#34d399', ...C, 'stroke-width': 1.4 }],
+        ['path', { d: 'M40.5 13 l0.5 -3 M39 16 l1 -1', stroke: '#d1fae5', 'stroke-width': 1, 'stroke-linecap': 'round' }],
+        ['circle', { cx: 62, cy: 36, r: 1.6, fill: '#34d399' }], ['circle', { cx: 8, cy: 52, r: 1.3, fill: '#34d399' }]
+      ] }
+    ],
     formas: [
       sombra(34, 24),
       ['rect', { x: 17, y: 45, width: 7, height: 13, rx: 2, fill: '#44403c', ...C }],
@@ -66,8 +101,26 @@ export const CRIATURAS = {
     ]
   },
   exploradora: {
+    nomes: ['Pyrrax', 'Pyrrazor', 'Pyrrathon'],
     nome: 'Pyrrax', tipo: 'Fogo', corTipo: '#f97316', habilidade: 'Além do Mapa',
     tema: 'Serpente-dragão com corpo de python. Não fica no caminho obrigatório: vai atrás dos desafios extras.',
+    evolucoes: [
+      { atras: [
+        ['path', { d: 'M38 27 L18 16 L24 25 L12 28 L33 34 Z', fill: '#b91c1c', ...C }]
+      ], frente: [
+        ['path', { d: 'M41 24 q-6 -1 -5 -7 q2 3 5 3 q-3 -5 1 -9 q1 5 4 6 q0 -4 3 -6 q0 6 -2 9 Z', fill: '#f97316', ...C, 'stroke-width': 1.4, transform: 'translate(-3 9)' }],
+        ['path', { d: 'M15 56 C5 61 1 51 6 46 C6 51 10 52 10 48 C13 51 17 53 15 56 Z', fill: '#f97316', ...C, 'stroke-width': 1.5 }],
+        ['path', { d: 'M12.5 55 C9 55.5 7.5 52 8.5 50.5 C9.5 52.5 12 53 12.5 55 Z', fill: '#fde047' }]
+      ] },
+      { atras: [
+        ['path', { d: 'M44 30 L64 6 L61 18 L66 17 L52 35 Z', fill: '#7f1d1d', ...C }]
+      ], frente: [
+        ['path', { d: 'M36 7 L33 -3 L38 2 L40 -6 L43 1 L47 -4 L46 5 Z', fill: '#fde047', ...C, 'stroke-width': 1.4 }],
+        ['path', { d: 'M38 4 L40 -1 L42 3', fill: '#f97316' }],
+        ['circle', { cx: 25, cy: 36, r: 1.2, fill: '#fbbf24' }], ['circle', { cx: 58, cy: 30, r: 1, fill: '#fbbf24' }],
+        ['circle', { cx: 5, cy: 42, r: 1.1, fill: '#f97316' }]
+      ] }
+    ],
     formas: [
       sombra(32, 20),
       ['path', { d: 'M39 29 L23 11 L27 22 L16 21 L32 33 Z', fill: '#7f1d1d', ...C }],
@@ -89,8 +142,25 @@ export const CRIATURAS = {
     ]
   },
   independente: {
+    nomes: ['Synthra', 'Synthrax', 'Synthrael'],
     nome: 'Synthra', tipo: 'Sombra', corTipo: '#a78bfa', habilidade: 'Sem Dicas',
     tema: 'Felino das sombras com a cauda em chaves { }. Resolve tudo sozinho e em silêncio.',
+    evolucoes: [
+      { atras: [
+        ['path', { d: 'M23 37 L9 28 L13 38 L6 40 L21 45 Z', fill: '#4c1d95', ...C, 'stroke-width': 1.6 }],
+        ['path', { d: 'M41 37 L55 28 L51 38 L58 40 L43 45 Z', fill: '#4c1d95', ...C, 'stroke-width': 1.6 }]
+      ], frente: [
+        ['path', { d: 'M29.5 13.5 a3.2 3.2 0 1 0 5 0 a2.4 2.4 0 1 1 -5 0 Z', fill: '#e879f9', stroke: L, 'stroke-width': 0.8 }],
+        ['path', { d: 'M22 27 l-3 2 M42 27 l3 2', stroke: '#c084fc', 'stroke-width': 1.4, 'stroke-linecap': 'round' }]
+      ] },
+      { atras: [
+        ['circle', { cx: 32, cy: 22, r: 17, fill: 'none', stroke: '#a78bfa', 'stroke-width': 1.2, 'stroke-dasharray': '1.5 3', opacity: 0.8 }]
+      ], frente: [
+        ['text', { x: 2, y: 22, 'font-size': 13, 'font-family': 'monospace', 'font-weight': 700, fill: '#c084fc' }, '{'],
+        ['text', { x: 55, y: 14, 'font-size': 11, 'font-family': 'monospace', 'font-weight': 700, fill: '#c084fc', opacity: 0.8 }, '}'],
+        ['path', { d: 'M24 2 L32 -6 L40 2 L36 0 L32 -2 L28 0 Z', fill: '#c084fc', ...C, 'stroke-width': 1.3 }]
+      ] }
+    ],
     formas: [
       sombra(32, 14),
       ...tubo('M42 54 C52 54 54 47 51 42 C49 38 52 34 55 34', '#312e81', 4),
@@ -116,8 +186,24 @@ export const CRIATURAS = {
     ]
   },
   constante: {
+    nomes: ['Commitix', 'Commitor', 'Mergeon'],
     nome: 'Commitix', tipo: 'Elétrico', corTipo: '#facc15', habilidade: 'Commit Diário',
     tema: 'Vespa blindada com antenas de raio que terminam em commits. Um pouco por dia, sem pular nenhum.',
+    evolucoes: [
+      { atras: [
+        ['path', { d: 'M31 30 C22 40 10 43 9 37 C8 32 21 30 31 30 Z', fill: '#bae6fd', ...C, opacity: 0.85 }]
+      ], frente: [
+        ['path', { d: 'M41 59 L38 65 L45 60 Z', fill: '#facc15', stroke: L, 'stroke-width': 1.2 }],
+        ['path', { d: 'M16 34 L22 33 M13 37 L19 35', stroke: '#22d3ee', 'stroke-width': 1, opacity: 0.8 }],
+        ['path', { d: 'M17 22 C15 19 15.5 16 17 14', fill: 'none', stroke: '#facc15', 'stroke-width': 1.4 }]
+      ] },
+      { atras: [], frente: [
+        ['path', { d: 'M31 2.5 C36 1 38 -2 39 -5 M23 1.5 C27 -3 34 -6 39 -5', fill: 'none', stroke: '#00b312', 'stroke-width': 1.6 }],
+        ['circle', { cx: 39, cy: -5, r: 2.4, fill: '#facc15', stroke: L, 'stroke-width': 1.2 }],
+        ['path', { d: 'M52 30 L48 36 L52 36 L48 42', fill: 'none', stroke: '#facc15', 'stroke-width': 1.6, 'stroke-linejoin': 'round' }],
+        ['path', { d: 'M8 46 L5 50 L8 50 L5 54', fill: 'none', stroke: '#facc15', 'stroke-width': 1.4, 'stroke-linejoin': 'round' }]
+      ] }
+    ],
     formas: [
       sombra(34, 12),
       ['path', { d: 'M28 24 C18 10 4 10 6 18 C8 24 20 26 28 26 Z', fill: '#bae6fd', ...C, opacity: 0.9 }],
@@ -149,26 +235,53 @@ function forma(alvo, [tag, atributos, texto]) {
   alvo.appendChild(no);
 }
 
-/* Pedaços de casca no chão, com as manchas na cor que o aluno escolheu. */
-function casca(alvo, corMancha) {
-  [['path', { d: 'M1 63 L2 55 L5 57.5 L7 53 L10 56.5 L12 54 L13 63 Z', fill: '#f3f3f3', ...C }],
-    ['path', { d: 'M51 63 L52 54 L54.5 57 L57 52.5 L59.5 56 L62 54.5 L63 63 Z', fill: '#f3f3f3', ...C }],
-    ['rect', { x: 5.5, y: 59, width: 2.4, height: 2, fill: corMancha }],
+/* Pedaços de casca no chão, com as manchas na cor que o aluno escolheu e o desenho da casca comprada na loja. */
+const ENFEITE_CASCA = {
+  'casca-listras': cor => [['path', { d: 'M2 59 h10.5 M52 58.5 h10.5', stroke: cor, 'stroke-width': 1.6 }]],
+  'casca-binaria': () => [['text', { x: 3, y: 61.5, 'font-size': 4.5, 'font-family': 'monospace', 'font-weight': 700, fill: '#1f6f2b' }, '01'],
+    ['text', { x: 53.5, y: 61.5, 'font-size': 4.5, 'font-family': 'monospace', 'font-weight': 700, fill: '#1f6f2b' }, '10']],
+  'casca-estrelas': () => [['path', { d: 'M7 57 l0.8 1.8 l1.8 0.8 l-1.8 0.8 l-0.8 1.8 l-0.8 -1.8 l-1.8 -0.8 l1.8 -0.8 Z M57.5 57 l0.8 1.8 l1.8 0.8 l-1.8 0.8 l-0.8 1.8 l-0.8 -1.8 l-1.8 -0.8 l1.8 -0.8 Z', fill: '#f2b443' }]]
+};
+function casca(alvo, corMancha, estilo = null) {
+  const cor = estilo === 'casca-dourada' ? '#f6d365' : '#f3f3f3';
+  [['path', { d: 'M1 63 L2 55 L5 57.5 L7 53 L10 56.5 L12 54 L13 63 Z', fill: cor, ...C }],
+    ['path', { d: 'M51 63 L52 54 L54.5 57 L57 52.5 L59.5 56 L62 54.5 L63 63 Z', fill: cor, ...C }]].forEach(f => forma(alvo, f));
+  if (ENFEITE_CASCA[estilo]) ENFEITE_CASCA[estilo](corMancha).forEach(f => forma(alvo, f));
+  else if (estilo !== 'casca-dourada') [['rect', { x: 5.5, y: 59, width: 2.4, height: 2, fill: corMancha }],
     ['rect', { x: 56, y: 58.5, width: 2.4, height: 2, fill: corMancha }]].forEach(f => forma(alvo, f));
 }
 
-export function criarCriatura(especie, { silhueta = false, comCasca = false, corMancha = '#00b312', rotulo } = {}) {
+/* Brilho atrás da forma final, na cor do tipo. */
+function aura(alvo, cor) {
+  forma(alvo, ['ellipse', { cx: 32, cy: 30, rx: 33, ry: 33, fill: cor, opacity: 0.16 }]);
+  [[4, 8], [60, 4], [62, 50], [2, 30]].forEach(([x, y]) =>
+    forma(alvo, ['path', { d: `M${x} ${y - 3} L${x + 1} ${y - 1} L${x + 3} ${y} L${x + 1} ${y + 1} L${x} ${y + 3} L${x - 1} ${y + 1} L${x - 3} ${y} L${x - 1} ${y - 1} Z`, fill: cor }]));
+}
+
+/* forma: 1 = acabou de nascer, 2 e 3 = evoluções compradas na lojinha (o servidor diz qual). */
+export function nomeDaCriatura(especie, formaAtual = 1) {
   const criatura = CRIATURAS[especie] || CRIATURAS.exploradora;
+  return criatura.nomes[Math.min(Math.max(formaAtual, 1), 3) - 1];
+}
+
+export function criarCriatura(especie, { silhueta = false, comCasca = false, corMancha = '#00b312', estiloCasca = null, rotulo, forma: nivelForma = 1 } = {}) {
+  const criatura = CRIATURAS[especie] || CRIATURAS.exploradora;
+  const extras = criatura.evolucoes.slice(0, Math.max(0, Math.min(nivelForma, 3) - 1));
   const svg = document.createElementNS(SVG, 'svg');
   svg.setAttribute('viewBox', '-1 -3 66 67');
+  // as evoluções têm o corpo do mesmo tamanho e os enfeites (asas, coroa, aura) saem um pouco para fora da caixa
+  if (extras.length) svg.setAttribute('overflow', 'visible');
   svg.setAttribute('role', 'img');
-  svg.setAttribute('aria-label', rotulo || (silhueta ? 'Criatura em formação' : criatura.nome));
-  svg.classList.add('criatura');
+  svg.setAttribute('aria-label', rotulo || (silhueta ? 'Criatura em formação' : nomeDaCriatura(especie, nivelForma)));
+  svg.classList.add('criatura', `criatura-forma-${extras.length + 1}`);
   if (silhueta) svg.classList.add('silhueta');
   const corpo = document.createElementNS(SVG, 'g');
   corpo.setAttribute('class', 'criatura-corpo');
+  if (extras.length === 2 && !silhueta) aura(corpo, criatura.corTipo);
+  extras.forEach(e => e.atras.forEach(f => forma(corpo, f)));
   criatura.formas.forEach(f => forma(corpo, f));
+  extras.forEach(e => e.frente.forEach(f => forma(corpo, f)));
   svg.appendChild(corpo);
-  if (comCasca) casca(svg, corMancha);
+  if (comCasca) casca(svg, corMancha, estiloCasca);
   return svg;
 }

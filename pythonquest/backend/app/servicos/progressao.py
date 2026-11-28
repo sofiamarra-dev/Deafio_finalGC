@@ -5,7 +5,8 @@
 - Os Intermediário abrem (também em ordem) depois de todos os Fácil.
 - Os Avançado abrem todos juntos depois de todos os Intermediário.
 - Módulo concluído = todos os Fácil + todos os Intermediário + o desafio final.
-- O ovo evolui um estágio por módulo concluído.
+- O ovo racha a cada exercício feito na primeira sala e choca quando ela é concluída (estágio 6 = nasceu).
+  Depois disso a criatura evolui na lojinha.
 """
 from dataclasses import dataclass, field
 
@@ -122,9 +123,22 @@ def proximo_exercicio(sessao: Session, aluno_id: int) -> str | None:
     return opcional
 
 
+ESTAGIO_NASCEU = 6
+SALAS_PARA_CHOCAR = 1
+
+
 def estagio_do_ovo(sessao: Session, aluno_id: int) -> int:
-    return sessao.scalar(select(func.count()).select_from(ProgressoModulo)
-                         .where(ProgressoModulo.aluno_id == aluno_id)) or 0
+    """0 a 5 = rachaduras, pelos exercícios concluídos da primeira sala; 6 = a criatura nasceu (sala 1 concluída)."""
+    salas = sessao.scalar(select(func.count()).select_from(ProgressoModulo)
+                          .where(ProgressoModulo.aluno_id == aluno_id)) or 0
+    if salas >= SALAS_PARA_CHOCAR:
+        return ESTAGIO_NASCEU
+    primeira = sessao.scalar(select(Modulo.id).order_by(Modulo.ordem).limit(1))
+    ids = set(sessao.scalars(select(Exercicio.id).where(Exercicio.modulo_id == primeira))) if primeira else set()
+    if not ids:
+        return 0
+    feitos = len(ids & exercicios_concluidos(sessao, aluno_id))
+    return min(ESTAGIO_NASCEU - 1, feitos * (ESTAGIO_NASCEU - 1) // len(ids))
 
 
 def registrar_conclusao_do_modulo(sessao: Session, aluno_id: int, modulo_id: str) -> bool:

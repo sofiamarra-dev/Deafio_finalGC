@@ -25,3 +25,17 @@ def test_nao_equipa_o_que_nao_tem_e_evolucao_exige_criatura(aluno):
     itens = {i["id"]: i for i in aluno.get("/api/loja").json()["itens"]}
     assert itens["evolucao-2"]["motivo"] == "Sua criatura ainda não nasceu."
     assert aluno.post("/api/loja/comprar", json={"item_id": "dica-gratis"}).status_code == 409
+
+
+def test_ovo_choca_na_sala_1_e_a_loja_evolui_a_criatura(aluno):
+    from testes.test_trilha_e_permissoes import OBRIGATORIOS_MODULO_1
+    for exercicio in OBRIGATORIOS_MODULO_1:
+        _resolver(aluno, exercicio)
+    trilha = aluno.get("/api/trilha").json()
+    assert trilha["ovo"]["estagio"] == 6 and trilha["criatura"]["situacao"] == "nasceu"
+    nomes = trilha["criatura"]["formas"]
+    assert trilha["criatura"]["nome"] == nomes[0]
+    itens = {i["id"]: i for i in aluno.get("/api/loja").json()["itens"]}
+    # nasceu, mas a evolução ainda pede nível e bytes (conferidos no servidor)
+    assert itens["evolucao-2"]["motivo"] != "Sua criatura ainda não nasceu."
+    assert itens["evolucao-3"]["motivo"] in ("Precisa da forma 2 antes.",) or itens["evolucao-3"]["motivo"].startswith("Libera")

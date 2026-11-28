@@ -8,28 +8,30 @@ Cinco traços, cada um de 0 a 100, calculados a partir do que está gravado (env
 - constante: estuda em dias diferentes, um pouco por vez
 
 Enquanto o ovo não eclode, a criatura "em formação" é a do traço mais forte e pode mudar.
-Quando o ovo eclode (última sala concluída), a espécie fica gravada para sempre."""
+Quando o ovo eclode (primeira sala concluída), a espécie fica gravada para sempre.
+Depois ela evolui na lojinha: forma 1 (nasceu), forma 2 e forma final, cada uma com um nome."""
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.modelos import Envio, Exercicio, Matricula, ProgressoExercicio, ProgressoModulo, Usuario
+from app.modelos import Compra, Envio, Exercicio, Matricula, ProgressoExercicio, ProgressoModulo, Usuario
 from app.servicos.jogador import dia_local
 
 ESPECIES = {
-    "certeira": {"nome": "Strixel", "traco": "Certeira", "tipo": "Precisão", "habilidade": "Mira Binária",
+    "certeira": {"formas": ["Strixel", "Strixar", "Strixion"], "nome": "Strixel", "traco": "Certeira", "tipo": "Precisão", "habilidade": "Mira Binária",
                  "frase": "Calcula tudo antes de agir e quase nunca erra o alvo."},
-    "persistente": {"nome": "Loopadon", "traco": "Persistente", "tipo": "Rocha", "habilidade": "Tenta de Novo",
+    "persistente": {"formas": ["Loopadon", "Loopagor", "Infiloop"], "nome": "Loopadon", "traco": "Persistente", "tipo": "Rocha", "habilidade": "Tenta de Novo",
                     "frase": "Cada erro deixa a armadura mais forte. Não desiste até passar nos testes."},
-    "exploradora": {"nome": "Pyrrax", "traco": "Exploradora", "tipo": "Fogo", "habilidade": "Além do Mapa",
+    "exploradora": {"formas": ["Pyrrax", "Pyrrazor", "Pyrrathon"], "nome": "Pyrrax", "traco": "Exploradora", "tipo": "Fogo", "habilidade": "Além do Mapa",
                     "frase": "Não fica só no caminho obrigatório: vai atrás dos desafios extras."},
-    "independente": {"nome": "Synthra", "traco": "Independente", "tipo": "Sombra", "habilidade": "Sem Dicas",
+    "independente": {"formas": ["Synthra", "Synthrax", "Synthrael"], "nome": "Synthra", "traco": "Independente", "tipo": "Sombra", "habilidade": "Sem Dicas",
                      "frase": "Resolve tudo sozinho e em silêncio, quase sem pedir dica."},
-    "constante": {"nome": "Commitix", "traco": "Constante", "tipo": "Elétrico", "habilidade": "Commit Diário",
+    "constante": {"formas": ["Commitix", "Commitor", "Mergeon"], "nome": "Commitix", "traco": "Constante", "tipo": "Elétrico", "habilidade": "Commit Diário",
                   "frase": "Um pouco por dia, sem pular nenhum."},
 }
 ORDEM = list(ESPECIES)  # desempate: a ordem acima
 MINIMO_EXERCICIOS = 3
-ESTAGIO_ECLOSAO = 6
+ESTAGIO_ECLOSAO = 6  # ovo da turma: estágio em que ele eclode
+SALAS_PARA_CHOCAR = 1  # ovo do aluno: choca ao concluir a primeira sala
 
 
 def tracos(sessao: Session, aluno_id: int) -> dict:
@@ -64,24 +66,36 @@ def especie_dominante(valores: dict) -> str:
     return max(ORDEM, key=lambda t: (valores[t], -ORDEM.index(t)))
 
 
+def forma_da_criatura(sessao: Session, aluno_id: int) -> int:
+    """1 = acabou de nascer; 2 e 3 = evoluções compradas na lojinha."""
+    feitas = set(sessao.scalars(select(Compra.item_id).where(Compra.aluno_id == aluno_id)))
+    return 3 if "evolucao-3" in feitas else 2 if "evolucao-2" in feitas else 1
+
+
 def criatura_do_aluno(sessao: Session, aluno: Usuario) -> dict:
     dados = tracos(sessao, aluno.id)
     estagio = sessao.scalar(select(func.count()).select_from(ProgressoModulo).where(ProgressoModulo.aluno_id == aluno.id)) or 0
+    if estagio >= SALAS_PARA_CHOCAR and not aluno.criatura:
+        aluno.criatura = especie_dominante(dados["valores"])  # quem já tinha concluído a sala antes desta regra
     if aluno.criatura:
         especie, situacao = aluno.criatura, "nasceu"
     elif dados["feitos"] < MINIMO_EXERCICIOS:
         especie, situacao = None, "cedo"
     else:
         especie, situacao = especie_dominante(dados["valores"]), "formando"
-    return {"situacao": situacao, "especie": especie, **(ESPECIES[especie] if especie else {}),
+    forma = forma_da_criatura(sessao, aluno.id) if situacao == "nasceu" else 1
+    info = dict(ESPECIES[especie]) if especie else {}
+    if info:
+        info["nome"] = info["formas"][forma - 1]
+    return {"situacao": situacao, "especie": especie, "forma": forma, **info,
             "tracos": [{"id": t, "nome": ESPECIES[t]["traco"], "valor": dados["valores"][t]} for t in ORDEM],
             "estagio": estagio, "minimo": MINIMO_EXERCICIOS, "feitos": dados["feitos"]}
 
 
 def fixar_se_eclodiu(sessao: Session, aluno: Usuario) -> None:
-    """Chamado quando uma sala é concluída: se foi a última, a espécie fica gravada."""
+    """Chamado quando uma sala é concluída: na primeira, o ovo choca e a espécie fica gravada."""
     estagio = sessao.scalar(select(func.count()).select_from(ProgressoModulo).where(ProgressoModulo.aluno_id == aluno.id)) or 0
-    if estagio >= ESTAGIO_ECLOSAO and not aluno.criatura:
+    if estagio >= SALAS_PARA_CHOCAR and not aluno.criatura:
         aluno.criatura = especie_dominante(tracos(sessao, aluno.id)["valores"])
 
 

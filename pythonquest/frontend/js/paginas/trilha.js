@@ -196,7 +196,7 @@ function colunaDireita(dados) {
     cartaoJogador(dados.jogador),
     el('section', { className: 'cartao cartao-ovo' },
       el('h2', {}, 'Seu ovo'),
-      el('div', { className: 'ovo-palco' }, criarOvo(ovo.estagio, { cor: sessao.usuario?.avatar, ninho: sessao.usuario?.ninho, casca: sessao.usuario?.casca, especie: dados.criatura.especie })),
+      el('div', { className: 'ovo-palco' }, criarOvo(ovo.estagio, { cor: sessao.usuario?.avatar, ninho: sessao.usuario?.ninho, casca: sessao.usuario?.casca, especie: dados.criatura.especie, forma: dados.criatura.forma })),
       el('p', { className: 'ovo-nome' }, ESTAGIOS[Math.min(ovo.estagio, ESTAGIOS.length - 1)].nome),
       el('p', { className: 'ovo-frase' }, ESTAGIOS[Math.min(ovo.estagio, ESTAGIOS.length - 1)].frase),
       el('a', { className: 'ovo-criatura', href: '#perfil' }, fraseDaCriatura(dados.criatura)),

@@ -49,13 +49,16 @@ def ranking(sessao: Session, aluno_id: int, escopo: str) -> dict:
     # quem ainda não ganhou XP (no período) não enche o ranking; só a própria pessoa se vê mesmo com 0
     linhas = [l for l in linhas if l.xp > 0 or l.Usuario.id == aluno_id]
     linhas.sort(key=lambda l: (-l.xp, l.Usuario.id))
-    estagios = dict(sessao.execute(select(ProgressoModulo.aluno_id, func.count()).group_by(ProgressoModulo.aluno_id)).all())
+    from app.servicos.criatura import forma_da_criatura  # aqui dentro: criatura.py importa jogador.py
+    from app.servicos.progressao import estagio_do_ovo
 
     def linha(posicao, l):
         total = l.xp if escopo != "semana" else xp_total(sessao, l.Usuario.id)
         return {"posicao": posicao, "id": l.Usuario.id, "nome": nome_exibido(l.Usuario), "cor": l.Usuario.avatar,
                 "ninho": l.Usuario.ninho, "casca": l.Usuario.casca,
-                "xp": int(l.xp), "nivel": nivel_de(int(total)), "ovo": estagios.get(l.Usuario.id, 0),
+                "xp": int(l.xp), "nivel": nivel_de(int(total)), "ovo": estagio_do_ovo(sessao, l.Usuario.id),
+                "especie": l.Usuario.criatura,
+                "forma": forma_da_criatura(sessao, l.Usuario.id) if l.Usuario.criatura else 1,
                 "eu": l.Usuario.id == aluno_id}
 
     todas = [linha(i, l) for i, l in enumerate(linhas, start=1)]

@@ -118,3 +118,4 @@
 @media (max-width:520px){.grade-criaturas{grid-template-columns:repeat(2,1fr)}}
 .criatura-vitrine .vitrine-traco{color:var(--verde-claro);font-weight:700;margin-bottom:4px}
 .criatura-vitrine:hover .criatura-corpo{animation:criatura-pula .9s ease-in-out}
+.vitrine-evolucao{margin:-4px 0 8px;font:600 12px var(--fonte-codigo);color:var(--texto-2);letter-spacing:.3px}

@@ -19,13 +19,13 @@ const RACHADURAS = {
 };
 
 export const ESTAGIOS = [
-  { nome: 'Ovo intacto', frase: 'Todo mundo começa aqui. Conclua o primeiro módulo para ver o que acontece.' },
+  { nome: 'Ovo intacto', frase: 'Todo mundo começa aqui. Cada exercício da primeira sala racha um pouco a casca.' },
   { nome: 'Primeiras marcas', frase: 'Algo se mexeu lá dentro.' },
   { nome: 'Rachaduras', frase: 'As rachaduras estão aumentando. Falta pouco para abrir.' },
   { nome: 'Abrindo', frase: 'Dá para ver uma luz saindo pelas frestas.' },
   { nome: 'Quase lá', frase: 'Pedaços da casca estão soltos. Um olho apareceu!' },
   { nome: 'Eclodindo', frase: 'A cabeça já está para fora.' },
-  { nome: 'Eclodiu!', frase: 'Sua criatura nasceu. Ela é fruto de todo o seu estudo.' }
+  { nome: 'Eclodiu!', frase: 'Sua criatura nasceu do seu jeito de estudar. Junte bytes para evoluí-la na lojinha.' }
 ];
 
 function pixel(alvo, x, y, cor) {
@@ -89,15 +89,25 @@ function desenharCasca(grupo, estagio, mancha, casca = null) {
   if (estagio === 4 || estagio === 5) [[6, 8], [9, 8]].forEach(([x, y]) => pixel(grupo, x, y, COR.olho));
 }
 
-export { CRIATURAS, criarCriatura } from './criaturas.js';
+export { CRIATURAS, criarCriatura, nomeDaCriatura } from './criaturas.js';
 import { criarCriatura } from './criaturas.js';
 
 /* ninho e casca: ids dos itens equipados na lojinha (ou null). */
-export function criarOvo(estagio = 0, { animar = true, cor = 'verde', especie = null, ninho = null, casca = null } = {}) {
+export function criarOvo(estagio = 0, { animar = true, cor = 'verde', especie = null, ninho = null, casca = null, forma = 1 } = {}) {
   estagio = Math.max(0, Math.min(estagio, ESTAGIOS.length - 1));
   if (estagio >= 6) {
     // eclodiu: a criatura de corpo inteiro, em pé entre os pedaços da casca
-    const criatura = criarCriatura(especie || 'exploradora', { comCasca: true, corMancha: CORES_OVO[cor] || COR.mancha });
+    const criatura = criarCriatura(especie || 'exploradora', { comCasca: forma === 1 || Boolean(casca), estiloCasca: casca,
+      corMancha: CORES_OVO[cor] || COR.mancha, forma });
+    if (NINHOS[ninho]) {
+      // a criatura fica em pé no ninho: o ninho em pixel art, embaixo dos pés
+      const base = document.createElementNS(SVG, 'svg');
+      [['x', 1], ['y', 55], ['width', 62], ['height', 13], ['viewBox', '-1 17 18 5'], ['preserveAspectRatio', 'none'], ['shape-rendering', 'crispEdges']]
+        .forEach(([k, v]) => base.setAttribute(k, v));
+      desenharNinho(base, ninho);
+      criatura.querySelector('.criatura-corpo').before(base);
+      criatura.setAttribute('overflow', 'visible');
+    }
     criatura.classList.add('ovo', 'ovo-eclodido');
     if (animar) criatura.classList.add('criatura-feliz');
     return criatura;
