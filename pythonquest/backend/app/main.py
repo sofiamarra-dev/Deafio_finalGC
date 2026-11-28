@@ -29,7 +29,7 @@ def criar_app() -> FastAPI:
     @app.exception_handler(OperationalError)
     async def banco_nao_preparado(_request: Request, erro: OperationalError):
         log.error("Erro no banco: %s", erro.orig)
-        detalhe = "O banco de dados não está preparado. No terminal do servidor, rode: alembic upgrade head"
+        detalhe = "O banco de dados não está preparado. No terminal do servidor, rode: python -m alembic upgrade head"
         if "no such table" not in str(erro.orig) and "does not exist" not in str(erro.orig):
             detalhe = "Erro no banco de dados. Veja o terminal onde o servidor está rodando."
         return JSONResponse(status_code=503, content={"detail": detalhe})

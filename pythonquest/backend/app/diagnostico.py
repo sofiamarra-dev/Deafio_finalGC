@@ -13,7 +13,7 @@ def conferir_banco() -> list[str]:
         return [f"Não consegui abrir o banco de dados ({erro}). Confira URL_BANCO no .env."]
     faltando = set(Base.metadata.tables) - existentes
     if faltando:
-        return ["O banco de dados ainda não tem as tabelas. Pare o servidor (Ctrl+C) e rode: alembic upgrade head"]
+        return ["O banco de dados ainda não tem as tabelas. Pare o servidor (Ctrl+C) e rode: python -m alembic upgrade head"]
     with FabricaSessao() as sessao:
         if sessao.scalar(select(Exercicio.id).limit(1)) is None:
             return ["Não há exercícios no banco. Rode: python -m app.conteudo.importar"]
