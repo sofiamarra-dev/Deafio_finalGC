@@ -39,6 +39,7 @@ export const api = {
   sair: () => pedir('/contas/sair', { metodo: 'POST' }),
   trilha: () => pedir('/trilha'),
   turmasDoProfessor: () => pedir('/professor/turmas'),
+  criarTurma: nome => pedir('/professor/turmas', { metodo: 'POST', corpo: { nome } }),
   guia: moduloId => pedir(`/modulos/${encodeURIComponent(moduloId)}/guia`),
   exercicio: id => pedir(`/exercicios/${encodeURIComponent(id)}`),
   dica: id => pedir(`/exercicios/${encodeURIComponent(id)}/dicas`, { metodo: 'POST' }),

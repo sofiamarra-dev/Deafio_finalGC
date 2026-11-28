@@ -1,22 +1,53 @@
-/* Área do professor. O painel com as métricas da turma é a etapa 7 do plano; até lá esta página
-   diz isso claramente em vez de mostrar números que ainda não existem. */
+/* Área do professor: as turmas dele, com o código de convite, e o formulário para criar uma turma nova.
+   O painel com as métricas da turma é a etapa 7 do plano; até lá a página diz isso claramente. */
 import { el, irPara } from '../util.js';
 import { sessao } from '../estado.js';
 import { api } from '../api.js';
 import { layoutPublico } from '../componentes/layout.js';
 
+function itemTurma(turma) {
+  const copiar = el('button', { className: 'botao secundario pequeno', type: 'button', onclick: async () => {
+    try { await navigator.clipboard.writeText(turma.codigo_convite); copiar.textContent = 'Copiado!'; }
+    catch { copiar.textContent = 'Selecione e copie'; }
+    setTimeout(() => { copiar.textContent = 'Copiar código'; }, 1800);
+  } }, 'Copiar código');
+  return el('li', {},
+    el('div', {}, el('strong', {}, turma.nome), el('div', { className: 'turma-info' }, `${turma.alunos} aluno(s)`)),
+    el('div', { className: 'turma-codigo' }, el('code', {}, turma.codigo_convite), copiar));
+}
+
 export async function paginaProfessor() {
   const turmas = await api.turmasDoProfessor().catch(() => []);
+  const lista = el('ul', { className: 'turmas' }, turmas.map(itemTurma));
+  const vazio = el('p', { className: 'turma-vazio', hidden: turmas.length > 0 }, 'Você ainda não tem turmas. Crie a primeira abaixo.');
+
+  const erro = el('p', { className: 'aviso erro', role: 'alert', hidden: true });
+  const nome = el('input', { name: 'nome', required: true, minLength: 2, maxLength: 60, placeholder: 'Ex.: 3º ano B, manhã' });
+  const criar = el('button', { className: 'botao', type: 'submit' }, 'Criar turma');
+  const form = el('form', { className: 'form-turma' },
+    el('label', { className: 'campo' }, 'Nome da nova turma', nome), criar);
+  form.addEventListener('submit', async evento => {
+    evento.preventDefault();
+    erro.hidden = true; criar.disabled = true;
+    try {
+      const turma = await api.criarTurma(nome.value);
+      const item = itemTurma(turma);
+      item.classList.add('turma-nova');
+      lista.prepend(item);
+      vazio.hidden = true;
+      nome.value = '';
+    } catch (falha) { erro.textContent = falha.message; erro.hidden = false; }
+    criar.disabled = false;
+  });
+
   const sair = el('button', { className: 'botao secundario', type: 'button', onclick: async () => {
     await sessao.sair(); irPara('entrar');
   } }, 'Sair');
+
   return layoutPublico(el('section', { className: 'cartao professor-aviso' },
     el('h1', {}, `Olá, ${sessao.usuario.nome}`),
-    el('p', {}, 'O painel do professor, com o desempenho da turma, chega numa próxima etapa.'),
-    turmas.length
-      ? [el('p', {}, 'Passe o código da turma para os alunos usarem no cadastro:'),
-         el('ul', { className: 'turmas' }, turmas.map(t => el('li', {},
-           el('span', {}, `${t.nome} · ${t.alunos} aluno(s)`), el('code', {}, t.codigo_convite))))]
-      : el('p', {}, 'Você ainda não tem turmas. Crie uma com o comando python -m app.criar_professor --turma.'),
-    sair));
+    el('p', {}, 'Passe o código da turma para os alunos. Eles colocam o código no campo "Código da turma" ao criar a conta.'),
+    el('h2', {}, 'Suas turmas'), vazio, lista, form, erro,
+    el('p', { className: 'aviso' }, 'O painel com o desempenho da turma chega numa próxima etapa.'),
+    el('div', { className: 'espaco-acima' }, sair)));
 }

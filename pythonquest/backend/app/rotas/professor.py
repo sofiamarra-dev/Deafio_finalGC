@@ -1,11 +1,13 @@
-"""Rotas do professor. Por enquanto só as turmas dele (com o código de convite); o painel vem na etapa 7."""
-from fastapi import APIRouter, Depends
+"""Rotas do professor. Por enquanto as turmas dele (listar e criar); o painel vem na etapa 7."""
+from fastapi import APIRouter, Depends, status
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.db import obter_sessao
+from app.esquemas.contas import NovaTurma
 from app.modelos import Matricula, Turma, Usuario
 from app.servicos.autenticacao import exigir_professor
+from app.servicos.turmas import criar_turma
 
 rotas = APIRouter(prefix="/api/professor", tags=["professor"])
 
@@ -16,3 +18,11 @@ def minhas_turmas(professor: Usuario = Depends(exigir_professor), sessao: Sessio
         select(Turma, func.count(Matricula.id)).outerjoin(Matricula, Matricula.turma_id == Turma.id)
         .where(Turma.professor_id == professor.id).group_by(Turma.id).order_by(Turma.criada_em.desc())).all()
     return [{"id": t.id, "nome": t.nome, "codigo_convite": t.codigo_convite, "alunos": n} for t, n in linhas]
+
+
+@rotas.post("/turmas", status_code=status.HTTP_201_CREATED)
+def nova_turma(dados: NovaTurma, professor: Usuario = Depends(exigir_professor),
+               sessao: Session = Depends(obter_sessao)) -> dict:
+    turma = criar_turma(sessao, professor.id, dados.nome)
+    sessao.commit()
+    return {"id": turma.id, "nome": turma.nome, "codigo_convite": turma.codigo_convite, "alunos": 0}

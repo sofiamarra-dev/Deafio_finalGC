@@ -12,3 +12,24 @@
 .turmas li{display:flex;justify-content:space-between;gap:12px;padding:10px 14px;background:var(--superficie-2);border-radius:10px}
 .turmas code{font-size:18px;color:var(--verde-claro);letter-spacing:2px}
 @media (max-width:760px){.conta{grid-template-columns:1fr;gap:16px}.conta-ovo{display:none}}
+
+/* Seletor "Sou aluno / Sou professor" */
+.seletor-papel{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.opcao-papel{font:700 14px var(--fonte-texto);letter-spacing:.6px;text-transform:uppercase;color:var(--texto-2);cursor:pointer;
+  background:var(--superficie-2);border:2px solid var(--borda);border-radius:12px;padding:12px;box-shadow:0 4px 0 var(--cinza-botao-lado);
+  transition:transform .07s,box-shadow .07s}
+.opcao-papel:active{transform:translateY(4px);box-shadow:none}
+.opcao-papel[aria-checked="true"]{color:var(--verde-claro);border-color:var(--verde);background:var(--verde-fundo);box-shadow:0 4px 0 var(--verde-escuro)}
+
+/* Área do professor */
+.professor-aviso h2{font-size:18px;margin:24px 0 8px}
+.turmas li{align-items:center;flex-wrap:wrap}
+.turma-info{font-size:13px;color:var(--texto-2)}
+.turma-codigo{display:flex;align-items:center;gap:12px}
+.turma-nova{animation:subir .25s ease}
+.turma-vazio{color:var(--texto-2)}
+.form-turma{display:flex;gap:12px;align-items:flex-end;margin:16px 0}
+.form-turma .campo{flex:1}
+.form-turma input{font:inherit;font-size:16px;color:var(--texto);background:var(--superficie-2);border:2px solid var(--borda);border-radius:12px;padding:12px 14px;min-height:48px}
+.form-turma input:focus{border-color:var(--verde);outline:none}
+@media (max-width:560px){.form-turma{flex-direction:column;align-items:stretch}}

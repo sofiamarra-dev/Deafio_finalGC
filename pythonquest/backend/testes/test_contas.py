@@ -45,3 +45,33 @@ def test_cookie_de_sessao_e_httponly(cliente):
     r = cliente.post("/api/contas/cadastro", json={"nome": "Bia", "email": "bia@x.com", "senha": "12345678"})
     cabecalho = r.headers["set-cookie"].lower()
     assert "httponly" in cabecalho and "samesite=lax" in cabecalho
+
+
+def _cadastro_professor(cliente, codigo):
+    return cliente.post("/api/contas/cadastro", json={"nome": "Prof Nova", "email": "nova@escola.br", "senha": "12345678",
+                                                      "papel": "professor", "codigo_professor": codigo})
+
+
+def test_professor_se_cadastra_com_o_codigo_certo_e_cria_turma(cliente):
+    r = _cadastro_professor(cliente, "codigo-secreto-de-teste")
+    assert r.status_code == 201 and r.json()["papel"] == "professor"
+    turma = cliente.post("/api/professor/turmas", json={"nome": "  3º ano   B "})
+    assert turma.status_code == 201 and turma.json()["nome"] == "3º ano B"
+    assert len(turma.json()["codigo_convite"]) == 6
+    assert [t["nome"] for t in cliente.get("/api/professor/turmas").json()] == ["3º ano B"]
+
+
+def test_codigo_de_professor_errado_ou_ausente_e_recusado(cliente):
+    assert _cadastro_professor(cliente, "chute").status_code == 403
+    assert _cadastro_professor(cliente, None).status_code == 403
+    assert cliente.get("/api/contas/eu").status_code == 401
+
+
+def test_cadastro_de_professor_desligado_sem_codigo_configurado(cliente, monkeypatch):
+    from app.config import obter_configuracao
+    monkeypatch.setattr(obter_configuracao(), "codigo_professor", "")
+    assert _cadastro_professor(cliente, "").status_code == 403
+
+
+def test_aluno_nao_cria_turma(aluno):
+    assert aluno.post("/api/professor/turmas", json={"nome": "Minha"}).status_code == 403

@@ -1,23 +1,17 @@
-"""Cria uma conta de professor e uma turma com código de convite.
+"""Cria uma conta de professor e uma turma pelo terminal (alternativa ao cadastro pelo site com CODIGO_PROFESSOR).
 
     python -m app.criar_professor --nome "Ana Souza" --email ana@escola.br --turma "Turma A"
 
 A senha é pedida no terminal (não aparece na tela nem fica no histórico)."""
 import argparse
 import getpass
-import secrets
 
 from sqlalchemy import select
 
 from app.db import FabricaSessao
-from app.modelos import Turma, Usuario
+from app.modelos import Usuario
 from app.servicos import senhas
-
-LETRAS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"  # sem 0/O e 1/I, que confundem
-
-
-def gerar_codigo() -> str:
-    return "".join(secrets.choice(LETRAS) for _ in range(6))
+from app.servicos.turmas import criar_turma
 
 
 def main() -> None:
@@ -42,11 +36,8 @@ def main() -> None:
         elif professor.papel != "professor":
             raise SystemExit("Esse e-mail já pertence a um aluno.")
         if opcoes.turma:
-            codigo = gerar_codigo()
-            while sessao.scalar(select(Turma).where(Turma.codigo_convite == codigo)):
-                codigo = gerar_codigo()
-            sessao.add(Turma(nome=opcoes.turma.strip(), codigo_convite=codigo, professor_id=professor.id))
-            print(f"Turma '{opcoes.turma}' criada. Código de convite para os alunos: {codigo}")
+            turma = criar_turma(sessao, professor.id, opcoes.turma.strip())
+            print(f"Turma '{turma.nome}' criada. Código de convite para os alunos: {turma.codigo_convite}")
         sessao.commit()
 
 

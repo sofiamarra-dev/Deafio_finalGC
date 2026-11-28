@@ -18,6 +18,9 @@ class Configuracao(BaseSettings):
 
     # Login
     dias_sessao: int = 14
+    # Código que o professor digita no cadastro para criar uma conta de professor.
+    # Vazio = cadastro de professor desligado (só pelo comando app.criar_professor).
+    codigo_professor: str = ""
 
     # Corretor: "docker" (seguro, padrão) ou "local" (só desenvolvimento e testes; recusado em produção)
     corretor: Literal["docker", "local"] = "docker"

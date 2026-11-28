@@ -3,6 +3,7 @@ import os
 
 os.environ.setdefault("CORRETOR", "local")
 os.environ.setdefault("ENVIOS_POR_MINUTO", "1000")
+os.environ.setdefault("CODIGO_PROFESSOR", "codigo-secreto-de-teste")
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402

@@ -11,8 +11,9 @@ foi aprovada antes do início do desenvolvimento.
 
 Já funciona:
 
-- **Contas**: cadastro de aluno (com código de turma opcional), login, logout, sessão em cookie seguro,
-  senha com hash (scrypt), limite de tentativas de login. Professores são criados por comando.
+- **Contas**: cadastro de aluno (com código de turma opcional) e de professor (com o código de professor),
+  login, logout, sessão em cookie seguro, senha com hash (scrypt), limite de tentativas.
+  O professor cria turmas no site e recebe o código de convite de cada uma.
 - **Trilha 2D**: 6 módulos em sequência, nós clicáveis em zigue-zague com animações, desbloqueio pelas regras
   da proposta (conferidas no servidor), botão "Guia" com o resumo de cada módulo e o ovo que evolui a cada módulo concluído.
 - **Exercícios** dos módulos 1 (Fundamentos) e 2 (Condicionais), 8 em cada: múltipla escolha, completar código,
@@ -46,11 +47,11 @@ uvicorn app.main:app --reload
 
 Abra http://127.0.0.1:8000, clique em "Começar agora" e crie uma conta de aluno.
 
-Para criar um professor e uma turma (o código de convite aparece no terminal):
-
-```bash
-python -m app.criar_professor --nome "Seu Nome" --email voce@escola.br --turma "Turma A"
-```
+**Professores** criam a conta pelo próprio site: em "Criar conta", escolhem "Sou professor" e digitam o
+**código de professor**, definido em `CODIGO_PROFESSOR` no `.env`. Passe esse código só para os professores.
+Depois de entrar, o professor cria as turmas no site e recebe o código de convite de cada uma para passar aos alunos.
+Se `CODIGO_PROFESSOR` estiver vazio, o cadastro de professores pelo site fica desligado. Ainda dá para criar pelo terminal:
+`python -m app.criar_professor --nome "Seu Nome" --email voce@escola.br --turma "Turma A"`.
 
 Sem Docker, dá para testar com `CORRETOR=local` no `.env`. Ele roda o código direto no seu computador,
 então use só para desenvolver, nunca com alunos de verdade.

@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import BaseModel, Field, field_validator
 
 
@@ -6,6 +8,8 @@ class Cadastro(BaseModel):
     email: str = Field(max_length=254)
     senha: str = Field(min_length=8, max_length=128)
     codigo_turma: str | None = Field(default=None, max_length=12)
+    papel: Literal["aluno", "professor"] = "aluno"
+    codigo_professor: str | None = Field(default=None, max_length=128)
 
     @field_validator("nome")
     @classmethod
@@ -43,3 +47,15 @@ class UsuarioPublico(BaseModel):
     papel: str
     avatar: str
     turmas: list[str] = []
+
+
+class NovaTurma(BaseModel):
+    nome: str = Field(min_length=2, max_length=60)
+
+    @field_validator("nome")
+    @classmethod
+    def limpar(cls, valor: str) -> str:
+        valor = " ".join(valor.split())
+        if len(valor) < 2:
+            raise ValueError("O nome da turma precisa ter pelo menos 2 letras.")
+        return valor
