@@ -11,26 +11,20 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&family=Pixelify+Sans:wght@500;700&display=swap">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/componentes.css">
   <link rel="stylesheet" href="css/inicio.css">
+  <link rel="stylesheet" href="css/conta.css">
+  <link rel="stylesheet" href="css/trilha.css">
+  <link rel="stylesheet" href="css/exercicio.css">
 </head>
 <body>
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <div id="conteudo" tabindex="-1"></div>
+  <div id="camada-modal"></div>
 
-  <header class="topo">
-    <a class="marca" href="#inicio" aria-label="PythonQuest, página inicial">
-      <img src="img/marca/logo-gc-256.png" alt="Geração Caldeira" width="40" height="40">
-      <span class="marca-nome">Python<b>Quest</b></span>
-    </a>
-    <span class="status" id="statusServidor" role="status" data-estado="verificando">Verificando servidor…</span>
-  </header>
-
-  <main id="conteudo" tabindex="-1"></main>
-
-  <footer class="rodape">
-    <img src="img/marca/logo-gc-256.png" alt="" width="24" height="24">
-    <span>Projeto do Geração Caldeira</span>
-  </footer>
-
+  <!-- Python no navegador (só para o botão "Executar"; quem corrige é o servidor). -->
+  <script src="lib/skulpt/skulpt.min.js" defer></script>
+  <script src="lib/skulpt/skulpt-stdlib.js" defer></script>
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

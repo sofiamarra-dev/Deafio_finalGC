@@ -1,0 +1,308 @@
+id: condicionais
+ordem: 2
+titulo: Condicionais
+descricao: if, elif, else, comparações e operadores lógicos.
+guia: |
+  if testa uma condição: se for verdadeira, o bloco indentado (4 espaços) roda.
+  elif ("senão, se") testa outra condição só quando as anteriores foram falsas.
+  else roda quando nenhuma condição foi verdadeira.
+  Comparações: == igual, != diferente, < menor, > maior, <= menor ou igual, >= maior ou igual.
+  Lógicos: and (as duas verdadeiras), or (pelo menos uma), not (inverte).
+  Um número é par quando o resto da divisão por 2 é zero: n % 2 == 0.
+
+exercicios:
+  - id: condicionais-f1
+    dificuldade: facil
+    tipo: completar
+    titulo: Geladeira com alarme
+    enunciado: |
+      A geladeira só pode mostrar "Gelada" se a temperatura estiver ABAIXO de 5 graus.
+      Complete com o operador certo. Os testes trocam o valor de temperatura.
+    assuntos: [if, comparacao]
+    codigo_inicial: |
+      temperatura = 3
+
+      if temperatura ___ 5:
+          print("Gelada")
+      else:
+          print("Esquentou!")
+    blocos: [">", "<=", "<", "=="]
+    solucao: "<"
+    respostas_erradas: [">", "<=", "=="]
+    modo_teste: variavel
+    variavel: temperatura
+    casos:
+      - {entrada: "3", saida: "Gelada", visivel: true}
+      - {entrada: "5", saida: "Esquentou!", visivel: true}
+      - {entrada: "9", saida: "Esquentou!"}
+      - {entrada: "-2", saida: "Gelada"}
+    dicas:
+      - '"Abaixo de 5" quer dizer menor que 5.'
+      - Com exatamente 5 graus a geladeira já NÃO está abaixo de 5.
+    explicacao: < é "menor que". <= também aceitaria o 5, e o enunciado pede abaixo de 5.
+
+  - id: condicionais-f2
+    dificuldade: facil
+    tipo: multipla_escolha
+    titulo: Só o primeiro verdadeiro
+    enunciado: |
+      O que o programa mostra?
+      ```
+      x = 10
+      if x > 5:
+          print("A")
+      elif x > 8:
+          print("B")
+      else:
+          print("C")
+      ```
+    assuntos: [if, elif]
+    alternativas:
+      - texto: "A"
+        correta: true
+        explicacao: Isso. A primeira condição já é verdadeira, então o elif nem é testado.
+      - texto: "B"
+        explicacao: 10 > 8 é verdade, mas o elif só é testado se o if anterior for falso.
+      - texto: "A e depois B"
+        explicacao: Numa cadeia if/elif/else, só UM bloco roda.
+      - texto: "C"
+        explicacao: O else só roda quando todas as condições acima são falsas.
+    dicas:
+      - Numa cadeia if / elif / else, quantos blocos podem rodar?
+    explicacao: O Python para no primeiro teste verdadeiro da cadeia.
+
+  - id: condicionais-f3
+    dificuldade: facil
+    tipo: completar
+    titulo: Fogão de três potências
+    enunciado: |
+      Cada nível de chama mostra uma mensagem, e só uma delas pode aparecer.
+      Complete com a palavra que liga a segunda pergunta à primeira.
+    assuntos: [elif]
+    codigo_inicial: |
+      chama = 2
+
+      if chama == 3:
+          print("Forte")
+      ___ chama == 2:
+          print("Média")
+      else:
+          print("Fraca")
+    blocos: ["elif", "if", "else", "for"]
+    solucao: "elif"
+    respostas_erradas: ["if", "else", "for"]
+    modo_teste: variavel
+    variavel: chama
+    casos:
+      - {entrada: "3", saida: "Forte", visivel: true}
+      - {entrada: "2", saida: "Média", visivel: true}
+      - {entrada: "1", saida: "Fraca"}
+      - {entrada: "0", saida: "Fraca"}
+    dicas:
+      - Um segundo if começa uma pergunta NOVA, separada da primeira.
+      - Existe uma palavra que significa "senão, se".
+    explicacao: Com if no lugar de elif, a chama 3 mostraria "Forte" e também "Fraca".
+
+  - id: condicionais-i1
+    dificuldade: intermediario
+    tipo: programa
+    titulo: Par ou ímpar
+    enunciado: |
+      Leia um número inteiro e mostre "par" se ele for par ou "ímpar" se for ímpar.
+    assuntos: [if, else, resto]
+    codigo_inicial: |
+      n = int(input())
+    solucao: |
+      n = int(input())
+      if n % 2 == 0:
+          print("par")
+      else:
+          print("ímpar")
+    respostas_erradas:
+      - |
+        n = int(input())
+        if n / 2 == 0:
+            print("par")
+        else:
+            print("ímpar")
+    modo_teste: stdin
+    casos:
+      - {entrada: "4", saida: "par", visivel: true}
+      - {entrada: "7", saida: "ímpar", visivel: true}
+      - {entrada: "0", saida: "par"}
+      - {entrada: "-3", saida: "ímpar"}
+    dicas:
+      - Um número par dividido por 2 não deixa resto.
+      - O operador % dá o resto da divisão. n % 2 é 0 ou 1.
+    explicacao: Use n % 2 == 0 para testar se o número é par.
+
+  - id: condicionais-i2
+    dificuldade: intermediario
+    tipo: achar_erro
+    titulo: Boletim confuso
+    enunciado: |
+      Regra: nota 7 ou mais é "Aprovado"; de 5 até menos de 7 é "Recuperação"; abaixo de 5 é "Reprovado".
+      O programa mostra duas mensagens para quem tirou 8. Corrija.
+    assuntos: [if, elif]
+    codigo_inicial: |
+      nota = float(input())
+      if nota >= 7:
+          print("Aprovado")
+      if nota >= 5:
+          print("Recuperação")
+      else:
+          print("Reprovado")
+    solucao: |
+      nota = float(input())
+      if nota >= 7:
+          print("Aprovado")
+      elif nota >= 5:
+          print("Recuperação")
+      else:
+          print("Reprovado")
+    respostas_erradas:
+      - |
+        nota = float(input())
+        if nota >= 7:
+            print("Aprovado")
+        if nota >= 5:
+            print("Recuperação")
+        else:
+            print("Reprovado")
+    modo_teste: stdin
+    casos:
+      - {entrada: "8", saida: "Aprovado", visivel: true}
+      - {entrada: "6", saida: "Recuperação", visivel: true}
+      - {entrada: "3", saida: "Reprovado", visivel: true}
+      - {entrada: "7", saida: "Aprovado"}
+      - {entrada: "5", saida: "Recuperação"}
+    dicas:
+      - Com nota 8, as duas condições (>= 7 e >= 5) são verdadeiras.
+      - As três situações são uma cadeia única. Qual palavra faz a segunda pergunta depender da primeira?
+    explicacao: Dois if separados são testados os dois. Use elif para formar uma cadeia única.
+
+  - id: condicionais-i3
+    dificuldade: intermediario
+    tipo: programa
+    titulo: O maior de três
+    enunciado: |
+      Escreva a função maior(a, b, c) que DEVOLVE (return) o maior dos três números.
+      Tente resolver com if, sem usar a função max().
+    assuntos: [if, and, funcao]
+    codigo_inicial: |
+      def maior(a, b, c):
+          # devolva o maior dos três
+          pass
+    solucao: |
+      def maior(a, b, c):
+          if a >= b and a >= c:
+              return a
+          elif b >= c:
+              return b
+          else:
+              return c
+    respostas_erradas:
+      - |
+        def maior(a, b, c):
+            if a > b:
+                return a
+            else:
+                return b
+    modo_teste: funcao
+    funcao: maior
+    casos:
+      - {entrada: "[1, 5, 3]", saida: "5", visivel: true}
+      - {entrada: "[-1, -5, -3]", saida: "-1", visivel: true}
+      - {entrada: "[7, 7, 2]", saida: "7"}
+      - {entrada: "[2, 3, 9]", saida: "9"}
+      - {entrada: "[0, 0, 0]", saida: "0"}
+    dicas:
+      - Para a ser o maior, ele precisa ser maior ou igual a b E maior ou igual a c.
+      - Se a não é o maior, basta comparar b com c.
+      - Use return para devolver o valor. print() só mostra, não devolve.
+    explicacao: Compare a com os outros dois usando and; se não for o maior, decida entre b e c.
+
+  - id: condicionais-a1
+    dificuldade: avancado
+    tipo: programa
+    titulo: Ano bissexto
+    enunciado: |
+      Leia um ano e mostre "bissexto" ou "não bissexto".
+      Regra: é bissexto se for divisível por 4, exceto os divisíveis por 100 que não são divisíveis por 400.
+      (2000 é bissexto; 1900 não é.)
+    assuntos: [if, and, or, resto]
+    codigo_inicial: |
+      ano = int(input())
+    solucao: |
+      ano = int(input())
+      if (ano % 4 == 0 and ano % 100 != 0) or ano % 400 == 0:
+          print("bissexto")
+      else:
+          print("não bissexto")
+    respostas_erradas:
+      - |
+        ano = int(input())
+        if ano % 4 == 0:
+            print("bissexto")
+        else:
+            print("não bissexto")
+    modo_teste: stdin
+    casos:
+      - {entrada: "2024", saida: "bissexto", visivel: true}
+      - {entrada: "2023", saida: "não bissexto", visivel: true}
+      - {entrada: "1900", saida: "não bissexto"}
+      - {entrada: "2000", saida: "bissexto"}
+    dicas:
+      - Divisível por 4 é ano % 4 == 0.
+      - "Há dois jeitos de ser bissexto: (divisível por 4 e não por 100) ou (divisível por 400)."
+    explicacao: Junte as regras com and / or e use parênteses para deixar a ordem clara.
+
+  - id: condicionais-a2
+    dificuldade: avancado
+    tipo: programa
+    desafio_final: true
+    titulo: "Desafio final: triângulos"
+    enunciado: |
+      Leia três lados (inteiros, um por linha) e mostre:
+      "não é triângulo" se um lado for maior ou igual à soma dos outros dois;
+      senão "equilátero" (3 lados iguais), "isósceles" (exatamente 2 iguais) ou "escaleno" (todos diferentes).
+    assuntos: [if, elif, and, or, logica]
+    codigo_inicial: |
+      a = int(input())
+      b = int(input())
+      c = int(input())
+    solucao: |
+      a = int(input())
+      b = int(input())
+      c = int(input())
+      if a >= b + c or b >= a + c or c >= a + b:
+          print("não é triângulo")
+      elif a == b == c:
+          print("equilátero")
+      elif a == b or b == c or a == c:
+          print("isósceles")
+      else:
+          print("escaleno")
+    respostas_erradas:
+      - |
+        a = int(input())
+        b = int(input())
+        c = int(input())
+        if a == b == c:
+            print("equilátero")
+        elif a == b or b == c or a == c:
+            print("isósceles")
+        else:
+            print("escaleno")
+    modo_teste: stdin
+    casos:
+      - {entrada: "3\n3\n3", saida: "equilátero", visivel: true}
+      - {entrada: "3\n4\n5", saida: "escaleno", visivel: true}
+      - {entrada: "2\n2\n3", saida: "isósceles"}
+      - {entrada: "1\n2\n10", saida: "não é triângulo"}
+      - {entrada: "5\n3\n3", saida: "isósceles"}
+      - {entrada: "1\n1\n2", saida: "não é triângulo"}
+    dicas:
+      - Teste primeiro se os lados formam um triângulo. Só depois classifique.
+      - Em Python dá para escrever a == b == c.
+    explicacao: A ordem das perguntas importa. Descarte o "não é triângulo" antes de classificar.

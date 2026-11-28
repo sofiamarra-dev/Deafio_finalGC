@@ -1,0 +1,238 @@
+# Módulo 1. Formato descrito em backend/conteudo/LEIA-ME.md.
+id: fundamentos
+ordem: 1
+titulo: Fundamentos de Python
+descricao: Variáveis, tipos, print, input e operadores.
+guia: |
+  print() mostra um valor na tela: print("Olá") escreve Olá.
+  input() lê uma linha digitada e devolve sempre um TEXTO (str).
+  Para fazer conta com o que foi digitado, converta: int(input()) para inteiros, float(input()) para decimais.
+  Variáveis guardam valores: idade = 15.
+  Operadores: + soma, - subtrai, * multiplica, / divide (resultado decimal), // divisão inteira, % resto, ** potência.
+  Com textos, + junta: "Py" + "thon" vira "Python".
+
+exercicios:
+  - id: fundamentos-f1
+    dificuldade: facil
+    tipo: multipla_escolha
+    titulo: Mostrando na tela
+    enunciado: Qual comando faz o Python mostrar um texto na tela?
+    assuntos: [print]
+    alternativas:
+      - texto: 'print("Olá")'
+        correta: true
+        explicacao: Isso! print() escreve o valor na tela.
+      - texto: 'input("Olá")'
+        explicacao: input() até mostra a mensagem, mas a função dele é LER o que a pessoa digita.
+      - texto: 'show("Olá")'
+        explicacao: show não existe no Python.
+      - texto: 'echo "Olá"'
+        explicacao: echo é um comando do terminal, não do Python.
+    dicas:
+      - Em inglês, "imprimir" é...
+    explicacao: O comando de saída do Python é print().
+
+  - id: fundamentos-f2
+    dificuldade: facil
+    tipo: completar
+    titulo: Cumprimento
+    enunciado: |
+      O programa lê um nome e deve cumprimentar a pessoa exatamente assim: Olá, Ana
+      Complete a lacuna para juntar os dois textos.
+    assuntos: [input, print, str]
+    codigo_inicial: |
+      nome = input()
+      print("Olá, " ___ nome)
+    blocos: ["+", ",", "*", "-"]
+    solucao: "+"
+    respostas_erradas: [",", "*", "-"]
+    modo_teste: stdin
+    casos:
+      - {entrada: "Ana", saida: "Olá, Ana", visivel: true}
+      - {entrada: "Bia", saida: "Olá, Bia", visivel: true}
+      - {entrada: "Carlos Eduardo", saida: "Olá, Carlos Eduardo"}
+    dicas:
+      - Com textos, existe um operador que "cola" um no outro.
+      - "Cuidado com a vírgula dentro do print(): ela separa os valores com um espaço extra."
+    explicacao: O + junta dois textos sem colocar nada entre eles. "Olá, " + "Ana" vira "Olá, Ana".
+
+  - id: fundamentos-f3
+    dificuldade: facil
+    tipo: multipla_escolha
+    titulo: Texto ou número?
+    enunciado: |
+      O que o programa abaixo mostra?
+      ```
+      a = "7"
+      b = "3"
+      print(a + b)
+      ```
+    assuntos: [str, tipos]
+    alternativas:
+      - texto: "73"
+        correta: true
+        explicacao: Certo! Entre aspas, "7" e "3" são textos, e + junta textos.
+      - texto: "10"
+        explicacao: Seria 10 se fossem números (7 + 3). Com aspas, são textos.
+      - texto: "Dá erro"
+        explicacao: "Não dá erro: somar dois textos é permitido, o resultado é a junção deles."
+      - texto: "7 + 3"
+        explicacao: O print mostra o resultado da operação, não a conta escrita.
+    dicas:
+      - Repare nas aspas em volta dos números.
+    explicacao: Valores entre aspas são str (texto). "7" + "3" junta e vira "73".
+
+  - id: fundamentos-i1
+    dificuldade: intermediario
+    tipo: programa
+    titulo: Calculadora de soma
+    enunciado: |
+      Leia dois números inteiros, um em cada linha, e mostre a soma deles.
+    assuntos: [input, int, operadores]
+    codigo_inicial: |
+      # leia os dois números e mostre a soma
+    solucao: |
+      a = int(input())
+      b = int(input())
+      print(a + b)
+    respostas_erradas:
+      - |
+        a = input()
+        b = input()
+        print(a + b)
+    modo_teste: stdin
+    casos:
+      - {entrada: "2\n3", saida: "5", visivel: true}
+      - {entrada: "-4\n10", saida: "6", visivel: true}
+      - {entrada: "0\n0", saida: "0"}
+      - {entrada: "100\n250", saida: "350"}
+    dicas:
+      - input() devolve texto. Se você somar dois textos, eles são juntados ("2" + "3" = "23").
+      - Use int(input()) para ler cada número já como inteiro.
+    explicacao: Converta cada entrada com int() antes de somar.
+
+  - id: fundamentos-i2
+    dificuldade: intermediario
+    tipo: achar_erro
+    titulo: Ano que vem
+    enunciado: |
+      Este programa deveria ler a idade de alguém e mostrar quantos anos a pessoa terá no ano que vem.
+      Mas ele dá erro. Encontre e corrija o problema.
+    assuntos: [input, int, tipos]
+    codigo_inicial: |
+      idade = input()
+      print(idade + 1)
+    solucao: |
+      idade = int(input())
+      print(idade + 1)
+    respostas_erradas:
+      - |
+        idade = input()
+        print(idade + 1)
+    modo_teste: stdin
+    casos:
+      - {entrada: "15", saida: "16", visivel: true}
+      - {entrada: "0", saida: "1", visivel: true}
+      - {entrada: "99", saida: "100"}
+    dicas:
+      - Rode o código e leia o erro. Ele fala de "str" e "int".
+      - idade é um texto. Texto + número não funciona.
+    explicacao: input() devolve texto; somar texto com o número 1 causa TypeError. Converta com int().
+
+  - id: fundamentos-i3
+    dificuldade: intermediario
+    tipo: completar
+    titulo: Área do retângulo
+    enunciado: |
+      O programa lê a base e a altura de um retângulo e mostra a área. Complete o cálculo.
+    assuntos: [float, operadores]
+    codigo_inicial: |
+      base = float(input())
+      altura = float(input())
+      area = ___
+      print(area)
+    blocos: ["base * altura", "base + altura", "base ** altura", "(base + altura) * 2"]
+    solucao: "base * altura"
+    respostas_erradas: ["base + altura", "base ** altura", "(base + altura) * 2"]
+    modo_teste: stdin
+    casos:
+      - {entrada: "2\n3", saida: "6.0", visivel: true}
+      - {entrada: "2.5\n4", saida: "10.0", visivel: true}
+      - {entrada: "1.5\n1.5", saida: "2.25"}
+    dicas:
+      - A área de um retângulo é base vezes altura.
+      - Multiplicação no Python é *.
+    explicacao: Área = base * altura. (base + altura) * 2 seria o perímetro.
+
+  - id: fundamentos-a1
+    dificuldade: avancado
+    tipo: programa
+    titulo: Relógio de segundos
+    enunciado: |
+      Leia uma quantidade de segundos (inteiro) e mostre quantas horas, minutos e segundos ela representa,
+      no formato: 1h 1min 5s
+    assuntos: [operadores, divisao_inteira, resto]
+    codigo_inicial: |
+      total = int(input())
+    solucao: |
+      total = int(input())
+      horas = total // 3600
+      minutos = total % 3600 // 60
+      segundos = total % 60
+      print(f"{horas}h {minutos}min {segundos}s")
+    respostas_erradas:
+      - |
+        total = int(input())
+        print(f"{total / 3600}h {total / 60}min {total}s")
+    modo_teste: stdin
+    casos:
+      - {entrada: "3665", saida: "1h 1min 5s", visivel: true}
+      - {entrada: "59", saida: "0h 0min 59s", visivel: true}
+      - {entrada: "7200", saida: "2h 0min 0s"}
+      - {entrada: "86399", saida: "23h 59min 59s"}
+    dicas:
+      - Uma hora tem 3600 segundos. A divisão inteira (//) diz quantas horas cabem.
+      - O resto (%) diz o que sobrou depois de tirar as horas.
+      - "Para juntar tudo numa linha, use f-string: print(f\"{horas}h {minutos}min {segundos}s\")"
+    explicacao: Use // para saber quantas unidades inteiras cabem e % para o que sobra.
+
+  - id: fundamentos-a2
+    dificuldade: avancado
+    tipo: programa
+    desafio_final: true
+    titulo: "Desafio final: caixa eletrônico"
+    enunciado: |
+      Um caixa eletrônico tem notas de 50, 20 e 10 reais, e moedas de 1 real.
+      Leia um valor inteiro e mostre quantas notas e moedas de cada tipo ele entrega, usando sempre as maiores primeiro.
+      Formato da saída para 87 reais (uma linha por tipo, nesta ordem):
+      ```
+      50: 1
+      20: 1
+      10: 1
+      1: 7
+      ```
+    assuntos: [operadores, divisao_inteira, resto, logica]
+    codigo_inicial: |
+      valor = int(input())
+    solucao: |
+      valor = int(input())
+      for nota in (50, 20, 10, 1):
+          print(f"{nota}: {valor // nota}")
+          valor = valor % nota
+    respostas_erradas:
+      - |
+        valor = int(input())
+        print(f"50: {valor // 50}")
+        print(f"20: {valor // 20}")
+        print(f"10: {valor // 10}")
+        print(f"1: {valor}")
+    modo_teste: stdin
+    casos:
+      - {entrada: "87", saida: "50: 1\n20: 1\n10: 1\n1: 7", visivel: true}
+      - {entrada: "40", saida: "50: 0\n20: 2\n10: 0\n1: 0", visivel: true}
+      - {entrada: "0", saida: "50: 0\n20: 0\n10: 0\n1: 0"}
+      - {entrada: "199", saida: "50: 3\n20: 2\n10: 0\n1: 9"}
+    dicas:
+      - Comece pela nota de 50. valor // 50 diz quantas cabem.
+      - Depois de entregar as notas de 50, o que sobra é valor % 50. Continue com esse resto.
+    explicacao: A cada nota, use // para contar e % para guardar o que falta entregar.

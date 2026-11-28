@@ -1,0 +1,14 @@
+/* Entrar e criar conta. */
+.conta{display:grid;grid-template-columns:auto minmax(0,440px);gap:48px;align-items:center;justify-content:center;padding-block:24px}
+.conta-ovo svg{width:180px;height:auto}
+.conta-cartao{padding:28px}
+.conta-cartao h1{font-family:var(--fonte-titulo);font-size:32px;margin:0}
+.conta-sub{color:var(--texto-2);margin:4px 0 20px}
+.form-conta{display:flex;flex-direction:column;gap:16px}
+.conta-rodape{margin:20px 0 0;text-align:center;color:var(--texto-2);font-size:14px}
+.professor-aviso{max-width:560px;margin:24px auto}
+.professor-aviso h1{font-family:var(--fonte-titulo);margin-top:0}
+.turmas{list-style:none;padding:0;margin:16px 0;display:flex;flex-direction:column;gap:8px}
+.turmas li{display:flex;justify-content:space-between;gap:12px;padding:10px 14px;background:var(--superficie-2);border-radius:10px}
+.turmas code{font-size:18px;color:var(--verde-claro);letter-spacing:2px}
+@media (max-width:760px){.conta{grid-template-columns:1fr;gap:16px}.conta-ovo{display:none}}

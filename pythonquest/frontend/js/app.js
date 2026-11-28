@@ -1,9 +1,18 @@
-/* Ponto de partida do frontend: registra as rotas e liga o indicador do servidor. */
+/* Ponto de partida do frontend: descobre quem está logado, registra as rotas e desenha a página. */
 import { iniciarRoteador, registrarRota } from './roteador.js';
+import { sessao } from './estado.js';
 import { paginaInicio } from './paginas/inicio.js';
-import { atualizarStatusServidor } from './componentes/status-servidor.js';
+import { paginaEntrar, paginaCadastro } from './paginas/conta.js';
+import { paginaTrilha } from './paginas/trilha.js';
+import { paginaExercicio } from './paginas/exercicio.js';
+import { paginaProfessor } from './paginas/professor.js';
 
-registrarRota('inicio', paginaInicio, { padrao: true });
+registrarRota('inicio', paginaInicio, { padrao: true, acesso: 'visitante' });
+registrarRota('entrar', paginaEntrar, { acesso: 'visitante' });
+registrarRota('cadastro', paginaCadastro, { acesso: 'visitante' });
+registrarRota('trilha', paginaTrilha, { acesso: 'aluno' });
+registrarRota('exercicio', paginaExercicio, { acesso: 'aluno' });
+registrarRota('professor', paginaProfessor, { acesso: 'professor' });
 
+await sessao.carregar();
 iniciarRoteador();
-atualizarStatusServidor(document.getElementById('statusServidor'));

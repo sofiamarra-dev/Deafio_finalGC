@@ -22,3 +22,13 @@
   --largura-max:1120px;
   color-scheme:dark;
 }
+
+:root{
+  --verde-escuro:#007a0c;   /* "lado" dos botões 2D */
+  --cinza-botao:#3a4148;
+  --cinza-botao-lado:#262b30;
+  --dourado:#f2b443;
+  --dourado-lado:#b07b1c;
+  --erro-fundo:rgba(255,122,89,.12);
+  --largura-lateral:240px;
+}
